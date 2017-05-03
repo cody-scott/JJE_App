@@ -3,7 +3,10 @@
     <div class="container">
         <h1>Cancel claim for <strong>{{ waiverclaim.add_player }}</strong>?</h1>
         <form method="post">{% csrf_token %}
-            <input type="submit" value="Cancel Claim">
+            <input class="cancel_btn" type="submit" value="Confirm">
+        </form>
+        <form action="/">
+            <input type="submit" value="Return Home">
         </form>
     </div>
 {% endblock %}
