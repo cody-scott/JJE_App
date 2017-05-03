@@ -3,9 +3,12 @@ from .models import WaiverClaim, YahooTeam
 
 
 class WaiverClaimAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
     fieldsets = [
+        ('Claim ID', {'fields': ['id']}),
         (None, {'fields': ['claim_start']}),
         ('Team', {'fields': ["team"]}),
+        ('Overclaim/Cancelled', {'fields': ["overclaimed", "over_claim_id", "cancelled"]}),
         ("Add Player Info", {'fields': [
             'add_player',
             'add_LW', 'add_C', 'add_RW', 'add_D', 'add_G', 'add_Util', 'add_IR',
@@ -15,8 +18,7 @@ class WaiverClaimAdmin(admin.ModelAdmin):
             'drop_LW', 'drop_C', 'drop_RW', 'drop_D', 'drop_G', 'drop_Util', 'drop_IR',
         ]}),
     ]
-
-    list_display = ['add_player', 'drop_player']
+    list_display = ['add_player', 'drop_player', 'team', 'active_claim']
 
 
 admin.site.register(WaiverClaim, WaiverClaimAdmin)

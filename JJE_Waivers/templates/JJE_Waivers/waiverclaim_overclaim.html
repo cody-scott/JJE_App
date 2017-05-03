@@ -1,0 +1,94 @@
+{% extends 'JJE_App/_layout.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="container">
+        <form action="" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="twelve columns padded">
+                    <h5>Player: <strong>{{ add_name }}</strong></h5>
+                    <h5>Positions: {{ add_pos }}</h5>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="twelve columns padded">
+                    {{ form.team.errors }}
+                    <label for="{{ form.team.id_for_label }}">Team:</label>
+                    {{ form.team|attr:"class:claim_cbx" }}
+                </div>
+                <hr>
+            </div>
+
+            <div class="row">
+                <div class="twelve columns pdroped">
+                    {{ form.drop_player.errors }}
+                    <label for="{{ form.drop_player.id_for_label }}">Drop Player:</label>
+                    {{ form.drop_player|attr:"class:claim_tbx" }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="two columns">
+                </div>
+                <div class="two columns pdroped colwidth ">
+                    {{ form.drop_LW.errors }}
+                    <label for="{{ form.drop_LW.id_for_label }}">LW:</label>
+                    {{ form.drop_LW}}
+                </div>
+                <div class="two columns pdroped colwidth">
+                    {{ form.drop_C.errors }}
+                    <label for="{{ form.drop_C.id_for_label }}">C:</label>
+                    {{ form.drop_C}}
+                </div>
+                <div class="two columns pdroped colwidth">
+                    {{ form.drop_RW.errors }}
+                    <label for="{{ form.drop_RW.id_for_label }}">RW:</label>
+                    {{ form.drop_RW}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="two columns">
+                </div>
+                <div class="two columns pdroped colwidth">
+                    {{ form.drop_D.errors }}
+                    <label for="{{ form.drop_D.id_for_label }}">D:</label>
+                    {{ form.drop_D}}
+                </div>
+                <div class="two columns pdroped colwidth">
+                    {{ form.drop_G.errors }}
+                    <label for="{{ form.drop_G.id_for_label }}">G:</label>
+                    {{ form.drop_G}}
+                </div>
+                <div class="two columns pdroped colwidth">
+                    {{ form.drop_Util.errors }}
+                    <label for="{{ form.drop_Util.id_for_label }}">Util:</label>
+                    {{ form.drop_Util}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="two columns">
+                </div>
+                <div class="two columns pdroped colwidth">
+                    {{ form.drop_IR.errors }}
+                    <label for="{{ form.drop_IR.id_for_label }}">IR:</label>
+                    {{ form.drop_IR}}
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="twelve columns padded">
+                <input class="submitclaim_btn" type="submit" value="Submit Claim" />
+            </div>
+            <br>
+            <br>
+            <div class="twelve columns padded">
+                <input type="submit" value="Cancel" />
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

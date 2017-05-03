@@ -1,9 +1,73 @@
 {% extends 'JJE_App/_layout.html' %}
-
+{% load static %}
 {% block content %}
+    <div class="container new-claim-container">
+        <div class="row new-claim-row">
+            <div class="twelve columns">
+                <form action="/waiver_claim/new">
+                    <input type="submit" class="newclaim_btn" value="New Claim">
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
 
-    <h1>YES</h1>
+    {% for claim in object_list %}
+        {#        <div>#}
+        {#            <h1>#}
+        {#                {{ claim.add_player }}#}
+        {#            </h1>#}
+        {#            <h1>#}
+        {#                {{ claim.drop_player }}#}
+        {#            </h1>#}
+        {#        </div>#}
 
+        <div class="container claim-container" id={{ claim.id }}>
+            <div class="row">
+                <div team_id="{{ claim.team.id }}" class="twelve columns padded nowrap">
+                    <h4>Team: <strong>{{ claim.team }}</strong></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns padded nowrap">
+                    <h5>Player Added: {{ claim.add_player }}</h5>
+                    <h6>Position: {{ claim.get_position_add }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns padded nowrap">
+                    <h5>Player Dropped: {{ claim.drop_player }}</h5>
+                    <h6>Position: {{ claim.get_position_drop }}</h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="twelve columns padded TIMEROW">
+                    <h5>Time Remaining <p class="timecounter" end-time="{{ claim.claim_end }}">--:--:--</p></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="three columns padded">
+                    <form action="/waiver_claim/overclaim={{ claim.id }}">
+                        <input class="overclaim_btn" type="submit" value="Overclaim">
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="three columns padded">
+                    <form action="/waiver_claim/cancel={{ claim.id }}">
+                        <input class="cancel_btn" type="submit" value="Cancel">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <hr class="hr_claim_{{ claim.id }}">
+
+    {% endfor %}
+
+    <script src="{% static 'JJE_Waivers/worker.js' %}"></script>
 {% endblock %}
 
-<script src="{% static 'JJE_Waivers/worker.js' %}"></script>
