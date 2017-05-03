@@ -18,7 +18,7 @@ class WaiverClaimAdmin(admin.ModelAdmin):
             'drop_LW', 'drop_C', 'drop_RW', 'drop_D', 'drop_G', 'drop_Util', 'drop_IR',
         ]}),
     ]
-    list_display = ['add_player', 'drop_player', 'team', 'active_claim']
+    list_display = ['pk', 'add_player', 'drop_player', 'team', 'active_claim']
 
 
 admin.site.register(WaiverClaim, WaiverClaimAdmin)

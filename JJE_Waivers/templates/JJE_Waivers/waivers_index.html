@@ -13,15 +13,6 @@
     <hr>
 
     {% for claim in object_list %}
-        {#        <div>#}
-        {#            <h1>#}
-        {#                {{ claim.add_player }}#}
-        {#            </h1>#}
-        {#            <h1>#}
-        {#                {{ claim.drop_player }}#}
-        {#            </h1>#}
-        {#        </div>#}
-
         <div class="container claim-container" id={{ claim.id }}>
             <div class="row">
                 <div team_id="{{ claim.team.id }}" class="twelve columns padded nowrap">

@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView
 from django.urls import reverse
 
 from JJE_Waivers.models import WaiverClaim

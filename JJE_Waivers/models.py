@@ -15,13 +15,11 @@ class YahooTeam(models.Model):
 
 
 class WaiverClaim(models.Model):
-
     team = models.ForeignKey(YahooTeam)
 
     claim_start = models.DateTimeField(default=timezone.now)
 
     add_player = models.CharField(max_length=255)
-    add_position = models.CharField(max_length=255)
 
     add_LW = models.BooleanField(default=False)
     add_C = models.BooleanField(default=False)
