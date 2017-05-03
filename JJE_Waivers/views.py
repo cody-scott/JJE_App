@@ -6,7 +6,6 @@ from django.views.generic.edit import CreateView, FormView
 from django.urls import reverse
 
 from JJE_Waivers.models import WaiverClaim
-from JJE_Waivers.forms import CancelForm
 
 from django.utils import timezone
 from datetime import timedelta
@@ -19,10 +18,6 @@ class IndexView(ListView):
         now = timezone.now() - timedelta(days=1)
         claims = WaiverClaim.objects.filter(cancelled=False).filter(overclaimed=False).filter(claim_start__gt=now)
         return claims
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(IndexView, self).get_context_data(**kwargs)
-    #     return context
 
 
 class WaiverClaimCreate(CreateView):
