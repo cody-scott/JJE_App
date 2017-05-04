@@ -20,6 +20,7 @@ from django.contrib import admin
 admin.site.site_title = "JJE Admin"
 admin.site.site_header = "JJE Admin"
 urlpatterns = [
-    url(r'', include('JJE_Waivers.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'', include('JJE_Waivers.urls'), name="main"),
+    url('^accounts/', include('django.contrib.auth.urls'), name="accounts"),
+    url(r'^admin/', admin.site.urls, name="admin"),
 ]

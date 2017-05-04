@@ -20,7 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ba2$^e2$78(e28&owg_5)n1%(r$3490cc$&kw#dw6az4)i(2y8'
+# SECRET_KEY = 'ba2$^e2$78(e28&owg_5)n1%(r$3490cc$&kw#dw6az4)i(2y8'
+SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,6 +53,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'JJE_App.urls'
+
+LOGIN_REDIRECT_URL = 'index'
 
 TEMPLATES = [
     {

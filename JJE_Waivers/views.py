@@ -3,10 +3,20 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 from django.urls import reverse
 
-from JJE_Waivers.models import WaiverClaim
+from JJE_Waivers.models import WaiverClaim, YahooTeam
 
 from django.utils import timezone
 from datetime import timedelta
+
+
+def get_user_teams_list(user):
+    out_dct = {}
+    if not user.is_anonymous:
+        teams = YahooTeam.objects.filter(user=user.id)
+        if len(teams) == 1:
+            out_dct = {'team': teams[0].id}
+        pass
+    return out_dct
 
 
 class IndexView(ListView):
@@ -17,6 +27,17 @@ class IndexView(ListView):
         claims = WaiverClaim.objects.filter(cancelled=False).filter(overclaimed=False).filter(claim_start__gt=now)
         return claims
 
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        if not self.request.user.is_anonymous:
+            teams = self.request.user.yahooteam_set.all()
+            user_teams = [team_id.id for team_id in teams]
+        else:
+            user_teams = [team_id.id for team_id in YahooTeam.objects.all()]
+
+        context['user_team_ids'] = user_teams
+        return context
+
 
 class WaiverClaimCreate(CreateView):
     model = WaiverClaim
@@ -26,7 +47,16 @@ class WaiverClaimCreate(CreateView):
         "add_player", "add_LW", "add_C", "add_RW", "add_D", "add_G", "add_Util", "add_IR",
         "drop_player", "drop_LW", "drop_C", "drop_RW", "drop_D", "drop_G", "drop_Util", "drop_IR"
     ]
-    
+
+    def get_form(self, form_class=None):
+        frm = super(WaiverClaimCreate, self).get_form(form_class)
+        if not self.request.user.is_anonymous:
+            frm.fields['team'].queryset = YahooTeam.objects.filter(user=self.request.user.id)
+        return frm
+
+    def get_initial(self):
+        return get_user_teams_list(self.request.user)
+
     def form_valid(self, form):
         return super(WaiverClaimCreate, self).form_valid(form)
 
@@ -48,11 +78,19 @@ class OverclaimCreate(CreateView):
         except Exception as e:
             return redirect(reverse("index"))
 
+    def get_initial(self):
+        return get_user_teams_list(self.request.user)
+
+    def get_form(self, form_class=None):
+        frm = super(OverclaimCreate, self).get_form(form_class)
+        if not self.request.user.is_anonymous:
+            frm.fields['team'].queryset = YahooTeam.objects.filter(user=self.request.user.id)
+        return frm
+
     def get_context_data(self, **kwargs):
         context = super(OverclaimCreate, self).get_context_data(**kwargs)
         wc_id = self.kwargs.get("waiver_claim_id")
         player = WaiverClaim.objects.get(id=wc_id)
-
         context["add_name"] = player.add_player
         context["add_pos"] = player.get_position_add
         return context

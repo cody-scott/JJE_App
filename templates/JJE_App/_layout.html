@@ -26,14 +26,28 @@
     <link rel="stylesheet" href="{% static 'JJE_App/style.css' %}">
 
 </head>
-
+<body>
 <div class="container">
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-list">
                 <li class="navbar-item"><a class="navbar-link" href="/">Index</a></li>
-{#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
-{#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
+                {#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
+                {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
+                {% if user.is_authenticated %}
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="{% url 'login'%}?next={{request.path}}">Login</a>
+                    </li>
+                {% endif %}
+            {% if user.is_staff %}
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="/admin">Admin</a>
+                    </li>
+            {% endif %}
             </ul>
         </div>
     </nav>
