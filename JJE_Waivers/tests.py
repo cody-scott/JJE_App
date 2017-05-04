@@ -79,8 +79,9 @@ class WaiverClaimTest(TestCase):
     def test_claim_end(self):
         claim = WaiverClaim()
         st = timezone.now()
-        et = (timezone.now() + datetime.timedelta(days=1)).isoformat()
+        et = (st + datetime.timedelta(days=1)).isoformat()
         claim.claim_start = st
+        # claim.save()
         self.assertEqual(claim.claim_end, et)
 
 
