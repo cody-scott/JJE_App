@@ -41,7 +41,7 @@
             {% if claim.team.id not in user_team_ids or user.is_anonymous %}
             <div class="row">
                 <div class="three columns padded">
-                    <form action="/waiver_claim/overclaim={{ claim.id }}">
+                    <form action="{% url 'waiver_claim-overclaim' waiver_claim_id=claim.id %}">
                         <input class="overclaim_btn" type="submit" value="Overclaim">
                     </form>
                 </div>
@@ -51,7 +51,7 @@
             {% if claim.team.id in user_team_ids or user.is_anonymous%}
                 <div class="row">
                     <div class="three columns padded">
-                        <form action="/waiver_claim/cancel={{ claim.id }}">
+                        <form action="{% url 'waiver_claim-cancel' pk=claim.id %}">
                             <input class="cancel_btn" type="submit" value="Cancel">
                         </form>
                     </div>

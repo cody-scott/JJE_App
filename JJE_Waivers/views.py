@@ -8,6 +8,7 @@ from JJE_Waivers.models import WaiverClaim, YahooTeam
 from django.utils import timezone
 from datetime import timedelta
 
+from JJE_Waivers.utils import email_functions
 
 def get_user_teams_list(user):
     out_dct = {}
@@ -58,7 +59,9 @@ class WaiverClaimCreate(CreateView):
         return get_user_teams_list(self.request.user)
 
     def form_valid(self, form):
-        return super(WaiverClaimCreate, self).form_valid(form)
+        valid_form = super(WaiverClaimCreate, self).form_valid(form)
+        email_functions.new_claim_email(self.object)
+        return valid_form
 
 
 class OverclaimCreate(CreateView):
@@ -111,8 +114,11 @@ class OverclaimCreate(CreateView):
         form.instance.add_Util = player.add_Util
         form.instance.add_IR = player.add_IR
         form.instance.over_claim_id = int(wc_id)
+        valid_form = super(OverclaimCreate, self).form_valid(form)
 
-        return super(OverclaimCreate, self).form_valid(form)
+        email_functions.overclaim_email(self.object)
+
+        return valid_form
 
 
 class CancelClaimView(DetailView):
@@ -124,5 +130,5 @@ class CancelClaimView(DetailView):
         claim = get_object_or_404(WaiverClaim, id=claim_id)
         claim.cancelled = True
         claim.save()
-
+        email_functions.cancel_email(claim)
         return redirect(reverse('index'))

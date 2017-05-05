@@ -93,7 +93,11 @@ class WaiverClaim(models.Model):
 
     @property
     def claim_end(self):
-        return (self.claim_start + datetime.timedelta(days=1)).isoformat()
+        return self.claim_end_normal.isoformat()
+
+    @property
+    def claim_end_normal(self):
+        return self.claim_start + datetime.timedelta(days=1)
 
     def __str__(self):
         return self.add_player

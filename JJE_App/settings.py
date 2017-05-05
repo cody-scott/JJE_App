@@ -127,3 +127,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+
+try:
+    from JJE_App.private_config import email_user, email_password
+    EMAIL_HOST_USER = email_user
+    EMAIL_HOST_PASSWORD = email_password
+except:
+    EMAIL_HOST_USER = 'jje.waivers@gmail.com'
+    EMAIL_HOST_PASSWORD = os.environ.get("email_password")
+EMAIL_PORT = 587

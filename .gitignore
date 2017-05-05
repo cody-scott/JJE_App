@@ -96,3 +96,5 @@ ENV/
 .ropeproject
 
 .idea/
+
+private_config.py
