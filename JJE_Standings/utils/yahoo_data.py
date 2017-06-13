@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import math
 
+
 def create_session():
     refresh_yahoo_token()
     token = YahooKey.objects.first() #type: YahooKey
@@ -25,10 +26,20 @@ def create_session():
 
 def build_team_data():
     yahoo_obj = create_session()
-    x = YahooTeam.objects.all()
+    url = "http://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
+    result = yahoo_obj.get(url)
+    results, status_code = result.text, result.status_code
+    if (result.text is None) or (result.status_code != 200):
+        'Means an error with the yahoo stuff'
+        return False
+
+    standings_soup = BeautifulSoup(result.text, 'html.parser')
+    teams = standings_soup.findAll('team')
+    for team in teams:
+        _process_team(team)
 
 
-def get_standings():
+def update_standings():
     yahoo_obj = create_session()
     set_standings_not_current()
     _standings_collection(yahoo_obj)
@@ -54,41 +65,22 @@ def _standings_collection(yahoo_obj):
         standings_soup = BeautifulSoup(result.text, 'html.parser')
         team_list = league_standings(standings_soup)
 
-        to_add = []
-        for team in team_list:
-            team_item = team['team']
-            standings_item = team['standings']
-            new_team = team['new_team']
-
-            # if not existing add
-            if new_team:
-                to_add.append(team_item)
-                # db.session.add(team_item)
-
-            # Add the new standing
-            to_add.append(standings_item)
-            # db.session.add(standings_item)
-
-        # db.session.add_all(to_add)
-        # commit the changes to the db
-        # db.session.commit()
-
         return True
     except Exception as e:
-        print(e.message)
-
+        print(e)
 
 
 def league_standings(xml_data=None):
-    # Pass the xmlData in AS a beautiful soup object
-    # team_list is a series of model objects that can be saved on return
+    """
+    Pass the xmlData in AS a beautiful soup object
+    team_list is a series of model objects that can be saved on return
+    """
     team_list = []
     teams = xml_data.findAll('team')
     for team in teams:
         team_class, new_team = _process_team(team)
         standings_class = _process_standings(team_class, team, team_class.team_id)
         team_list.append({'team': team_class, 'standings': standings_class, 'new_team': new_team})
-
     return team_list
 
 

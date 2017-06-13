@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title_block %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="{% static 'JJE_App/skeleton/skeleton.css' %}">
+    <link rel="stylesheet" href="{% static 'JJE_App/skeleton/normalize.css' %}">
+
+    <script src="{% static 'JJE_App/javascript_libs/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'JJE_App/javascript_libs/moment.min.js' %}"></script>
+    <script src="{% static 'JJE_App/javascript_libs/countdown.min.js' %}"></script>
+    <script src="{% static 'JJE_App/javascript_libs/moment-countdown.min.js' %}"></script>
+
+    {% block head %}
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'JJE_App/style.css' %}">
+
+</head>
+<body>
+<div class="container">
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-list">
+                <li class="navbar-item"><a class="navbar-link" href="/">Home</a></li>
+                {#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
+                {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
+                {% if user.is_authenticated %}
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="/accounts/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="/accounts/login">Login</a>
+                    </li>
+                {% endif %}
+            {% if user.is_staff %}
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="/admin">Admin</a>
+                    </li>
+            {% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>
+<hr class="hr_top">
+
+{% block basecontent %}
+{% endblock %}
+
+{#<hr>#}
+<div class="padding-header"></div>
+
+</body>
+</html>
