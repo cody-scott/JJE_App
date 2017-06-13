@@ -40,6 +40,9 @@ class StandingsAdmin(admin.ModelAdmin):
     list_per_page = 12
 
 
+class YahooTeamAdmin(admin.ModelAdmin):
+    list_display = ['team_name', 'manager_name', 'manager_email']
+
 admin.site.register(WaiverClaim, WaiverClaimAdmin)
-admin.site.register(YahooTeam)
+admin.site.register(YahooTeam, YahooTeamAdmin)
 admin.site.register(YahooStanding, StandingsAdmin)

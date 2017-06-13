@@ -152,6 +152,7 @@ try:
 except:
     EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")
+
 EMAIL_PORT = 587
 
 SITE_ID = 1
@@ -160,3 +161,6 @@ ACCOUNT_EMAIL_VERIFICATION ="none"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+email_super_users = False
+email_admins = True

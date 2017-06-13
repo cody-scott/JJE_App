@@ -10,14 +10,15 @@ import requests
 
 from JJE_Standings.models import YahooKey
 
-from urllib import request as rq
-prx = {
-    'http': "http://barracuda:3128",
-    'https': "https://barracuda:3128"
-}
-proxy = rq.ProxyHandler(proxies = prx)
-opener = rq.build_opener(proxy)
-rq.install_opener(opener)
+prx = None
+# from urllib import request as rq
+# prx = {
+#     'http': "http://barracuda:3128",
+#     'https': "https://barracuda:3128"
+# }
+# proxy = rq.ProxyHandler(proxies = prx)
+# opener = rq.build_opener(proxy)
+# rq.install_opener(opener)
 
 def save_yahoo_token(access_token, access_secret, session_handle):
     """Save the yahoo token"""

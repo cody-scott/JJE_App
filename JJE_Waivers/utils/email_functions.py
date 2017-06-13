@@ -3,6 +3,9 @@ from django.template import Context, Template
 
 from JJE_Waivers.models import YahooTeam, WaiverClaim
 
+from JJE_App.settings import email_super_users, email_admins
+from django.contrib.auth.models import User
+
 
 def overclaim_email(waiver_claim):
     send_waiver_email(waiver_claim, "Overclaim")
@@ -30,12 +33,6 @@ def cancel_email(waiver_claim):
 def send_waiver_email(waiver_object, message_type):
     subject, body, body_non_html = format_waiver_claim(waiver_object, message_type)
     construct_send_email(subject=subject, body=body, body_non_html=body_non_html)
-
-
-def construct_send_email(subject, body_non_html, body):
-    emails = get_available_emails()
-    send_mail(subject=subject, message=body_non_html, from_email="jje.waivers@gmail.com",
-              html_message=body, recipient_list=emails)
 
 
 def format_waiver_claim(waiver_object, message_type):
@@ -67,6 +64,17 @@ def format_waiver_claim(waiver_object, message_type):
     return subject, body, body_non_html
 
 
+def construct_send_email(subject, body_non_html, body):
+    if email_super_users:
+        emails = superuser_emails()
+    elif email_admins:
+        emails = admin_emails()
+    else:
+        emails = get_available_emails()
+    send_mail(subject=subject, message=body_non_html, from_email="jje.waivers@gmail.com",
+              html_message=body, recipient_list=emails)
+
+
 def get_available_emails():
     teams = YahooTeam.objects.all()
     emails = []
@@ -78,3 +86,13 @@ def get_available_emails():
             emails.append(team.manager_email)
 
     return [email for email in emails if email != ""]
+
+
+def superuser_emails():
+    users = User.objects.filter(is_superuser=True).all()
+    return [user.email for user in users]
+
+
+def admin_emails():
+    users = User.objects.filter(is_staff=True)
+    return [user.email for user in users]

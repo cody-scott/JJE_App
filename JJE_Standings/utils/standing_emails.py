@@ -2,10 +2,12 @@ from django.core.mail import send_mail
 from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.utils import timezone
-from django.contrib.auth.models import User
 
 from JJE_Waivers.models import YahooTeam
 from JJE_Standings.models import YahooStanding
+
+from JJE_Waivers.utils.email_functions import construct_send_email
+
 
 def send_standings_email(standings_html):
     standings_non_html = "\n".join(
@@ -19,20 +21,3 @@ def send_standings_email(standings_html):
     return standings_html
 
 
-def construct_send_email(subject, body_non_html, body):
-    emails = get_available_emails()
-    send_mail(subject=subject, message=body_non_html, from_email="jje.waivers@gmail.com",
-              html_message=body, recipient_list=emails)
-
-
-def get_available_emails():
-    teams = YahooTeam.objects.all()
-    emails = []
-
-    for team in teams:
-        if team.user is not None:
-            emails.append(team.user.email)
-        else:
-            emails.append(team.manager_email)
-
-    return [email for email in emails if email != ""]
