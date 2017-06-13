@@ -10,6 +10,8 @@ class YahooTeam(models.Model):
     manager_name = models.CharField(max_length=200, blank=True)
     manager_email = models.EmailField(blank=True)
 
+    manager_guid = models.CharField(max_length=200, blank=True)
+
     user = models.ForeignKey(User, default=None, blank=True, null=True)
 
     def __str__(self):

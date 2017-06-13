@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'JJE_Waivers.apps.JJEWaiversConfig',
+    'JJE_Standings.apps.JjeStandingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,6 +137,6 @@ try:
     EMAIL_HOST_USER = email_user
     EMAIL_HOST_PASSWORD = email_password
 except:
-    EMAIL_HOST_USER = 'jje.waivers@gmail.com'
+    EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")
 EMAIL_PORT = 587

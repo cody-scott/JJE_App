@@ -21,6 +21,8 @@ admin.site.site_title = "JJE Admin"
 admin.site.site_header = "JJE Admin"
 urlpatterns = [
     url(r'', include('JJE_Waivers.urls'), name="main"),
+    url(r'^standings/', include("JJE_Standings.urls"), name="standings"),
     url('^accounts/', include('django.contrib.auth.urls'), name="accounts"),
     url(r'^admin/', admin.site.urls, name="admin"),
+
 ]

@@ -98,3 +98,5 @@ ENV/
 .idea/
 
 private_config.py
+
+db.sqlite3
