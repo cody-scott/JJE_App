@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class JjeStandingsConfig(AppConfig):
+class JJEStandingsConfig(AppConfig):
     name = 'JJE_Standings'

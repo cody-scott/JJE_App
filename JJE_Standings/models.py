@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from JJE_Waivers.models import YahooTeam
+import datetime
 
 
-class YahooStandings(models.Model):
+class YahooStanding(models.Model):
     """Weekly standings from Yahoo"""
-    date_created = models.DateTimeField(default=timezone.now)
+    date_created = models.DateTimeField(auto_now=True)
 
     team = models.ForeignKey(YahooTeam)
 
@@ -44,7 +45,9 @@ class YahooStandings(models.Model):
     stat_points_26 = models.FloatField()
     stat_points_27 = models.FloatField()
 
-    standings_week = models.IntegerField
+    standings_week = models.IntegerField()
+
+    current_standings = models.BooleanField(default=False)
 
     def __str__(self):
         return "<id: {}>".format(self.team)
@@ -52,7 +55,7 @@ class YahooStandings(models.Model):
 
 class YahooKey(models.Model):
     """This is just for the API to collect and update the app"""
-    date_created = models.DateTimeField(default=timezone.now)
+    date_created = models.DateTimeField(auto_now=True)
     consumer_key = models.TextField()
     consumer_secret = models.TextField()
     access_token = models.TextField()
@@ -62,3 +65,10 @@ class YahooKey(models.Model):
 
     def __repr__(self):
         return "<ID: {}>".format(self.id)
+
+    @property
+    def expired(self):
+        if (self.date_created + datetime.timedelta(hours=1)) > timezone.now():
+            return True
+        else:
+            return False

@@ -25,4 +25,6 @@ urlpatterns = [
     url('^accounts/', include('django.contrib.auth.urls'), name="accounts"),
     url(r'^admin/', admin.site.urls, name="admin"),
 
+    # url(r'^accounts/', include('allauth.urls')),
+
 ]

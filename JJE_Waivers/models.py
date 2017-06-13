@@ -4,7 +4,10 @@ from django.urls import reverse
 import datetime
 from django.contrib.auth.models import User
 
+
 class YahooTeam(models.Model):
+
+    team_id = models.CharField(max_length=10)
     team_name = models.CharField(max_length=50)
     logo_url = models.TextField(blank=True)
     manager_name = models.CharField(max_length=200, blank=True)

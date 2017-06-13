@@ -1,7 +1,14 @@
 appdirs==1.4.3
+certifi==2017.4.17
+chardet==3.0.4
 Django==1.11.2
 django-widget-tweaks==1.4.1
+idna==2.5
+oauthlib==2.0.2
 packaging==16.8
 pyparsing==2.2.0
 pytz==2017.2
+requests==2.17.3
+requests-oauthlib==0.8.0
 six==1.10.0
+urllib3==1.21.1
