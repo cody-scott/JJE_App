@@ -26,9 +26,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# ALLOWED_HOSTS = ['0.0.0.0']
-ALLOWED_HOSTS = ['jje-league.herokuapp.com']
-
+# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ['jje-league.herokuapp.com']
+# COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 # Application definition
 
 INSTALLED_APPS = [
@@ -212,3 +213,36 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 email_super_users = True
 email_admins = False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'mysite.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'MYAPP': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
