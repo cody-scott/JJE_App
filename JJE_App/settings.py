@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 DEBUG = False
 
 # ALLOWED_HOSTS = ['0.0.0.0']
-ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['jje-league.herokuapp.com']
 
 # Application definition
 
