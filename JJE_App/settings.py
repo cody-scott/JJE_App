@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 
@@ -190,7 +190,7 @@ STATICFILES_FINDERS = (
 )
 
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -204,7 +204,6 @@ except:
     EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")
     ADMINS = (('Admin', os.environ.get("email_user")),)
-
 
 
 EMAIL_PORT = 587
