@@ -28,7 +28,7 @@ DEBUG = False
 
 # ALLOWED_HOSTS = ['127.0.0.1']
 # ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'locahost']
 # COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 # Application definition
 
