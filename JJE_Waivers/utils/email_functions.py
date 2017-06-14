@@ -6,6 +6,8 @@ from JJE_Waivers.models import YahooTeam, WaiverClaim
 from JJE_App.settings import email_super_users, email_admins
 from django.contrib.auth.models import User
 
+from allauth.account.models import EmailAddress
+
 
 def overclaim_email(waiver_claim):
     send_waiver_email(waiver_claim, "Overclaim")
@@ -76,23 +78,23 @@ def construct_send_email(subject, body_non_html, body):
 
 
 def get_available_emails():
-    teams = YahooTeam.objects.all()
-    emails = []
-
-    for team in teams:
-        if team.user is not None:
-            emails.append(team.user.email)
-        else:
-            emails.append(team.manager_email)
-
-    return [email for email in emails if email != ""]
-
+    return [email.email for email in EmailAddress.objects.all() if email.verified]
 
 def superuser_emails():
-    users = User.objects.filter(is_superuser=True).all()
-    return [user.email for user in users]
+    emails = []
+    for email in EmailAddress.objects.all():
+        if not email.verified:
+            continue
+        if email.user.is_superuser:
+            emails.append(email.email)
+    return emails
 
 
 def admin_emails():
-    users = User.objects.filter(is_staff=True)
-    return [user.email for user in users]
+    emails = []
+    for email in EmailAddress.objects.all():
+        if not email.verified:
+            continue
+        if email.user.is_staff:
+            emails.append(email.email)
+    return emails

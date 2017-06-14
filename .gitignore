@@ -100,3 +100,4 @@ ENV/
 private_config.py
 
 db.sqlite3
+*.sqlite3

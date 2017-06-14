@@ -2,9 +2,9 @@ from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import YahooTeam
 
 from JJE_Standings.utils.standing_emails import send_standings_email
+from django.utils import timezone
 
 import json
-
 
 def email_standings():
     standings = get_standings()
@@ -54,3 +54,14 @@ def get_standings_json(guid=None):
         })
 
     return json.dumps(od, indent=4)
+
+
+def check_if_update_required():
+    standings = YahooStanding.objects.filter(current_standings=True).first() #type: YahooStanding
+    now = timezone.now()
+    diff = (now - standings.date_created)
+
+    if diff.days > 6:
+        return True
+    else:
+        return False

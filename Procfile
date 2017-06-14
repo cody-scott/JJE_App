@@ -1,1 +1,1 @@
-web: gunicorn JJE_App.wsig
+web: gunicorn JJE_App.wsig --log-file -

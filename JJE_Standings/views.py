@@ -1,8 +1,8 @@
 from django.views.generic import View
 from django.http import HttpResponse
 
-from JJE_Standings.utils.yahoo_data import  build_team_data
-from JJE_Standings.utils import get_standings_json, email_standings
+from JJE_Standings.utils.yahoo_data import  build_team_data, update_standings
+from JJE_Standings.utils import get_standings_json, email_standings, check_if_update_required
 
 
 class IndexView(View):
@@ -12,8 +12,10 @@ class IndexView(View):
 
 class UpdateStandings(View):
     def get(self, request):
-        # update_standings()
-        email_standings()
+        if check_if_update_required():
+            update_standings()
+            email_standings()
+
         return HttpResponse(
             "<pre>{}</pre>".format(get_standings_json()))
 

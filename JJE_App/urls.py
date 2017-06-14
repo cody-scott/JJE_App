@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-
 admin.site.site_title = "JJE Admin"
 admin.site.site_header = "JJE Admin"
 urlpatterns = [
@@ -24,5 +23,4 @@ urlpatterns = [
     url(r'^standings/', include("JJE_Standings.urls"), name="standings"),
     url(r'^admin/', admin.site.urls, name="admin"),
     url(r'^accounts/', include('allauth.urls')),
-
 ]

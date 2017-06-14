@@ -1,6 +1,7 @@
 {% extends 'JJE_App/_layout.html' %}
 {% load static %}
 {% block content %}
+    {% if not user.is_anonymous %}
     <div class="container new-claim-container">
         <div class="row new-claim-row">
             <div class="twelve columns">
@@ -10,6 +11,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <hr>
 
     {% for claim in object_list %}
@@ -38,7 +40,7 @@
                 </div>
             </div>
 
-            {% if claim.team.id not in user_team_ids or user.is_anonymous %}
+            {% if not user.is_anonymous and claim.team.id not in overclaim_ids %}
             <div class="row">
                 <div class="three columns padded">
                     <form action="{% url 'waiver_claim-overclaim' waiver_claim_id=claim.id %}">
@@ -48,7 +50,7 @@
             </div>
             {% endif %}
 
-            {% if claim.team.id in user_team_ids or user.is_anonymous%}
+            {% if claim.team.id in user_team_ids%}
                 <div class="row">
                     <div class="three columns padded">
                         <form action="{% url 'waiver_claim-cancel' pk=claim.id %}">

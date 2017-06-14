@@ -16,5 +16,3 @@ def send_standings_email(standings_html):
     subject = "JJE Standings - Week {}".format(week)
     construct_send_email(subject, standings_non_html, standings_html)
     return standings_html
-
-

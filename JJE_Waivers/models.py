@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 
 
 class YahooTeam(models.Model):
-
     team_id = models.CharField(max_length=10)
     team_name = models.CharField(max_length=50)
     logo_url = models.TextField(blank=True)

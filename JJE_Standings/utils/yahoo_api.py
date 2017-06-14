@@ -7,14 +7,7 @@ import requests
 from JJE_Standings.models import YahooKey
 
 prx = None
-# from urllib import request as rq
-# prx = {
-#     'http': "http://barracuda:3128",
-#     'https': "https://barracuda:3128"
-# }
-# proxy = rq.ProxyHandler(proxies = prx)
-# opener = rq.build_opener(proxy)
-# rq.install_opener(opener)
+
 
 def save_yahoo_token(access_token, access_secret, session_handle):
     """Save the yahoo token"""
@@ -30,8 +23,8 @@ def refresh_yahoo_token():
 
     token = YahooKey.objects.first()  # type: YahooKey
 
-    # if not token.expired:
-    #     return
+    if not token.expired:
+        return
 
     url = 'https://api.login.yahoo.com/oauth/v2/get_token'
 
@@ -89,5 +82,3 @@ def convert_result(result):
         a, b = item.split("=")
         data_dct[a] = parse.unquote(b)
     return data_dct
-
-

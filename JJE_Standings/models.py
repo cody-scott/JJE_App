@@ -3,6 +3,21 @@ from django.utils import timezone
 from JJE_Waivers.models import YahooTeam
 import datetime
 
+from django.db.models.signals import pre_save
+from django.contrib.auth.models import User
+from django.dispatch.dispatcher import receiver
+
+
+@receiver(pre_save, sender=User)
+def update_username_from_email(sender, instance, **kwargs):
+    user_email = instance.email
+    username = user_email[:30]
+    n = 1
+    while User.objects.exclude(pk=instance.pk).filter(username=username).exists():
+        n += 1
+        username = user_email[:(29 - len(str(n)))] + '-' + str(n)
+    instance.username = username
+
 
 class YahooStanding(models.Model):
     """Weekly standings from Yahoo"""
@@ -72,3 +87,5 @@ class YahooKey(models.Model):
             return True
         else:
             return False
+
+
