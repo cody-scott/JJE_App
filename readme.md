@@ -27,8 +27,12 @@ Made for python 3.6
 1. Set your environment variables
 
     email_password
+
     email_user
+
     SECRET_KEY
+
+    DATABASE_URL
 
 
 1. Do all your fun stuff!
