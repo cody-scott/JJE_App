@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-
-import os
 from oauthlib.common import generate_nonce, generate_timestamp
 from oauthlib.oauth1.rfc5849 import signature
 from urllib import parse

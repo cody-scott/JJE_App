@@ -1,9 +1,6 @@
-from django.core.mail import send_mail
-from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from JJE_Waivers.models import YahooTeam
 from JJE_Standings.models import YahooStanding
 
 from JJE_Waivers.utils.email_functions import construct_send_email

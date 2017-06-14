@@ -10,6 +10,7 @@ from datetime import timedelta
 
 from JJE_Waivers.utils import email_functions
 
+
 def get_user_teams_list(user):
     out_dct = {}
     if not user.is_anonymous:

@@ -1,9 +1,5 @@
-from __future__ import print_function
-from __future__ import division
-
 from requests_oauthlib import OAuth1Session
 
-import os
 from JJE_Standings.models import YahooKey, YahooStanding
 from JJE_Waivers.models import YahooTeam
 

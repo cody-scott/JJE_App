@@ -1,17 +1,15 @@
-from __future__ import print_function
-from __future__ import division
-
 from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import YahooTeam
 
 from JJE_Standings.utils.standing_emails import send_standings_email
 
-import os
 import json
+
 
 def email_standings():
     standings = get_standings()
     send_standings_email(standings)
+
 
 def get_standings():
     # try:
