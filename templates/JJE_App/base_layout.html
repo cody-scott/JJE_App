@@ -37,16 +37,16 @@
                 {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
                 {% if user.is_authenticated %}
                     <li class="navbar-item">
-                        <a class="navbar-link" href="/accounts/logout">Logout</a>
+                        <a class="navbar-link" href="/accounts/logout/">Logout</a>
                     </li>
                 {% else %}
                     <li class="navbar-item">
-                        <a class="navbar-link" href="/accounts/login">Login</a>
+                        <a class="navbar-link" href="/accounts/login/">Login</a>
                     </li>
                 {% endif %}
             {% if user.is_staff %}
                     <li class="navbar-item">
-                        <a class="navbar-link" href="/admin">Admin</a>
+                        <a class="navbar-link" href="/admin/">Admin</a>
                     </li>
             {% endif %}
             </ul>
