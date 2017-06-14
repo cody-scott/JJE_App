@@ -57,11 +57,15 @@ def get_standings_json(guid=None):
 
 
 def check_if_update_required():
-    standings = YahooStanding.objects.filter(current_standings=True).first() #type: YahooStanding
-    now = timezone.now()
-    diff = (now - standings.date_created)
+    try:
+        standings = YahooStanding.objects.filter(current_standings=True).first() #type: YahooStanding
+        now = timezone.now()
+        diff = (now - standings.date_created)
 
-    if diff.days > 6:
+        if diff.days > 6:
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(e)
         return True
-    else:
-        return False

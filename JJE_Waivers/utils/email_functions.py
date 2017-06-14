@@ -21,7 +21,7 @@ def cancel_email(waiver_claim):
     body = "<h1>Cancelled Claim</h1>" \
            "<h1>Team: {}</h1>\n" \
            "<h2>Player: {}</h2>\n" \
-           "<h3><a href=\"https://jje-fantasy-app.herokuapp.com\">Claim Site</a></h3>".format(
+           "<h3><a href=\"https://jje-league.herokuapp.com\">Claim Site</a></h3>".format(
         waiver_claim.team.team_name,
         waiver_claim.add_player)
     body_non_html = "{}]n{}".format(
@@ -45,13 +45,14 @@ def format_waiver_claim(waiver_object, message_type):
            "<h2>Drop: {}</h2>\n" \
            "<h2>Claim Start (UTC): {}</h2>\n" \
            "<h2>Claim End (UTC): {}</h2>\n" \
-           "<h2><a href=\"\">Overclaim Link</a><h2>\n" \
-           "<h3><a href=\"https://jje-fantasy-app.herokuapp.com\">Claim Site</a></h3>".format(
+           "<h2><a href=\"https://jje-league.herokuapp.com/overclaim={}\">Overclaim Link</a><h2>\n" \
+           "<h3><a href=\"https://jje-league.herokuapp.com\">Claim Site</a></h3>".format(
         waiver_object.team.team_name,
         waiver_object.add_player,
         waiver_object.drop_player,
         waiver_object.claim_start,
-        waiver_object.claim_end_normal
+        waiver_object.claim_end_normal,
+        waiver_object.id
     )
 
     body_non_html = "{}\n{}\n{}\n{}\n{}".format(
