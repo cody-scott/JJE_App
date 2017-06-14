@@ -198,9 +198,13 @@ try:
     from JJE_App.private_config import email_user, email_password
     EMAIL_HOST_USER = email_user
     EMAIL_HOST_PASSWORD = email_password
+    ADMINS = (('Admin', email_user),)
 except:
     EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")
+    ADMINS = (('Admin', os.environ.get("email_user")),)
+
+
 
 EMAIL_PORT = 587
 
