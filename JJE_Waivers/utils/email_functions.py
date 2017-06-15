@@ -3,27 +3,25 @@ from django.template import Context, Template
 
 from JJE_Waivers.models import YahooTeam, WaiverClaim
 
-from JJE_App.settings import email_super_users, email_admins
+from JJE_App.settings import email_super_users, email_admins, send_emails
 from django.contrib.auth.models import User
 
 from allauth.account.models import EmailAddress
 
-
-def overclaim_email(waiver_claim):
-    send_waiver_email(waiver_claim, "Overclaim")
-
-
-def new_claim_email(waiver_claim):
-    send_waiver_email(waiver_claim, "New Claim")
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 
 
-def cancel_email(waiver_claim):
-    body = "<h1>Cancelled Claim</h1>" \
-           "<h1>Team: {}</h1>\n" \
-           "<h2>Player: {}</h2>\n" \
-           "<h3><a href=\"https://jje-league.herokuapp.com\">Claim Site</a></h3>".format(
-        waiver_claim.team.team_name,
-        waiver_claim.add_player)
+def claim_email(waiver_claim, claim_type, request):
+    send_waiver_email(waiver_claim, claim_type, request)
+
+
+def cancel_email(waiver_claim, request):
+    body = render_to_string("JJE_Waivers/cancel_claim.html",
+                            {
+                                "claim": waiver_claim,
+                                "site": get_current_site(request),
+                            })
     body_non_html = "{}]n{}".format(
         waiver_claim.team.team_name,
         waiver_claim.add_player
@@ -31,29 +29,17 @@ def cancel_email(waiver_claim):
     construct_send_email("Cancelled Claim", body_non_html, body)
 
 
-
-def send_waiver_email(waiver_object, message_type):
-    subject, body, body_non_html = format_waiver_claim(waiver_object, message_type)
+def send_waiver_email(waiver_object, message_type, request):
+    subject, body, body_non_html = format_waiver_claim(waiver_object, message_type, request)
     construct_send_email(subject=subject, body=body, body_non_html=body_non_html)
 
 
-def format_waiver_claim(waiver_object, message_type):
+def format_waiver_claim(waiver_object, message_type, request):
     waiver_object = waiver_object # type: WaiverClaim
-
-    body = "<h1>Claimee: {}</h1>\n" \
-           "<h2>Add: {}</h2>\n" \
-           "<h2>Drop: {}</h2>\n" \
-           "<h2>Claim Start (UTC): {}</h2>\n" \
-           "<h2>Claim End (UTC): {}</h2>\n" \
-           "<h2><a href=\"https://jje-league.herokuapp.com/waiver_claim/overclaim={}\">Overclaim Link</a><h2>\n" \
-           "<h3><a href=\"https://jje-league.herokuapp.com\">Claim Site</a></h3>".format(
-        waiver_object.team.team_name,
-        waiver_object.add_player,
-        waiver_object.drop_player,
-        waiver_object.claim_start,
-        waiver_object.claim_end_normal,
-        waiver_object.id
-    )
+    body = render_to_string("JJE_Waivers/email_claim.html", {
+        "claim": waiver_object,
+        "site": get_current_site(request),
+    })
 
     body_non_html = "{}\n{}\n{}\n{}\n{}".format(
         waiver_object.team.team_name,
@@ -74,8 +60,10 @@ def construct_send_email(subject, body_non_html, body):
         emails = admin_emails()
     else:
         emails = get_available_emails()
-    send_mail(subject=subject, message=body_non_html, from_email="jje.waivers@gmail.com",
-              html_message=body, recipient_list=emails)
+
+    if send_emails:
+        send_mail(subject=subject, message=body_non_html, from_email="jje.waivers@gmail.com",
+                  html_message=body, recipient_list=emails)
 
 
 def get_available_emails():

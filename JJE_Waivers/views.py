@@ -86,7 +86,7 @@ class WaiverClaimCreate(CreateView):
 
     def form_valid(self, form):
         valid_form = super(WaiverClaimCreate, self).form_valid(form)
-        email_functions.new_claim_email(self.object)
+        email_functions.claim_email(self.object, "New Claim", self.request)
         return valid_form
 
 
@@ -157,7 +157,7 @@ class OverclaimCreate(CreateView):
         form.instance.over_claim_id = int(wc_id)
         valid_form = super(OverclaimCreate, self).form_valid(form)
 
-        email_functions.overclaim_email(self.object)
+        email_functions.claim_email(self.object, "Overclaim", self.request)
 
         return valid_form
 
@@ -200,5 +200,5 @@ class CancelClaimView(DetailView):
         claim = get_object_or_404(WaiverClaim, id=claim_id)
         claim.cancelled = True
         claim.save()
-        email_functions.cancel_email(claim)
+        email_functions.cancel_email(claim, request)
         return redirect(reverse('index'))

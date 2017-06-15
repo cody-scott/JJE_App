@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+<div>
+    <h1>Claimee: {{ claim.team.team_name }}</h1>
+    <h2>Add: {{ claim.add_player }}</h2>
+    <h2>Drop: {{ claim.drop_player }}</h2>
+    <h2>Claim Start (UTC): {{ claim.claim_start }}</h2>
+    <h2>Claim End (UTC): {{ claim.claim_end_normal }}</h2>
+    <h2>
+        <a href="{{ site.domain }}/waiver_claim/overclaim={{ claim.id }}">Overclaim Link</a>
+    </h2>
+    <h3>
+        <a href="{{ site.domain }}">Claim Site</a>
+    </h3>
+</div>
+</body>
+</html>
