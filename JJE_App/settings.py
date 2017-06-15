@@ -28,8 +28,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-# if "DEBUG" in os.environ:
-#     DEBUG = True
+if "DEBUG" in os.environ:
+    DEBUG = True
 
 
 ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'locahost']

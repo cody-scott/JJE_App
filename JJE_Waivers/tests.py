@@ -3,18 +3,26 @@ from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
+from django.contrib.auth import get_user_model
 
 from JJE_Waivers.models import WaiverClaim, YahooTeam
 
 import datetime
 
 
-def create_test_user(username, user_pass):
-    user = User()
-    user.username = username
-    user.set_password(user_pass)
-    user.save()
+def create_test_user(username="test@test.com", password='test'):
+    User = get_user_model()
+    user = User.objects.create_user(username, password=password, email=username, is_active=True)
     return user
+
+
+def create_test_user_login(client, username="test@test.com", user_pass='test'):
+    user = create_test_user(username, user_pass)
+    logged_in = client.login(
+        username=username,
+        password=user_pass)
+    return user, logged_in
+
 
 
 def create_test_team(team_name, user=None):
@@ -85,46 +93,63 @@ class WaiverClaimTest(TestCase):
         self.assertEqual(claim.claim_end, et)
 
 
-# class IndexViewTest(TestCase):
-#     def test_index_no_claim(self):
-#         response = self.client.get(reverse("index"))
-#         self.assertQuerysetEqual(response.context['waiverclaim_list'], [])
-#
-#     def test_index_one_claim(self):
-#         st = (timezone.now() - datetime.timedelta(hours=5))
-#         team = create_test_team("Test")
-#         claim = create_claim("Test Player Add", "Test Player Drop", team)
-#         response = self.client.get(reverse("index"))
-#         self.assertQuerysetEqual(response.context['waiverclaim_list'], ["<WaiverClaim: Test Player Add>"])
-#
-#     def test_index_two_claims(self):
-#         team = create_test_team("Test Team")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         claim_two = create_claim("Test A P 2", "Test D P 2", team)
-#         response = self.client.get(reverse("index"))
-#         self.assertQuerysetEqual(response.context['waiverclaim_list'],
-#                                  ["<WaiverClaim: Test A P 1>", "<WaiverClaim: Test A P 2>"], ordered=False)
-#
-#     def test_old_and_new_claims(self):
-#         team = create_test_team("Test Team")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         claim_two = create_claim("Test A P 2", "Test D P 2", team)
-#         claim_one.claim_start = (timezone.now() - datetime.timedelta(days=2))
-#         claim_one.save()
-#         response = self.client.get(reverse("index"))
-#         self.assertQuerysetEqual(response.context['waiverclaim_list'],["<WaiverClaim: Test A P 2>"], ordered=False)
-#
-#
-# class IndexViewLoggedInTest(TestCase):
-#     def test_valid_claims(self):
-#         user = create_test_user("testuser", "test")
-#         team = create_test_team("Test Team", user)
-#         second_team = create_test_team("second_team")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         claim_two = create_claim("ap2", "dp2", second_team)
-#         x = [user.yahooteam_set.first().waiverclaim_set.first()]
-#         z = [WaiverClaim.objects.filter(team=team.id).first()]
-#         self.assertEqual(x, z)
+class IndexViewTest(TestCase):
+
+    def test_index_no_claim(self):
+        response = self.client.get(reverse("index"))
+        self.assertQuerysetEqual(response.context['waiverclaim_list'], [])
+
+    def test_index_one_claim(self):
+        st = (timezone.now() - datetime.timedelta(hours=5))
+        team = create_test_team("Test")
+        claim = create_claim("Test Player Add", "Test Player Drop", team)
+        response = self.client.get(reverse("index"))
+        self.assertQuerysetEqual(response.context['waiverclaim_list'], ["<WaiverClaim: Test Player Add>"])
+
+    def test_index_two_claims(self):
+        team = create_test_team("Test Team")
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        claim_two = create_claim("Test A P 2", "Test D P 2", team)
+        response = self.client.get(reverse("index"))
+        self.assertQuerysetEqual(response.context['waiverclaim_list'],
+                                 ["<WaiverClaim: Test A P 1>", "<WaiverClaim: Test A P 2>"], ordered=False)
+
+    def test_old_and_new_claims(self):
+        team = create_test_team("Test Team")
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        claim_two = create_claim("Test A P 2", "Test D P 2", team)
+        claim_one.claim_start = (timezone.now() - datetime.timedelta(days=2))
+        claim_one.save()
+        response = self.client.get(reverse("index"))
+        self.assertQuerysetEqual(response.context['waiverclaim_list'],["<WaiverClaim: Test A P 2>"], ordered=False)
+
+    def test_anonymous_no_new_claim_button(self):
+        request = self.client.get('/')
+        try:
+            self.assertInHTML('<input type="submit" class="newclaim_btn" value="New Claim">', request.rendered_content)
+            raise AssertionError
+        except:
+            pass
+
+
+class IndexViewLoggedInTest(TestCase):
+
+    def test_valid_login(self):
+        user = create_test_user_login(self.client)
+        User = get_user_model()
+        first_user = User.objects.first()
+        self.assertEqual(user, (first_user, True, ))
+
+    # def test_valid_claims(self):
+    #     user = self.setUp()
+    #     team = create_test_team("Test Team", user)
+    #     second_team = create_test_team("second_team")
+    #     claim_one = create_claim("Test A P 1", "Test D P 1", team)
+    #     claim_two = create_claim("ap2", "dp2", second_team)
+    #
+    #     x = [user.yahooteam_set.first().waiverclaim_set.first()]
+    #     z = [WaiverClaim.objects.filter(team=team.id).first()]
+    #     self.assertEqual(x, z)
 #
 #     def test_cancel_valid_html(self):
 #         user = create_test_user("testuser", "test")
