@@ -45,7 +45,7 @@ def format_waiver_claim(waiver_object, message_type):
            "<h2>Drop: {}</h2>\n" \
            "<h2>Claim Start (UTC): {}</h2>\n" \
            "<h2>Claim End (UTC): {}</h2>\n" \
-           "<h2><a href=\"https://jje-league.herokuapp.com/overclaim={}\">Overclaim Link</a><h2>\n" \
+           "<h2><a href=\"https://jje-league.herokuapp.com/waiver_claim/overclaim={}\">Overclaim Link</a><h2>\n" \
            "<h3><a href=\"https://jje-league.herokuapp.com\">Claim Site</a></h3>".format(
         waiver_object.team.team_name,
         waiver_object.add_player,
