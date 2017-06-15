@@ -6,6 +6,8 @@ defusedxml==0.5.0
 dj-database-url==0.4.2
 Django==1.11.2
 django-allauth==0.32.0
+django-debug-toolbar==1.8
+django-flat-responsive==1.4.1
 django-widget-tweaks==1.4.1
 gunicorn==19.7.1
 idna==2.5
@@ -18,5 +20,6 @@ pytz==2017.2
 requests==2.17.3
 requests-oauthlib==0.8.0
 six==1.10.0
+sqlparse==0.2.3
 urllib3==1.21.1
 whitenoise==3.3.0

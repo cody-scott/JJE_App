@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from JJE_App.settings import DEBUG
 
 admin.site.site_title = "JJE Admin"
 admin.site.site_header = "JJE Admin"
@@ -24,3 +25,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls, name="admin"),
     url(r'^accounts/', include('allauth.urls')),
 ]
+
+if DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
