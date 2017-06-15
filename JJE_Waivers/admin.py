@@ -28,6 +28,4 @@ class YahooTeamAdmin(admin.ModelAdmin):
 admin.site.register(WaiverClaim, WaiverClaimAdmin)
 admin.site.register(YahooTeam, YahooTeamAdmin)
 
-
-
 UserAdmin.list_display = ('email', 'is_staff')

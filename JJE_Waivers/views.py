@@ -14,6 +14,7 @@ from JJE_Waivers.utils import email_functions
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+
 def get_user_teams_list(user):
     out_dct = {}
     teams = YahooTeam.objects.filter(user=user.id)
@@ -100,7 +101,7 @@ class OverclaimCreate(CreateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            wc_id = self.kwargs.get("waiver_claim_id")
+            wc_id = self.kwargs.get("pk")
             player = WaiverClaim.objects.get(id=wc_id)
             assert player.active_claim()
 
@@ -125,21 +126,21 @@ class OverclaimCreate(CreateView):
 
     def get_form(self, form_class=None):
         frm = super(OverclaimCreate, self).get_form(form_class)
-        wc_id = self.kwargs.get("waiver_claim_id")
+        wc_id = self.kwargs.get("pk")
         player = WaiverClaim.objects.get(id=wc_id)
         frm.fields['team'].queryset = self.get_rank(self.request, player)
         return frm
 
     def get_context_data(self, **kwargs):
         context = super(OverclaimCreate, self).get_context_data(**kwargs)
-        wc_id = self.kwargs.get("waiver_claim_id")
+        wc_id = self.kwargs.get("pk")
         player = WaiverClaim.objects.get(id=wc_id)
         context["add_name"] = player.add_player
         context["add_pos"] = player.get_position_add
         return context
 
     def form_valid(self, form):
-        wc_id = self.kwargs.get("waiver_claim_id")
+        wc_id = self.kwargs.get("pk")
         player = WaiverClaim.objects.get(id=wc_id)
         player.overclaimed = True
         player.save()
