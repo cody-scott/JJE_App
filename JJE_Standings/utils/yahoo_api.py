@@ -23,8 +23,8 @@ def refresh_yahoo_token():
 
     token = YahooKey.objects.first()  # type: YahooKey
 
-    if not token.expired:
-        return
+    # if not token.expired:
+    #     return
 
     url = 'https://api.login.yahoo.com/oauth/v2/get_token'
 

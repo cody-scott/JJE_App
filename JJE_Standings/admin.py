@@ -3,11 +3,11 @@ from django.contrib import admin
 # Register your models here.
 from JJE_Standings.models import YahooStanding, YahooKey
 
-
-class YahooKeyAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': ['date_created']}),
-    ]
+#
+# class YahooKeyAdmin(admin.ModelAdmin):
+#     fieldsets = [
+#         (None, {'fields': ['date_created']}),
+#     ]
 
 
 class StandingsAdmin(admin.ModelAdmin):
@@ -16,4 +16,4 @@ class StandingsAdmin(admin.ModelAdmin):
     list_per_page = 12
 
 admin.site.register(YahooStanding, StandingsAdmin)
-admin.site.register(YahooKey, YahooKeyAdmin)
+admin.site.register(YahooKey)
