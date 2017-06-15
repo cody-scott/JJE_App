@@ -1,1 +1,1 @@
-web: gunicorn JJE_App.wsgi --log-file="test.log"
+web: gunicorn JJE_App.wsgi --log-file=-
