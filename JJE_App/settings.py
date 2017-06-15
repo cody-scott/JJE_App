@@ -28,8 +28,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-if "DEBUG" in os.environ:
-    DEBUG = True
+# if "DEBUG" in os.environ:
+#     DEBUG = True
 
 
 ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'locahost']
@@ -165,6 +165,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, "sharedstatic"),
+]
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
