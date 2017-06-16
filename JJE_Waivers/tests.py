@@ -176,7 +176,9 @@ class IndexViewLoggedInTest(TestCase):
 
 
 class OverclaimViewTest(TestCase):
+
     def test_null_overclaim(self):
+        """Waiver claim matching query because requesting this section for an item that doesn't exist"""
         user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
         team = create_test_team("Test Team", user2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
@@ -242,9 +244,9 @@ class OverclaimViewTest(TestCase):
         self.assertInHTML(
             '<option value="1" selected>t1</option>',
                           response.rendered_content)
-#
-#
-# class NewClaimTest(TestCase):
+
+
+class NewClaimTest(TestCase):
 #     def test_new_claim(self):
 #         team = create_test_team("Test Team")
 #         response = self.client.post('/waiver_claim/new/',
@@ -264,15 +266,16 @@ class OverclaimViewTest(TestCase):
 #             ["<WaiverClaim: Test A>"]
 #         )
 #
-#     def test_null_submission_team(self):
-#         team = create_test_team("Team")
-#         response = self.client.post('/waiver_claim/new/',
-#                                     {
-#                                         'add_player': "Test A",
-#                                         'add_C': True,
-#                                         'drop_player': "Test D",
-#                                     }, follow=True)
-#         self.assertEqual(response.redirect_chain, [])
+    def test_null_submission_team(self):
+        user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
+        team = create_test_team("t1", user)
+        response = self.client.post('/waiver_claim/new/',
+                                    {
+                                        'add_player': "Test A",
+                                        'add_C': True,
+                                        'drop_player': "Test D",
+                                    }, follow=True)
+        self.assertEqual(response.redirect_chain, [])
 #
 #     def test_null_submission_add_player(self):
 #         team = create_test_team("Team")
