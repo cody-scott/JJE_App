@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
 from django.contrib.auth import get_user_model
 
 from JJE_Waivers.models import WaiverClaim, YahooTeam
@@ -22,7 +20,6 @@ def create_test_user_login(client, username="test@test.com", user_pass='test'):
         username=username,
         password=user_pass)
     return user, logged_in
-
 
 
 def create_test_team(team_name, user=None):
@@ -94,7 +91,6 @@ class WaiverClaimTest(TestCase):
 
 
 class IndexViewTest(TestCase):
-
     def test_index_no_claim(self):
         response = self.client.get(reverse("index"))
         self.assertQuerysetEqual(response.context['waiverclaim_list'], [])
@@ -125,100 +121,127 @@ class IndexViewTest(TestCase):
 
     def test_anonymous_no_new_claim_button(self):
         request = self.client.get('/')
-        try:
-            self.assertInHTML('<input type="submit" class="newclaim_btn" value="New Claim">', request.rendered_content)
-            raise AssertionError
-        except:
-            pass
+        check = False
+        self.assertNotIn('<input type="submit" class="newclaim_btn" value="New Claim">', request.rendered_content)
 
 
 class IndexViewLoggedInTest(TestCase):
-
     def test_valid_login(self):
         user = create_test_user_login(self.client)
         User = get_user_model()
         first_user = User.objects.first()
         self.assertEqual(user, (first_user, True, ))
 
-    # def test_valid_claims(self):
-    #     user = self.setUp()
-    #     team = create_test_team("Test Team", user)
-    #     second_team = create_test_team("second_team")
-    #     claim_one = create_claim("Test A P 1", "Test D P 1", team)
-    #     claim_two = create_claim("ap2", "dp2", second_team)
-    #
-    #     x = [user.yahooteam_set.first().waiverclaim_set.first()]
-    #     z = [WaiverClaim.objects.filter(team=team.id).first()]
-    #     self.assertEqual(x, z)
-#
-#     def test_cancel_valid_html(self):
-#         user = create_test_user("testuser", "test")
-#         team = create_test_team("Test Team", user)
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         self.client.login(username="testuser", password="test")
-#         request = self.client.get('/')
-#         self.assertInHTML('<input class="cancel_btn" type="submit" value="Cancel">', request.rendered_content)
-#
-#     def test_overclaim_valid_html(self):
-#         user = create_test_user("testuser", "test")
-#         user2 = create_test_user("testuser2", "test")
-#
-#         team = create_test_team("Test Team", user2)
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#
-#         self.client.login(username="testuser", password="test")
-#         request = self.client.get('/')
-#         self.assertInHTML('<input class="overclaim_btn" type="submit" value="Overclaim">', request.rendered_content)
-#
-#
-# class OverclaimViewTest(TestCase):
-#     def test_null_overclaim(self):
-#         team = create_test_team("Test Team")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         response = self.client.get('/waiver_claim/overclaim={}'.format(10))
-#         self.assertEqual(response.status_code, 302)
-#
-#     def test_valid_overclaim(self):
-#         user = create_test_user("testuser", "test")
-#         team = create_test_team("Test Team", user)
-#         self.client.login(username="testuser", password="test")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         response = self.client.get('/waiver_claim/overclaim={}'.format(1))
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_overclaim_content(self):
-#         team = create_test_team("Test Team")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         response = self.client.get('/waiver_claim/overclaim={}'.format(1))
-#         self.assertEqual(response.context['add_name'], claim_one.add_player)
-#
-#     def test_overclaim_submit(self):
-#         team = create_test_team("Test Team")
-#         team_two = create_test_team("Team Two")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#
-#         response = self.client.post('/waiver_claim/overclaim={}'.format(1),
-#                                     {
-#                                         'team': team_two.id, 'drop_player': "Drop Test"}
-#                                     )
-#         claim_two = WaiverClaim.objects.get(id=2)
-#         self.assertEqual(claim_two.team.id, team_two.id)
-#
-#         claim_one = WaiverClaim.objects.get(id=1)
-#         self.assertIs(claim_one.overclaimed, True)
-#
-#         self.assertEqual(claim_two.over_claim_id, claim_one.id)
-#
-#     def test_logged_in_overclaim(self):
-#         user = create_test_user("u1", "test")
-#         team = create_test_team("t1", user)
-#         team2 = create_test_team("t2")
-#         claim = create_claim("ap1", "dp1", team2)
-#         self.client.login(username="u1", password="test")
-#         response = self.client.get("/waiver_claim/overclaim=1")
-#         self.assertInHTML(
-#             '<option value="1" selected>t1</option>',
-#                           response.rendered_content)
+    def test_valid_claims(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        second_team = create_test_team("second_team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        x = [user.yahooteam_set.first().waiverclaim_set.first()]
+        z = [WaiverClaim.objects.filter(team=team.id).first()]
+        self.assertEqual(x, z)
+
+    def test_cancel_valid_html(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        request = self.client.get('/')
+        self.assertInHTML('<input class="cancel_btn" type="submit" value="Cancel">', request.rendered_content)
+
+    def test_cancel_missing_from_current_user(self):
+        user1 = create_test_user()
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+
+        t1 = create_test_team("Team1", user1)
+        t2 = create_test_team("Team2", user2)
+
+        claim = create_claim("Test", "Test", t1)
+
+        request = self.client.get("/")
+        check = False
+        self.assertNotIn('<input class="cancel_btn" type="submit" value="Cancel">', request.rendered_content)
+
+
+    def test_overclaim_valid_html_no_standings(self):
+        user1 = create_test_user()
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+
+        t1 = create_test_team("Team1", user1)
+        t2 = create_test_team("Team2", user2)
+
+        claim = create_claim("Test", "Test", t1)
+
+        request = self.client.get('/')
+        self.assertInHTML('<input class="overclaim_btn" type="submit" value="Overclaim">', request.rendered_content)
+
+
+class OverclaimViewTest(TestCase):
+    def test_null_overclaim(self):
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+        team = create_test_team("Test Team", user2)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        response = self.client.get('/waiver_claim/overclaim={}'.format(10))
+        self.assertEqual(response.status_code, 302)
+
+    def test_valid_overclaim(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        response = self.client.get('/waiver_claim/overclaim={}'.format(1))
+        self.assertEqual(response.status_code, 200)
+
+    def test_overclaim_content(self):
+        user = create_test_user()
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+        team = create_test_team("Test Team", user)
+        team2 = create_test_team("Test Team 2", user2)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        response = self.client.get('/waiver_claim/overclaim={}'.format(1))
+        self.assertEqual(response.context['add_name'], claim_one.add_player)
+
+    def test_overclaim_content_same_user(self):
+        user = create_test_user()
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+        team = create_test_team("Test Team", user)
+        team2 = create_test_team("Test Team 2", user2)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team2)
+        response = self.client.get('/waiver_claim/overclaim={}'.format(1))
+        self.assertEqual(response.context['add_name'], claim_one.add_player)
+
+    def test_overclaim_submit(self):
+        user = create_test_user()
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+        team = create_test_team("Test Team", user)
+        team_two = create_test_team("Team Two", user2)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+
+        response = self.client.post('/waiver_claim/overclaim={}'.format(1),
+                                    {
+                                        'team': team_two.id, 'drop_player': "Drop Test"}
+                                    )
+        claim_two = WaiverClaim.objects.get(id=2)
+        self.assertEqual(claim_two.team.id, team_two.id)
+
+        claim_one = WaiverClaim.objects.get(id=1)
+        self.assertIs(claim_one.overclaimed, True)
+
+        self.assertEqual(claim_two.over_claim_id, claim_one.id)
+
+    def test_logged_in_overclaim(self):
+        user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
+        team = create_test_team("t1", user)
+
+        user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
+        team2 = create_test_team("t2", user2)
+
+        self.client.login(username="t1@test.com", password="pass")
+
+        claim = create_claim("ap1", "dp1", team2)
+
+        response = self.client.get("/waiver_claim/overclaim=1")
+        self.assertInHTML(
+            '<option value="1" selected>t1</option>',
+                          response.rendered_content)
 #
 #
 # class NewClaimTest(TestCase):
@@ -272,14 +295,13 @@ class IndexViewLoggedInTest(TestCase):
 #                                         'drop_player': "Test D",
 #                                     }, follow=True)
 #         self.assertEqual(response.redirect_chain, [])
-#
-#
-# class CancelClaimTest(TestCase):
-#     def test_valid_cancel(self):
-#         user = create_test_user("u1", "test")
-#         team = create_test_team("Test Team", user)
-#         self.client.login(username="u1", password="test")
-#         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-#         response = self.client.post('/waiver_claim/cancel={}'.format(claim_one.id), follow=True)
-#         claim_one_test = WaiverClaim.objects.get(id=1)
-#         self.assertIs(claim_one_test.cancelled, True)
+
+
+class CancelClaimTest(TestCase):
+    def test_valid_cancel(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        response = self.client.post('/waiver_claim/cancel={}'.format(claim_one.id), follow=True)
+        claim_one_test = WaiverClaim.objects.get(id=1)
+        self.assertIs(claim_one_test.cancelled, True)
