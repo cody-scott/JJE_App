@@ -1,3 +1,3 @@
-JJE_Waivers/static/JJE_Waivers/charting/* linguist-vendored
-JJE_Waivers/static/JJE_Waivers/javascript_libs/* linguist-vendored
-JJE_Waivers/static/JJE_Waivers/skeleton/* linguist-vendored
+sharedstatic/JJE_App/charting/* linguist-vendored
+sharedstatic/JJE_App/javascript_libs/* linguist-vendored
+sharedstatic/JJE_App/skeleton/* linguist-vendored
