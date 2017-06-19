@@ -18,10 +18,10 @@ def create_session(request):
     token = UserTokens.objects.get(standings_token=True)
     oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
 
-    if token.expired:
-        _refresh_token(request, token)
-        token = UserTokens.objects.get(standings_token=True)
-        oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
+    # if token.expired:
+    _refresh_token(request, token)
+    token = UserTokens.objects.get(standings_token=True)
+    oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
 
     return oauth
 
@@ -56,7 +56,7 @@ def set_standings_not_current():
 def _standings_collection(yahoo_obj):
     try:
         # yahoo_obj = OAuth1Session()
-        url = "http://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
+        url = "https://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
         # , headers=yahoo_obj.access_token
         result = yahoo_obj.request("get", url)
         results, status_code = result.text, result.status_code

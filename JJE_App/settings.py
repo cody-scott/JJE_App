@@ -14,7 +14,7 @@ import os
 import sys
 import dj_database_url
 
-# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -34,6 +34,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 DEBUG = False
 if "DEBUG" in os.environ:
     DEBUG = True
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 
 ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'localhost', 'www.myapp.new']
@@ -208,3 +209,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 email_super_users = False
 email_admins = False
 send_emails = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
