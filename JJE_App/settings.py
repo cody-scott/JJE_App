@@ -121,6 +121,11 @@ if 'test' in sys.argv:
             'TEST_NAME': os.path.join(os.path.dirname(__file__), 'test.db'),
         }
     }
+else:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -207,9 +212,3 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 email_super_users = False
 email_admins = False
 send_emails = True
-
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
