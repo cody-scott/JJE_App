@@ -30,9 +30,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 # DEBUG = True
 
 DEBUG = False
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 if "DEBUG" in os.environ:
     DEBUG = True
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    ACCOUNT_EMAIL_VERIFICATION = "none"
 
 
 ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'localhost', 'www.myapp.new']
@@ -121,6 +123,7 @@ if 'test' in sys.argv:
             'TEST_NAME': os.path.join(os.path.dirname(__file__), 'test.db'),
         }
     }
+    ACCOUNT_EMAIL_VERIFICATION = "none"
 else:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
@@ -204,7 +207,7 @@ EMAIL_PORT = 587
 
 SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION ="none"
+
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
