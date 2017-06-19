@@ -88,7 +88,7 @@ class OverclaimCreate(CreateView):
             if len(claim_team_standing) > 0 and len(claimee_standings) > 0:
                 cts = max(claim_team_standing)
                 cee = max(claimee_standings)
-                if cts > cee:
+                if cts >= cee:
                     raise AssertionError
 
             return super(OverclaimCreate, self).get(request, *args, **kwargs)
