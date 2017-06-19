@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 from JJE_Waivers.models import WaiverClaim, YahooTeam
+from JJE_Standings.tests import create_standing
+from JJE_oauth.tests import create_user_token
 
 import datetime
 
@@ -162,6 +164,20 @@ class IndexViewLoggedInTest(TestCase):
         self.assertNotIn('<input class="cancel_btn" type="submit" value="Cancel">', request.rendered_content)
 
 
+    def test_oauth_registration_link_visible(self):
+        user, logged_in = create_test_user_login(self.client)
+        request = self.client.get('/')
+        self.assertInHTML('<input type="submit" class="newclaim_btn" value="Link Yahoo">', request.rendered_content)
+
+
+    def test_oauth_registration_link_hidden(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("test", user)
+        token = create_user_token(user)
+        request = self.client.get('/')
+        self.assertInHTML('<input type="submit" class="newclaim_btn" value="New Claim">', request.rendered_content)
+
+
     def test_overclaim_valid_html_no_standings(self):
         user1 = create_test_user()
         user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
@@ -176,7 +192,6 @@ class IndexViewLoggedInTest(TestCase):
 
 
 class OverclaimViewTest(TestCase):
-
     def test_null_overclaim(self):
         """Waiver claim matching query because requesting this section for an item that doesn't exist"""
         user2, logged_in = create_test_user_login(self.client, "test1@test.com", "test")
@@ -246,26 +261,54 @@ class OverclaimViewTest(TestCase):
                           response.rendered_content)
 
 
+    def test_claim_by_higher_rank_team(self):
+        user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
+        team = create_test_team("t1", user)
+        create_standing(team, 1)
+
+        user2 = create_test_user("t2@test.com", "pass")
+        team2 = create_test_team("t2", user2)
+        create_standing(team2, 3)
+
+        claim = create_claim("ap1", "dp1", team2)
+
+        response = self.client.get("/waiver_claim/overclaim=1")
+
+        self.assertEqual(response.status_code, 302)
+
+
+    def test_claim_by_equal_rank_team(self):
+        user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
+        team = create_test_team("t1", user)
+        create_standing(team, 1)
+
+        user2 = create_test_user("t2@test.com", "pass")
+        team2 = create_test_team("t2", user2)
+        create_standing(team2, 1)
+
+        claim = create_claim("ap1", "dp1", team2)
+
+        response = self.client.get("/waiver_claim/overclaim=1")
+
+        self.assertEqual(response.status_code, 302)
+
+
+    def test_claim_by_lower_rank_team(self):
+        user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
+        team = create_test_team("t1", user)
+        create_standing(team, 2)
+
+        user2 = create_test_user("t2@test.com", "pass")
+        team2 = create_test_team("t2", user2)
+        create_standing(team2, 1)
+
+        claim = create_claim("ap1", "dp1", team2)
+
+        response = self.client.get("/waiver_claim/overclaim=1")
+
+        self.assertEqual(response.status_code, 200)
+
 class NewClaimTest(TestCase):
-#     def test_new_claim(self):
-#         team = create_test_team("Test Team")
-#         response = self.client.post('/waiver_claim/new/',
-#                                     {
-#                                         'team': team.id,
-#                                         'add_player': "Test A",
-#                                         'add_C': True,
-#                                         'drop_player': "Test D",
-#                                     }, follow=True)
-#         response_index = self.client.get(reverse('index'))
-#         claim_one = WaiverClaim.objects.get(id=1)
-#         self.assertEqual(claim_one.team.id, team.id)
-#         self.assertEqual(claim_one.add_player, "Test A")
-#         self.assertEqual(claim_one.drop_player, "Test D")
-#         self.assertQuerysetEqual(
-#             response_index.context["waiverclaim_list"],
-#             ["<WaiverClaim: Test A>"]
-#         )
-#
     def test_null_submission_team(self):
         user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
         team = create_test_team("t1", user)

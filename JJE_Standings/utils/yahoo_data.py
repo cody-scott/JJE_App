@@ -1,12 +1,10 @@
 from requests_oauthlib import OAuth1Session
 
-from JJE_Standings.models import YahooKey, YahooStanding
+from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import YahooTeam
 
-from JJE_Standings.utils.yahoo_api import refresh_yahoo_token
-
-from JJE_oauth.utils.new_oauth_flow import _refresh_token, create_oauth_session
-from JJE_oauth.models import UserTokens
+from JJE_oauth.utils.oauth_flow import _refresh_token, create_oauth_session
+from JJE_oauth.models import UserToken
 
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -14,13 +12,12 @@ import math
 
 
 def create_session(request):
-
-    token = UserTokens.objects.get(standings_token=True)
+    token = UserToken.objects.get(standings_token=True)
     oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
 
     # if token.expired:
     _refresh_token(request, token)
-    token = UserTokens.objects.get(standings_token=True)
+    token = UserToken.objects.get(standings_token=True)
     oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
 
     return oauth

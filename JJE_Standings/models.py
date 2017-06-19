@@ -66,24 +66,3 @@ class YahooStanding(models.Model):
 
     def __str__(self):
         return "<id: {}>".format(self.team)
-
-
-class YahooKey(models.Model):
-    """This is just for the API to collect and update the app"""
-    date_created = models.DateTimeField(auto_now=True)
-    consumer_key = models.TextField()
-    consumer_secret = models.TextField()
-    access_token = models.TextField()
-    access_secret_token = models.TextField()
-    session_handle = models.TextField()
-    user_guid = models.TextField()
-
-    def __repr__(self):
-        return "<ID: {}>".format(self.id)
-
-    @property
-    def expired(self):
-        if (self.date_created + datetime.timedelta(hours=1)) > timezone.now():
-            return True
-        else:
-            return False

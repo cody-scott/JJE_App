@@ -1,45 +1,17 @@
-from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
-from django.urls import reverse
-
-from JJE_Waivers.models import WaiverClaim, YahooTeam
-from JJE_Standings.models import YahooStanding
-
-from django.utils import timezone
 from datetime import timedelta
 
-from JJE_Waivers.utils import email_functions
-
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView
 
-
-def get_user_teams_list(user):
-    out_dct = {}
-    teams = YahooTeam.objects.filter(user=user.id)
-    if len(teams) == 1:
-        out_dct = {'team': teams[0].id}
-    return out_dct
-
-
-def get_current_ranks(user):
-    """Gets all the teams that are not eligible for overclaim"""
-    ranks = []
-    for item in user.yahooteam_set.all():
-        ranks.extend([z.rank for z in item.yahoostanding_set.filter(current_standings=True).all()])
-
-    rank = 0
-    if len(ranks) > 0:
-        rank = max(ranks)
-
-    teams = [team.team.id for team in YahooStanding.objects.filter(current_standings=True, rank__gte=rank)]
-    return teams
-
-
-def get_claim_rank(team):
-    standings = [item.rank for item in team.yahoostanding_set.filter(current_standings=True).all()]
-    return standings
+from JJE_Standings.models import YahooStanding
+from JJE_Waivers.models import WaiverClaim, YahooTeam
+from JJE_Waivers.utils import email_functions, get_user_teams_list, \
+    get_current_ranks, get_claim_rank, show_oauth_link
 
 
 class IndexView(ListView):
@@ -52,6 +24,8 @@ class IndexView(ListView):
         return claims
 
     def get_context_data(self, **kwargs):
+        oauth_display = show_oauth_link(self.request)
+
         context = super(IndexView, self).get_context_data(**kwargs)
         # user_teams = [team_id.id for team_id in YahooTeam.objects.all()]
         user_teams = []
@@ -63,6 +37,7 @@ class IndexView(ListView):
 
         context['user_team_ids'] = user_teams
         context['overclaim_ids'] = overclaim_teams
+        context['show_oauth'] = oauth_display
         return context
 
 

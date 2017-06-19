@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from JJE_Standings.models import YahooStanding, YahooKey
+from JJE_Standings.models import YahooStanding
 
 #
 # class YahooKeyAdmin(admin.ModelAdmin):
@@ -16,4 +16,4 @@ class StandingsAdmin(admin.ModelAdmin):
     list_per_page = 12
 
 admin.site.register(YahooStanding, StandingsAdmin)
-admin.site.register(YahooKey)
+

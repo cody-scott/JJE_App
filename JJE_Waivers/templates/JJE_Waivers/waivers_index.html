@@ -3,15 +3,27 @@
 {% block title_block %}JJE League{% endblock %}
 {% block content %}
     {% if not user.is_anonymous %}
-    <div class="container new-claim-container">
-        <div class="row new-claim-row">
-            <div class="twelve columns">
-                <form action="/waiver_claim/new">
-                    <input type="submit" class="newclaim_btn" value="New Claim">
-                </form>
+        {% if show_oauth %}
+            <div class="container new-claim-container">
+                <div class="row new-claim-row">
+                    <div class="twelve columns">
+                        <form action="/oauth">
+                            <input type="submit" class="newclaim_btn" value="Link Yahoo">
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        {% else %}
+            <div class="container new-claim-container">
+                <div class="row new-claim-row">
+                    <div class="twelve columns">
+                        <form action="/waiver_claim/new">
+                            <input type="submit" class="newclaim_btn" value="New Claim">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
     <hr>
 
@@ -42,13 +54,13 @@
             </div>
 
             {% if not user.is_anonymous and claim.team.id not in overclaim_ids %}
-            <div class="row">
-                <div class="three columns padded">
-                    <form action="{% url 'waiver_claim-overclaim' pk=claim.id %}">
-                        <input class="overclaim_btn" type="submit" value="Overclaim">
-                    </form>
+                <div class="row">
+                    <div class="three columns padded">
+                        <form action="{% url 'waiver_claim-overclaim' pk=claim.id %}">
+                            <input class="overclaim_btn" type="submit" value="Overclaim">
+                        </form>
+                    </div>
                 </div>
-            </div>
             {% endif %}
 
             {% if claim.team.id in user_team_ids%}

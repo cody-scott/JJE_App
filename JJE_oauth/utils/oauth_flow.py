@@ -3,7 +3,7 @@ from JJE_App.settings import client_id, client_secret
 from requests_oauthlib import OAuth2Session
 from django.shortcuts import redirect
 
-from JJE_oauth.models import UserTokens
+from JJE_oauth.models import UserToken
 
 auth_url = "https://api.login.yahoo.com/oauth2/request_auth"
 token_url = "https://api.login.yahoo.com/oauth2/get_token"
@@ -15,7 +15,12 @@ def create_oauth_session(_client_id=None, state=None, token=None):
         c_i = _client_id
 
     redirect_uri = "{}/oauth/callback".format(Site.objects.first().domain)
-    oauth = OAuth2Session(c_i, redirect_uri=redirect_uri, state=state, token=token)
+
+    access_token = token
+    if token is not None:
+        access_token = {'access_token': token}
+
+    oauth = OAuth2Session(c_i, redirect_uri=redirect_uri, state=state, token=access_token)
     return oauth
 
 
@@ -44,7 +49,7 @@ def save_token(token, request, user_token=None):
     guid = token.get("xoauth_yahoo_guid")
 
     if user_token is None:
-        user_token = UserTokens()
+        user_token = UserToken()
         user_token.user = request.user
 
     user_token.client_id = client_id
