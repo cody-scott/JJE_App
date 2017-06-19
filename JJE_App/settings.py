@@ -14,6 +14,8 @@ import os
 import sys
 import dj_database_url
 
+# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,12 +29,14 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
+
 DEBUG = False
 if "DEBUG" in os.environ:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'locahost']
+ALLOWED_HOSTS = ['jje-league.herokuapp.com', '127.0.0.1', '0.0.0.0', 'localhost', 'www.myapp.new']
 INTERNAL_IPS = ["127.0.0.1"]
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 # Application definition
@@ -57,6 +61,7 @@ INSTALLED_APPS = [
 
     'JJE_Waivers.apps.JJEWaiversConfig',
     'JJE_Standings.apps.JJEStandingsConfig',
+    'JJE_oauth.apps.JJEOauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -103,7 +108,10 @@ DATABASES = {
     'default': {},
 }
 
+# TODO Remove
+
 db_from_env = dj_database_url.config(conn_max_age=500)
+
 DATABASES['default'].update(db_from_env)
 
 if 'test' in sys.argv:
@@ -173,14 +181,19 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 
 try:
-    from JJE_App.private_config import email_user, email_password
+    from JJE_App.private_config import email_user, email_password, client_id, client_secret
     EMAIL_HOST_USER = email_user
     EMAIL_HOST_PASSWORD = email_password
     ADMINS = (('Admin', email_user),)
+    client_id = client_id
+    client_secret = client_secret
 except:
     EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")
     ADMINS = (('Admin', os.environ.get("email_user")),)
+
+    client_id = os.environ.get("client_id")
+    client_secret = os.environ.get("client_sec")
 
 
 EMAIL_PORT = 587

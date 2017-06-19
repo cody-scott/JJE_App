@@ -5,23 +5,29 @@ from JJE_Waivers.models import YahooTeam
 
 from JJE_Standings.utils.yahoo_api import refresh_yahoo_token
 
+from JJE_oauth.utils.new_oauth_flow import _refresh_token, create_oauth_session
+from JJE_oauth.models import UserTokens
+
 from bs4 import BeautifulSoup
 from datetime import datetime
 import math
 
 
-def create_session():
-    refresh_yahoo_token()
-    token = YahooKey.objects.first() #type: YahooKey
-    yahoo_obj = OAuth1Session(token.consumer_key,
-                              client_secret=token.consumer_secret,
-                              resource_owner_key=token.access_token,
-                              resource_owner_secret=token.access_secret_token)
-    return yahoo_obj
+def create_session(request):
+
+    token = UserTokens.objects.get(standings_token=True)
+    oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
+
+    if token.expired:
+        _refresh_token(request, token)
+        token = UserTokens.objects.get(standings_token=True)
+        oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
+
+    return oauth
 
 
-def build_team_data():
-    yahoo_obj = create_session()
+def build_team_data(request):
+    yahoo_obj = create_session(request)
     url = "http://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
     result = yahoo_obj.get(url)
     results, status_code = result.text, result.status_code
@@ -35,8 +41,8 @@ def build_team_data():
         _process_team(team)
 
 
-def update_standings():
-    yahoo_obj = create_session()
+def update_standings(request):
+    yahoo_obj = create_session(request)
     set_standings_not_current()
     _standings_collection(yahoo_obj)
 
@@ -51,8 +57,8 @@ def _standings_collection(yahoo_obj):
     try:
         # yahoo_obj = OAuth1Session()
         url = "http://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
-
-        result = yahoo_obj.get(url)
+        # , headers=yahoo_obj.access_token
+        result = yahoo_obj.request("get", url)
         results, status_code = result.text, result.status_code
         if (result.text is None) or (result.status_code != 200):
             'Means an error with the yahoo stuff'

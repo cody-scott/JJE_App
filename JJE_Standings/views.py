@@ -12,9 +12,9 @@ class IndexView(View):
 
 class UpdateStandings(View):
     def get(self, request):
-        if check_if_update_required():
-            update_standings()
-            email_standings()
+        # if check_if_update_required():
+        update_standings(request)
+        email_standings()
 
         return HttpResponse(
             "<pre>{}</pre>".format(get_standings_json()))
@@ -22,5 +22,5 @@ class UpdateStandings(View):
 
 class CreateTeams(View):
     def get(self, request):
-        build_team_data()
+        build_team_data(request)
         return HttpResponse("Done")
