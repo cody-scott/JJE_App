@@ -25,7 +25,7 @@ def create_session(request):
 
 def build_team_data(request):
     yahoo_obj = create_session(request)
-    url = "http://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
+    url = "https://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
     result = yahoo_obj.get(url)
     results, status_code = result.text, result.status_code
     if (result.text is None) or (result.status_code != 200):
