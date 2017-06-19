@@ -13,12 +13,12 @@ import math
 
 def create_session(request):
     token = UserToken.objects.get(standings_token=True)
-    oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
+    oauth = create_oauth_session(_client_id=token.client_id, token=token.access_token)
 
     # if token.expired:
     _refresh_token(request, token)
     token = UserToken.objects.get(standings_token=True)
-    oauth = create_oauth_session(_client_id=token.client_id, token={'access_token': token.access_token})
+    oauth = create_oauth_session(_client_id=token.client_id, token=token.access_token)
 
     return oauth
 
@@ -51,22 +51,18 @@ def set_standings_not_current():
 
 
 def _standings_collection(yahoo_obj):
-    try:
-        # yahoo_obj = OAuth1Session()
-        url = "https://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
-        # , headers=yahoo_obj.access_token
-        result = yahoo_obj.request("get", url)
-        results, status_code = result.text, result.status_code
-        if (result.text is None) or (result.status_code != 200):
-            'Means an error with the yahoo stuff'
-            return False
+    url = "https://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
+    result = yahoo_obj.request("get", url)
+    results, status_code = result.text, result.status_code
+    if (result.text is None) or (result.status_code != 200):
+        'Means an error with the yahoo stuff'
+        print("Error with yahoo")
+        return False
 
-        standings_soup = BeautifulSoup(result.text, 'html.parser')
-        team_list = league_standings(standings_soup)
+    standings_soup = BeautifulSoup(result.text, 'html.parser')
+    team_list = league_standings(standings_soup)
 
-        return True
-    except Exception as e:
-        print(e)
+    return True
 
 
 def league_standings(xml_data=None):
