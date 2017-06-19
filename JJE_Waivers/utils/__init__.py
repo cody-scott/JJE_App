@@ -59,3 +59,16 @@ def _check_user_team(user):
         return False
     else:
         return True
+
+
+def assign_user_teams_from_token(request):
+    user = request.user
+
+    token = user.usertoken_set.first()
+
+    teams = YahooTeam.objects.filter(manager_guid=token.user_guid).all()
+    for team in teams:
+        team.user = user
+        team.save()
+
+    return

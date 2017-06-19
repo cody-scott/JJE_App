@@ -8,6 +8,8 @@ from django.utils.decorators import method_decorator
 # Create your views here.
 from JJE_oauth.utils.oauth_flow import start_oauth, callback_oauth, refresh_token
 
+from JJE_Waivers.utils import assign_user_teams_from_token
+
 
 @method_decorator(login_required, name='dispatch')
 class OAuthStart(View):
@@ -19,7 +21,7 @@ class OAuthStart(View):
 class OAuthCallback(View):
     def get(self, request):
         callback_oauth(request)
-        # site = request.get_current_site()
+        assign_user_teams_from_token(request)
         return redirect(Site.objects.first().domain)
 
 
