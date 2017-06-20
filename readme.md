@@ -49,13 +49,13 @@ If you would like to make any requests that hit the yahoo api then you will need
 Examples of items that hit the api currently are the linking of the user to their teams in yahoo
 and updating the current weekly standings.
 
-Since these require requests be send over HTTPS you will need to setup a reverse proxy using NGINX.
+Since these require requests be sent over HTTPS you will need to setup a reverse proxy using NGINX.
 
 Additionally you will need to configure this proxy to serve a certificate you create to ensure its over https.
 
-#### Settngs file
+#### settings.py file
 
-move these items outside the if block to activate all the time
+move these items outside the if block
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
@@ -74,7 +74,7 @@ Specifically update the ssl cert/ssl key paths and the log path
 
 Update anything that says myapp.new to your path
 
-finally update the proxy redirect below.
+finally update the proxy redirect
 
     # --------------------
     worker_processes  1;
