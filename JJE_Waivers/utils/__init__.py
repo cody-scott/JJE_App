@@ -1,5 +1,7 @@
 from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import YahooTeam
+from JJE_oauth.views import oauth_complete_signal
+from django.dispatch.dispatcher import receiver
 
 
 def get_user_teams_list(user):
@@ -61,7 +63,8 @@ def _check_user_team(user):
         return True
 
 
-def assign_user_teams_from_token(request):
+@receiver(oauth_complete_signal)
+def assign_user_teams_from_token(request, **kwargs):
     user = request.user
 
     token = user.usertoken_set.first()

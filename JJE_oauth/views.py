@@ -5,10 +5,10 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+import django.dispatch
+
 # Create your views here.
 from JJE_oauth.utils.oauth_flow import start_oauth, callback_oauth, refresh_token
-
-from JJE_Waivers.utils import assign_user_teams_from_token
 
 
 @method_decorator(login_required, name='dispatch')
@@ -17,11 +17,12 @@ class OAuthStart(View):
         return start_oauth(request)
 
 
+oauth_complete_signal = django.dispatch.Signal(providing_args=["request"])
 @method_decorator(login_required, name='dispatch')
 class OAuthCallback(View):
     def get(self, request):
         callback_oauth(request)
-        assign_user_teams_from_token(request)
+        oauth_complete_signal.send(sender=self.__class__, request=request)
         return redirect(Site.objects.first().domain)
 
 
