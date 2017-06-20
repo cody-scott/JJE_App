@@ -101,5 +101,3 @@ private_config.py
 
 db.sqlite3
 *.sqlite3
-
-JJE_Standings/tests/data.html
