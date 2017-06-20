@@ -1,7 +1,11 @@
-from django.test import TestCase
+from __future__ import print_function
+from __future__ import division
+
+import os
+
 from JJE_Standings.models import YahooStanding
 
-# Create your tests here.
+
 def create_standing(team, rank):
     standing = YahooStanding()
     standing.team = team

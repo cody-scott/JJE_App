@@ -4,6 +4,7 @@ from datetime import timedelta
 # Create your tests here.
 
 
+
 def create_user_token(user=None):
     token = UserToken()
     token.client_id = ""

@@ -1,47 +1,14 @@
-from django.test import TestCase
-from django.utils import timezone
-from django.urls import reverse
-from django.contrib.auth import get_user_model
-
-from JJE_Waivers.models import WaiverClaim, YahooTeam
-from JJE_Standings.tests import create_standing
-from JJE_oauth.tests import create_user_token
-
 import datetime
 
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import reverse
+from django.utils import timezone
 
-def create_test_user(username="test@test.com", password='test'):
-    User = get_user_model()
-    user = User.objects.create_user(username, password=password, email=username, is_active=True)
-    return user
-
-
-def create_test_user_login(client, username="test@test.com", user_pass='test'):
-    user = create_test_user(username, user_pass)
-    logged_in = client.login(
-        username=username,
-        password=user_pass)
-    return user, logged_in
-
-
-def create_test_team(team_name, user=None):
-    new_team = YahooTeam()
-    new_team.team_name = team_name
-    if user is not None:
-        new_team.user = user
-    new_team.save()
-    return new_team
-
-
-def create_claim(add_player, drop_player, team):
-    claim = WaiverClaim()
-    claim.add_player = add_player
-    claim.add_C = True
-    claim.drop_player = drop_player
-    claim.drop_C = True
-    claim.team = team
-    claim.save()
-    return claim
+from JJE_Standings.tests.shared_tests import create_standing
+from JJE_Waivers.models import WaiverClaim, YahooTeam
+from JJE_Waivers.tests.sharedtests import create_test_user, create_test_user_login, create_test_team, create_claim
+from JJE_oauth.tests.tests import create_user_token
 
 
 class YahooTeamTest(TestCase):
@@ -119,7 +86,7 @@ class IndexViewTest(TestCase):
         claim_one.claim_start = (timezone.now() - datetime.timedelta(days=2))
         claim_one.save()
         response = self.client.get(reverse("index"))
-        self.assertQuerysetEqual(response.context['waiverclaim_list'],["<WaiverClaim: Test A P 2>"], ordered=False)
+        self.assertQuerysetEqual(response.context['waiverclaim_list'], ["<WaiverClaim: Test A P 2>"], ordered=False)
 
     def test_anonymous_no_new_claim_button(self):
         request = self.client.get('/')
@@ -163,12 +130,10 @@ class IndexViewLoggedInTest(TestCase):
         check = False
         self.assertNotIn('<input class="cancel_btn" type="submit" value="Cancel">', request.rendered_content)
 
-
     def test_oauth_registration_link_visible(self):
         user, logged_in = create_test_user_login(self.client)
         request = self.client.get('/')
         self.assertInHTML('<input type="submit" class="newclaim_btn" value="Link Yahoo">', request.rendered_content)
-
 
     def test_oauth_registration_link_hidden(self):
         user, logged_in = create_test_user_login(self.client)
@@ -176,7 +141,6 @@ class IndexViewLoggedInTest(TestCase):
         token = create_user_token(user)
         request = self.client.get('/')
         self.assertInHTML('<input type="submit" class="newclaim_btn" value="New Claim">', request.rendered_content)
-
 
     def test_overclaim_valid_html_no_standings(self):
         user1 = create_test_user()
@@ -256,10 +220,7 @@ class OverclaimViewTest(TestCase):
         claim = create_claim("ap1", "dp1", team2)
 
         response = self.client.get("/waiver_claim/overclaim=1")
-        self.assertInHTML(
-            '<option value="1" selected>t1</option>',
-                          response.rendered_content)
-
+        self.assertInHTML('<option value="1" selected>t1</option>', response.rendered_content)
 
     def test_claim_by_higher_rank_team(self):
         user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
@@ -276,7 +237,6 @@ class OverclaimViewTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-
     def test_claim_by_equal_rank_team(self):
         user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
         team = create_test_team("t1", user)
@@ -292,7 +252,6 @@ class OverclaimViewTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-
     def test_claim_by_lower_rank_team(self):
         user, logged_in = create_test_user_login(self.client, "t1@test.com", "pass")
         team = create_test_team("t1", user)
@@ -307,6 +266,7 @@ class OverclaimViewTest(TestCase):
         response = self.client.get("/waiver_claim/overclaim=1")
 
         self.assertEqual(response.status_code, 200)
+
 
 class NewClaimTest(TestCase):
     def test_null_submission_team(self):

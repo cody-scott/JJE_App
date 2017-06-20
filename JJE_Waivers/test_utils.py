@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 from JJE_Waivers.models import YahooTeam, WaiverClaim
 from JJE_Waivers import utils
-from JJE_oauth.tests import create_user_token
+from JJE_oauth.tests.tests import create_user_token
 
 
 def create_test_user(username="test@test.com", password='test'):

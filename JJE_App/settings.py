@@ -183,8 +183,6 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-
-
 email_super_users = False
 if _check_os_condition("SU_Email", "True"):
     email_super_users = True
