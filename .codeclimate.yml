@@ -10,3 +10,4 @@ exclude_paths:
 - "sharedstatic/**/*"
 - "**/static/"
 - "tests.py"
+- "**/migrations/"
