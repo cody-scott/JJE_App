@@ -171,8 +171,15 @@ class CancelClaimView(DetailView):
         return False
 
     def post(self, request, *args, **kwargs):
+        if request.user.yahooteam_set is None:
+            return redirect(reverse('index'))
+
         claim_id = kwargs.get("pk")
         claim = get_object_or_404(WaiverClaim, id=claim_id)
+
+        if claim.team.id not in [team.id for team in request.user.yahooteam_set.all()]:
+            return redirect(reverse('index'))
+
         claim.cancelled = True
         claim.save()
         email_functions.cancel_email(claim, request)

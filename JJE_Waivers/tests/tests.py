@@ -279,35 +279,46 @@ class NewClaimTest(TestCase):
                                         'drop_player': "Test D",
                                     }, follow=True)
         self.assertEqual(response.redirect_chain, [])
-#
-#     def test_null_submission_add_player(self):
-#         team = create_test_team("Team")
-#         response = self.client.post('/waiver_claim/new/',
-#                                     {
-#                                         'team': team.id,
-#                                         'add_player': "Test A",
-#                                         'add_C': True,
-#                                         # 'drop_player': "Test D",
-#                                     }, follow=True)
-#         self.assertEqual(response.redirect_chain, [])
-#
-#     def test_null_submission_drop_player(self):
-#         team = create_test_team("Team")
-#         response = self.client.post('/waiver_claim/new/',
-#                                     {
-#                                         'team': team.id,
-#                                         # 'add_player': "Test A",
-#                                         'add_C': True,
-#                                         'drop_player': "Test D",
-#                                     }, follow=True)
-#         self.assertEqual(response.redirect_chain, [])
 
 
 class CancelClaimTest(TestCase):
-    def test_valid_cancel(self):
+    def test_valid_cancel_post(self):
         user, logged_in = create_test_user_login(self.client)
         team = create_test_team("Test Team", user)
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
         response = self.client.post('/waiver_claim/cancel={}'.format(claim_one.id), follow=True)
         claim_one_test = WaiverClaim.objects.get(id=1)
         self.assertIs(claim_one_test.cancelled, True)
+
+    def test_cancel_wrong_user_post(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        user2, logged_in = create_test_user_login(username="test2@test.com", user_pass="pass", client=self.client)
+        response = self.client.post('/waiver_claim/cancel={}'.format(claim_one.id), follow=True)
+        claim_one_test = WaiverClaim.objects.get(id=1)
+        self.assertIs(claim_one_test.cancelled, False)
+
+
+class CancelClaimTestViews(TestCase):
+    def test_cancel_view(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        response = self.client.get('/waiver_claim/cancel={}'.format(claim_one.id))
+        self.assertEqual(response.status_code, 200)
+
+    def test_cancel_wrong_user(self):
+        user, logged_in = create_test_user_login(self.client)
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        user2, logged_in = create_test_user_login(username="test2@test.com", user_pass="pass", client=self.client)
+        response = self.client.get('/waiver_claim/cancel={}'.format(claim_one.id))
+        self.assertEqual(response.status_code, 302)
+
+    def test_cancel_view_not_logged_in(self):
+        user = create_test_user()
+        team = create_test_team("Test Team", user)
+        claim_one = create_claim("Test A P 1", "Test D P 1", team)
+        response = self.client.get('/waiver_claim/cancel={}'.format(claim_one.id))
+        self.assertEqual(response.status_code, 302)
