@@ -58,10 +58,10 @@ class WaiverClaim(models.Model):
         # return reverse('waiver-claim-detail', kwargs={'pk': self.pk})
 
     def active_claim(self):
+        time_difference = self.claim_start + datetime.timedelta(days=1)
         if (not self.overclaimed)\
                 and (not self.cancelled)\
-                and self.claim_start + datetime.timedelta(days=1) >= \
-                        timezone.now():
+                and time_difference >= timezone.now():
             return True
         else:
             return False

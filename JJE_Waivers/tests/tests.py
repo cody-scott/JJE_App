@@ -7,7 +7,8 @@ from django.utils import timezone
 
 from JJE_Standings.tests.shared_tests import create_standing
 from JJE_Waivers.models import WaiverClaim, YahooTeam
-from JJE_Waivers.tests.sharedtests import create_test_user, create_test_user_login, create_test_team, create_claim
+from JJE_Waivers.tests.sharedtests import \
+    create_test_user, create_test_user_login, create_test_team, create_claim
 from JJE_oauth.tests.tests import create_user_token
 
 
@@ -189,7 +190,10 @@ class IndexViewLoggedInTest(TestCase):
 
 class OverclaimViewTest(TestCase):
     def test_null_overclaim(self):
-        """Waiver claim matching query because requesting this section for an item that doesn't exist"""
+        """
+        Waiver claim matching query because requesting
+        this section for an item that doesn't exist
+        """
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
         team = create_test_team("Test Team", user2)

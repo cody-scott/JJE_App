@@ -150,7 +150,7 @@ class OverclaimCreate(CreateView):
 
     def get_rank(self, request, player):
         try:
-            player = player #type: WaiverClaim
+            player = player
             rank = player.team.yahoostanding_set.filter(
                 current_standings=True
             ).first().rank

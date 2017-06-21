@@ -2,7 +2,8 @@ from django.views.generic import View
 from django.http import HttpResponse
 
 from JJE_Standings.utils.yahoo_data import build_team_data, update_standings
-from JJE_Standings.utils import get_standings_json, email_standings, check_if_update_required
+from JJE_Standings.utils import \
+    get_standings_json, email_standings, check_if_update_required
 
 
 class IndexView(View):

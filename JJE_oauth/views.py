@@ -11,6 +11,8 @@ import django.dispatch
 from JJE_oauth.utils.oauth_flow import \
     start_oauth, callback_oauth, refresh_token
 
+oauth_complete_signal = django.dispatch.Signal(providing_args=["request"])
+
 
 @method_decorator(login_required, name='dispatch')
 class OAuthStart(View):
@@ -18,7 +20,6 @@ class OAuthStart(View):
         return start_oauth(request)
 
 
-oauth_complete_signal = django.dispatch.Signal(providing_args=["request"])
 @method_decorator(login_required, name='dispatch')
 class OAuthCallback(View):
     def get(self, request):

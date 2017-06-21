@@ -35,7 +35,7 @@ def create_test_team(team_name, user=None):
 class YahooTeamTest(TestCase):
     def test_user_no_team_assigned(self):
         """
-        This should return false as a user is created/logged in, 
+        This should return false as a user is created/logged in,
         but no team assigned to that user
         """
         user, logged_in = create_test_user_login(self.client)

@@ -8,6 +8,7 @@ from JJE_Waivers.tests.sharedtests import create_test_user, create_test_team
 import json
 # Create your tests here.
 
+
 class mock_results:
     def __init__(self):
         self.text = self.load_text()
@@ -26,6 +27,7 @@ class mock_oauth:
 
     def request(self, *args, **kwargs):
         return self.get()
+
 
 class StandingsTest(TestCase):
     def create_mock_item(self):
