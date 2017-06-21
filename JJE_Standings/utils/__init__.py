@@ -6,6 +6,7 @@ from django.utils import timezone
 
 import json
 
+
 def email_standings():
     standings = get_standings()
     send_standings_email(standings)

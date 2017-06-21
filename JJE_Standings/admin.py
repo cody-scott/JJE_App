@@ -22,4 +22,3 @@ class StandingsAdmin(admin.ModelAdmin):
     list_per_page = 12
 
 admin.site.register(YahooStanding, StandingsAdmin)
-
