@@ -20,7 +20,8 @@ def create_oauth_session(_client_id=None, state=None, token=None):
     if token is not None:
         access_token = {'access_token': token}
 
-    oauth = OAuth2Session(c_i, redirect_uri=redirect_uri, state=state, token=access_token)
+    oauth = OAuth2Session(c_i, redirect_uri=redirect_uri, state=state,
+                          token=access_token)
     return oauth
 
 
@@ -38,7 +39,7 @@ def callback_oauth(request):
     x = "{}{}".format(Site.objects.first().domain, request.get_full_path())
     oauth = create_oauth_session(state=request.session['oauth_state'])
     token = oauth.fetch_token(token_url, client_secret=client_secret,
-                               authorization_response=x)
+                              authorization_response=x)
 
     save_token(token, request)
 
@@ -77,7 +78,11 @@ def _refresh_token(request, user_token):
     }
 
     oauth = create_oauth_session(_client_id=user_token.client_id)
-    new_token = oauth.refresh_token(token_url, refresh_token=user_token.refresh_token, **extra)
+    new_token = oauth.refresh_token(
+        token_url,
+        refresh_token=user_token.refresh_token,
+        **extra
+    )
 
     save_token(new_token, request, user_token)
     return

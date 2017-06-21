@@ -10,7 +10,9 @@ from JJE_Waivers.models import YahooTeam, WaiverClaim
 
 def create_test_user(username="test@test.com", password='test'):
     User = get_user_model()
-    user = User.objects.create_user(username, password=password, email=username, is_active=True)
+    user = User.objects.create_user(
+        username, password=password, email=username, is_active=True
+    )
     return user
 
 

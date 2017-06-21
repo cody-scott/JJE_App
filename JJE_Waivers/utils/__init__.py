@@ -16,18 +16,32 @@ def get_current_ranks(user):
     """Gets all the teams that are not eligible for overclaim"""
     ranks = []
     for item in user.yahooteam_set.all():
-        ranks.extend([z.rank for z in item.yahoostanding_set.filter(current_standings=True).all()])
+        ranks.extend(
+            [
+                z.rank
+                for z in item.yahoostanding_set.filter(
+                    current_standings=True).all()
+            ]
+        )
 
     rank = 0
     if len(ranks) > 0:
         rank = max(ranks)
 
-    teams = [team.team.id for team in YahooStanding.objects.filter(current_standings=True, rank__gte=rank)]
+    teams = [
+        team.team.id
+        for team in YahooStanding.objects.filter(
+            current_standings=True, rank__gte=rank)
+    ]
     return teams
 
 
 def get_claim_rank(team):
-    standings = [item.rank for item in team.yahoostanding_set.filter(current_standings=True).all()]
+    standings = [
+        item.rank
+        for item in team.yahoostanding_set.filter(
+            current_standings=True).all()
+    ]
     return standings
 
 

@@ -30,12 +30,14 @@ def cancel_email(waiver_claim, request):
 
 
 def send_waiver_email(waiver_object, message_type, request):
-    subject, body, body_non_html = format_waiver_claim(waiver_object, message_type, request)
-    construct_send_email(subject=subject, body=body, body_non_html=body_non_html)
+    subject, body, body_non_html = format_waiver_claim(
+        waiver_object, message_type, request)
+    construct_send_email(
+        subject=subject, body=body, body_non_html=body_non_html)
 
 
 def format_waiver_claim(waiver_object, message_type, request):
-    waiver_object = waiver_object # type: WaiverClaim
+    waiver_object = waiver_object
     body = render_to_string("JJE_Waivers/email_claim.html", {
         "claim": waiver_object,
         "site": get_current_site(request),
@@ -62,12 +64,21 @@ def construct_send_email(subject, body_non_html, body):
         emails = get_available_emails()
 
     if send_emails:
-        send_mail(subject=subject, message=body_non_html, from_email="jje.waivers@gmail.com",
-                  html_message=body, recipient_list=emails)
+        send_mail(
+            subject=subject,
+            message=body_non_html,
+            from_email="jje.waivers@gmail.com",
+            html_message=body, recipient_list=emails
+        )
 
 
 def get_available_emails():
-    return [email.email for email in EmailAddress.objects.all() if email.verified]
+    return [
+        email.email
+        for email in EmailAddress.objects.all()
+        if email.verified
+    ]
+
 
 def superuser_emails():
     emails = []

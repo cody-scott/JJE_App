@@ -13,19 +13,23 @@ import math
 
 def create_session(request):
     token = UserToken.objects.get(standings_token=True)
-    oauth = create_oauth_session(_client_id=token.client_id, token=token.access_token)
+    oauth = create_oauth_session(_client_id=token.client_id,
+                                 token=token.access_token)
 
     # if token.expired:
     _refresh_token(request, token)
     token = UserToken.objects.get(standings_token=True)
-    oauth = create_oauth_session(_client_id=token.client_id, token=token.access_token)
+    oauth = create_oauth_session(_client_id=token.client_id,
+                                 token=token.access_token)
 
     return oauth
 
 
 def build_team_data(request):
     yahoo_obj = create_session(request)
-    url = "https://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
+    url = "https://fantasysports.yahooapis.com/" \
+          "fantasy/v2/league/nhl.l.48844/standings"
+
     result = yahoo_obj.get(url)
     results, status_code = result.text, result.status_code
     if (result.text is None) or (result.status_code != 200):
@@ -51,7 +55,8 @@ def set_standings_not_current():
 
 
 def _standings_collection(yahoo_obj):
-    url = "https://fantasysports.yahooapis.com/fantasy/v2/league/nhl.l.48844/standings"
+    url = "https://fantasysports.yahooapis.com/" \
+          "fantasy/v2/league/nhl.l.48844/standings"
     result = yahoo_obj.request("get", url)
     results, status_code = result.text, result.status_code
     if (result.text is None) or (result.status_code != 200):
@@ -74,8 +79,17 @@ def league_standings(xml_data=None):
     teams = xml_data.findAll('team')
     for team in teams:
         team_class, new_team = _process_team(team)
-        standings_class = _process_standings(team_class, team, team_class.team_id)
-        team_list.append({'team': team_class, 'standings': standings_class, 'new_team': new_team})
+
+        standings_class = _process_standings(
+            team_class, team, team_class.team_id
+        )
+
+        team_list.append(
+            {
+                'team': team_class,
+                'standings': standings_class,
+                'new_team': new_team}
+        )
     return team_list
 
 
@@ -86,7 +100,7 @@ def _process_team(team_row_xml):
     # Check if exists in the db
     team_class = YahooTeam.objects.filter(team_id=team_id).first()
 
-    # If it doesn't exist then make a new one -> won't return None if it exists
+    # If it doesn't exist then make a new one -> won't return None if it exist
     if team_class is None:
         new_team = True
         team_class = YahooTeam()
@@ -115,8 +129,12 @@ def _process_standings(team_class, team_row_xml, team_id):
     standings_class = _process_team_stats(standings_class, team_row_xml)
     standings_class = _process_team_points(standings_class, team_row_xml)
 
-    starting_week = datetime.strptime("2016-10-03 00:00:00.000000", "%Y-%m-%d %H:%M:%S.%f")
-    standings_class.standings_week = math.floor(((datetime.utcnow() - starting_week).days / 7))
+    starting_week = datetime.strptime(
+        "2016-10-03 00:00:00.000000", "%Y-%m-%d %H:%M:%S.%f"
+    )
+    standings_class.standings_week = math.floor(
+        ((datetime.utcnow() - starting_week).days / 7)
+    )
 
     standings_class.current_standings = True
 
@@ -127,21 +145,36 @@ def _process_standings(team_class, team_row_xml, team_id):
 
 def _process_team_stats(standings_class=None, team_row_xml=None):
     stats_rows = team_row_xml.find('team_stats').find('stats')
-    standings_class.stat_1 = _stat_value(stats_rows.find('stat_id', text="1"))
-    standings_class.stat_2 = _stat_value(stats_rows.find('stat_id', text="2"))
-    standings_class.stat_3 = _stat_value(stats_rows.find('stat_id', text="3"))
-    standings_class.stat_4 = _stat_value(stats_rows.find('stat_id', text="4"))
-    standings_class.stat_5 = _stat_value(stats_rows.find('stat_id', text="5"))
-    standings_class.stat_8 = _stat_value(stats_rows.find('stat_id', text="8"))
-    standings_class.stat_12 = _stat_value(stats_rows.find('stat_id', text="12"))
-    standings_class.stat_31 = _stat_value(stats_rows.find('stat_id', text="31"))
-    standings_class.stat_19 = _stat_value(stats_rows.find('stat_id', text="19"))
-    standings_class.stat_22 = _stat_value(stats_rows.find('stat_id', text="22"))
-    standings_class.stat_23 = _stat_value(stats_rows.find('stat_id', text="23"))
-    standings_class.stat_25 = _stat_value(stats_rows.find('stat_id', text="25"))
-    standings_class.stat_24 = _stat_value(stats_rows.find('stat_id', text="24"))
-    standings_class.stat_26 = _stat_value(stats_rows.find('stat_id', text="26"))
-    standings_class.stat_27 = _stat_value(stats_rows.find('stat_id', text="27"))
+    standings_class.stat_1 = _stat_value(
+        stats_rows.find('stat_id', text="1"))
+    standings_class.stat_2 = _stat_value(
+        stats_rows.find('stat_id', text="2"))
+    standings_class.stat_3 = _stat_value(
+        stats_rows.find('stat_id', text="3"))
+    standings_class.stat_4 = _stat_value(
+        stats_rows.find('stat_id', text="4"))
+    standings_class.stat_5 = _stat_value(
+        stats_rows.find('stat_id', text="5"))
+    standings_class.stat_8 = _stat_value(
+        stats_rows.find('stat_id', text="8"))
+    standings_class.stat_12 = _stat_value(
+        stats_rows.find('stat_id', text="12"))
+    standings_class.stat_31 = _stat_value(
+        stats_rows.find('stat_id', text="31"))
+    standings_class.stat_19 = _stat_value(
+        stats_rows.find('stat_id', text="19"))
+    standings_class.stat_22 = _stat_value(
+        stats_rows.find('stat_id', text="22"))
+    standings_class.stat_23 = _stat_value(
+        stats_rows.find('stat_id', text="23"))
+    standings_class.stat_25 = _stat_value(
+        stats_rows.find('stat_id', text="25"))
+    standings_class.stat_24 = _stat_value(
+        stats_rows.find('stat_id', text="24"))
+    standings_class.stat_26 = _stat_value(
+        stats_rows.find('stat_id', text="26"))
+    standings_class.stat_27 = _stat_value(
+        stats_rows.find('stat_id', text="27"))
     return standings_class
 
 
@@ -155,21 +188,36 @@ def _process_team_points(standings_class=None, team_row_xml=None):
 
     standings_class.stat_point_total = point_total
     stats_rows = points_row.find('stats')
-    standings_class.stat_points_1 = _stat_value(stats_rows.find('stat_id', text="1"))
-    standings_class.stat_points_2 = _stat_value(stats_rows.find('stat_id', text="2"))
-    standings_class.stat_points_3 = _stat_value(stats_rows.find('stat_id', text="3"))
-    standings_class.stat_points_4 = _stat_value(stats_rows.find('stat_id', text="4"))
-    standings_class.stat_points_5 = _stat_value(stats_rows.find('stat_id', text="5"))
-    standings_class.stat_points_8 = _stat_value(stats_rows.find('stat_id', text="8"))
-    standings_class.stat_points_12 = _stat_value(stats_rows.find('stat_id', text="12"))
-    standings_class.stat_points_31 = _stat_value(stats_rows.find('stat_id', text="31"))
-    standings_class.stat_points_19 = _stat_value(stats_rows.find('stat_id', text="19"))
-    standings_class.stat_points_22 = _stat_value(stats_rows.find('stat_id', text="22"))
-    standings_class.stat_points_23 = _stat_value(stats_rows.find('stat_id', text="23"))
-    standings_class.stat_points_25 = _stat_value(stats_rows.find('stat_id', text="25"))
-    standings_class.stat_points_24 = _stat_value(stats_rows.find('stat_id', text="24"))
-    standings_class.stat_points_26 = _stat_value(stats_rows.find('stat_id', text="26"))
-    standings_class.stat_points_27 = _stat_value(stats_rows.find('stat_id', text="27"))
+    standings_class.stat_points_1 = _stat_value(
+        stats_rows.find('stat_id', text="1"))
+    standings_class.stat_points_2 = _stat_value(
+        stats_rows.find('stat_id', text="2"))
+    standings_class.stat_points_3 = _stat_value(
+        stats_rows.find('stat_id', text="3"))
+    standings_class.stat_points_4 = _stat_value(
+        stats_rows.find('stat_id', text="4"))
+    standings_class.stat_points_5 = _stat_value(
+        stats_rows.find('stat_id', text="5"))
+    standings_class.stat_points_8 = _stat_value(
+        stats_rows.find('stat_id', text="8"))
+    standings_class.stat_points_12 = _stat_value(
+        stats_rows.find('stat_id', text="12"))
+    standings_class.stat_points_31 = _stat_value(
+        stats_rows.find('stat_id', text="31"))
+    standings_class.stat_points_19 = _stat_value(
+        stats_rows.find('stat_id', text="19"))
+    standings_class.stat_points_22 = _stat_value(
+        stats_rows.find('stat_id', text="22"))
+    standings_class.stat_points_23 = _stat_value(
+        stats_rows.find('stat_id', text="23"))
+    standings_class.stat_points_25 = _stat_value(
+        stats_rows.find('stat_id', text="25"))
+    standings_class.stat_points_24 = _stat_value(
+        stats_rows.find('stat_id', text="24"))
+    standings_class.stat_points_26 = _stat_value(
+        stats_rows.find('stat_id', text="26"))
+    standings_class.stat_points_27 = _stat_value(
+        stats_rows.find('stat_id', text="27"))
     return standings_class
 
 

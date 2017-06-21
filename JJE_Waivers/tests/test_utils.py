@@ -10,7 +10,8 @@ from JJE_oauth.tests.tests import create_user_token
 
 def create_test_user(username="test@test.com", password='test'):
     User = get_user_model()
-    user = User.objects.create_user(username, password=password, email=username, is_active=True)
+    user = User.objects.create_user(
+        username, password=password, email=username, is_active=True)
     return user
 
 
@@ -34,7 +35,8 @@ def create_test_team(team_name, user=None):
 class YahooTeamTest(TestCase):
     def test_user_no_team_assigned(self):
         """
-        This should return false as a user is created/logged in, but no team assigned to that user
+        This should return false as a user is created/logged in, 
+        but no team assigned to that user
         """
         user, logged_in = create_test_user_login(self.client)
         create_test_team("Test 1")

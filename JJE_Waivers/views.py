@@ -19,7 +19,10 @@ class IndexView(ListView):
 
     def get_queryset(self):
         now = timezone.now() - timedelta(days=1)
-        claims = WaiverClaim.objects.filter(cancelled=False).filter(overclaimed=False).filter(claim_start__gt=now) \
+        claims = WaiverClaim.objects \
+            .filter(cancelled=False) \
+            .filter(overclaimed=False) \
+            .filter(claim_start__gt=now) \
             .order_by('claim_start')
         return claims
 
@@ -47,13 +50,17 @@ class WaiverClaimCreate(CreateView):
     template_name_suffix = "_new"
     fields = [
         "team",
-        "add_player", "add_LW", "add_C", "add_RW", "add_D", "add_G", "add_Util", "add_IR",
-        "drop_player", "drop_LW", "drop_C", "drop_RW", "drop_D", "drop_G", "drop_Util", "drop_IR"
+        "add_player", "add_LW", "add_C", "add_RW",
+        "add_D", "add_G", "add_Util", "add_IR",
+        "drop_player", "drop_LW", "drop_C", "drop_RW",
+        "drop_D", "drop_G", "drop_Util", "drop_IR",
     ]
 
     def get_form(self, form_class=None):
         frm = super(WaiverClaimCreate, self).get_form(form_class)
-        frm.fields['team'].queryset = YahooTeam.objects.filter(user=self.request.user.id)
+        frm.fields['team'].queryset = YahooTeam.objects.filter(
+            user=self.request.user.id
+        )
         return frm
 
     def get_initial(self):
@@ -71,7 +78,8 @@ class OverclaimCreate(CreateView):
     template_name_suffix = "_overclaim"
     fields = [
         "team",
-        "drop_player", "drop_LW", "drop_C", "drop_RW", "drop_D", "drop_G", "drop_Util", "drop_IR"
+        "drop_player", "drop_LW", "drop_C", "drop_RW",
+        "drop_D", "drop_G", "drop_Util", "drop_IR",
     ]
 
     def get(self, request, *args, **kwargs):
@@ -83,7 +91,11 @@ class OverclaimCreate(CreateView):
             claim_team_standing = get_claim_rank(player.team)
             claimee_standings = []
             for item in self.request.user.yahooteam_set.all():
-                claimee_standings.extend([z.rank for z in item.yahoostanding_set.filter(current_standings=True).all()])
+                claimee_standings.extend([
+                    z.rank
+                    for z in item.yahoostanding_set.filter(
+                        current_standings=True).all()
+                ])
 
             if len(claim_team_standing) > 0 and len(claimee_standings) > 0:
                 cts = max(claim_team_standing)
@@ -139,12 +151,21 @@ class OverclaimCreate(CreateView):
     def get_rank(self, request, player):
         try:
             player = player #type: WaiverClaim
-            rank = player.team.yahoostanding_set.filter(current_standings=True).first().rank
-            ranks = [team.team.id for team in YahooStanding.objects.filter(current_standings=True)
-                .filter(rank__gte=rank).all()]
-            return YahooTeam.objects.filter(pk__in=ranks).filter(user=self.request.user.id)
+            rank = player.team.yahoostanding_set.filter(
+                current_standings=True
+            ).first().rank
+
+            ranks = [
+                team.team.id
+                for team in YahooStanding.objects.filter(
+                    current_standings=True).filter(rank__gte=rank).all()
+
+            ]
+            return YahooTeam.objects.filter(pk__in=ranks) \
+                .filter(user=self.request.user.id)
         except:
-            return YahooTeam.objects.filter(user=self.request.user.id).exclude(id=player.team.id)
+            return YahooTeam.objects.filter(user=self.request.user.id) \
+                .exclude(id=player.team.id)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -154,7 +175,7 @@ class CancelClaimView(DetailView):
 
     def get(self, request, *a, **k):
         id = int(k.get("pk"))
-        claim_obj = WaiverClaim.objects.filter(id=id).first() #type: WaiverClaim
+        claim_obj = WaiverClaim.objects.filter(id=id).first()
         if claim_obj is None or not claim_obj.active_claim():
             return redirect(reverse("index"))
 
@@ -177,7 +198,9 @@ class CancelClaimView(DetailView):
         claim_id = kwargs.get("pk")
         claim = get_object_or_404(WaiverClaim, id=claim_id)
 
-        if claim.team.id not in [team.id for team in request.user.yahooteam_set.all()]:
+        if claim.team.id not in [
+            team.id for team in request.user.yahooteam_set.all()
+        ]:
             return redirect(reverse('index'))
 
         claim.cancelled = True

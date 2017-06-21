@@ -60,7 +60,8 @@ class WaiverClaim(models.Model):
     def active_claim(self):
         if (not self.overclaimed)\
                 and (not self.cancelled)\
-                and self.claim_start + datetime.timedelta(days=1) >= timezone.now():
+                and self.claim_start + datetime.timedelta(days=1) >= \
+                        timezone.now():
             return True
         else:
             return False
@@ -82,7 +83,11 @@ class WaiverClaim(models.Model):
             "D": self.add_D, "G": self.add_G,
             "Utils": self.add_Util, "IR": self.add_IR
         }
-        out_positions_add = "/".join([item for item in add if add[item] is True])
+        out_positions_add = "/".join(
+            [item
+             for item in add if add[item] is True
+             ]
+        )
         return out_positions_add
 
     @property
@@ -92,7 +97,11 @@ class WaiverClaim(models.Model):
             "D": self.drop_D, "G": self.drop_G,
             "Utils": self.drop_Util, "IR": self.drop_IR
         }
-        out_positions_drop = "/".join([item for item in drop if drop[item] is True])
+        out_positions_drop = "/".join([
+            item
+            for item in drop
+            if drop[item] is True]
+        )
         return out_positions_drop
 
     @property

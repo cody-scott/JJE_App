@@ -13,7 +13,8 @@ def update_username_from_email(sender, instance, **kwargs):
     user_email = instance.email
     username = user_email[:30]
     n = 1
-    while User.objects.exclude(pk=instance.pk).filter(username=username).exists():
+    while User.objects.exclude(pk=instance.pk).filter(
+            username=username).exists():
         n += 1
         username = user_email[:(29 - len(str(n)))] + '-' + str(n)
     instance.username = username

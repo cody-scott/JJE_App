@@ -17,7 +17,8 @@ def get_standings():
         standings = YahooStanding.objects.filter(current_standings=True)
         for standing in standings:
             # i think the -1 will get the most recent
-            # if there is any team that is missed, then this will be screwed up so run again
+            # if there is any team that is missed,
+            # then this will be screwed up so run again
             out_teams.append([standing.team.team_id,
                               standing.team.team_name,
                               standing.rank,
@@ -58,7 +59,10 @@ def get_standings_json(guid=None):
 
 def check_if_update_required():
     try:
-        standings = YahooStanding.objects.filter(current_standings=True).first() #type: YahooStanding
+        standings = YahooStanding.objects.filter(
+            current_standings=True
+        ).first()
+
         now = timezone.now()
         diff = (now - standings.date_created)
 

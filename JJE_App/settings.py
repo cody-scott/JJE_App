@@ -2,6 +2,7 @@ import os
 import sys
 import dj_database_url
 
+
 def _check_os_condition(condition, target):
     if os.environ.get(condition, "") == target:
         return True
@@ -121,16 +122,20 @@ AUTHENTICATION_BACKENDS = (
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.'
+                'NumericPasswordValidator',
     },
 ]
 
@@ -161,7 +166,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 
 try:
-    from JJE_App.private_config import email_user, email_password, client_id, client_secret
+    from JJE_App.private_config import \
+        email_user, email_password, client_id, client_secret
+
     EMAIL_HOST_USER = email_user
     EMAIL_HOST_PASSWORD = email_password
     ADMINS = (('Admin', email_user),)

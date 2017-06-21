@@ -8,7 +8,8 @@ from django.utils.decorators import method_decorator
 import django.dispatch
 
 # Create your views here.
-from JJE_oauth.utils.oauth_flow import start_oauth, callback_oauth, refresh_token
+from JJE_oauth.utils.oauth_flow import \
+    start_oauth, callback_oauth, refresh_token
 
 
 @method_decorator(login_required, name='dispatch')

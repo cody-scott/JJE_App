@@ -31,12 +31,14 @@ class StandingsTest(TestCase):
     def create_mock_item(self):
         return mock_oauth()
 
-    @mock.patch("JJE_Standings.utils.yahoo_data.create_session", create_mock_item)
+    @mock.patch("JJE_Standings.utils.yahoo_data.create_session",
+                create_mock_item)
     def test_team_creation(self):
         yahoo_data.build_team_data(self.client.request)
         self.assertEqual(True, True)
 
-    @mock.patch("JJE_Standings.utils.yahoo_data.create_session", create_mock_item)
+    @mock.patch("JJE_Standings.utils.yahoo_data.create_session",
+                create_mock_item)
     def test_standings_creation(self):
         yahoo_data._standings_collection(mock_oauth())
         self.assertEqual(True, True)
