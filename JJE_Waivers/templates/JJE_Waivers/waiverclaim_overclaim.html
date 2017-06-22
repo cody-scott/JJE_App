@@ -79,6 +79,15 @@
             </div>
 
             <hr>
+            <div class="row">
+                <div class="twelve columns">
+                    {{ form.claim_message.errors }}
+                    <label for="{{ form.claim_message.id_for_label }}">Claim Message:</label>
+                    {{ form.claim_message|attr:"class:claim_message_tbx"}}
+                </div>
+            </div>
+
+            <hr>
 
             <div class="twelve columns padded">
                 <input class="submitclaim_btn" type="submit" value="Submit Claim" />

@@ -3,7 +3,7 @@
 {% block title_block %}JJE League - New Claim{% endblock %}
 {% block content %}
     <div class="container">
-        <form action="" method="post">{% csrf_token %}
+        <form action="" method="post" class="claim_form">{% csrf_token %}
             <div class="row">
                 <div class="twelve columns padded">
                     {{ form.team.errors }}
@@ -122,7 +122,7 @@
             </div>
 
             <div class="row">
-                <div class="two columns">
+                <div class="twe columns">
                 </div>
                 <div class="two columns pdroped colwidth">
                     {{ form.drop_IR.errors }}
@@ -131,8 +131,18 @@
                 </div>
             </div>
             <hr>
-            <div class="twelve columns padded">
-                <input class="submitclaim_btn" type="submit" value="Submit Claim" />
+            <div class="row">
+                <div class="twelve columns">
+                    {{ form.claim_message.errors }}
+                    <label for="{{ form.claim_message.id_for_label }}">Claim Message:</label>
+                    {{ form.claim_message|attr:"class:claim_message_tbx"}}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="twelve columns padded">
+                    <input class="submitclaim_btn" type="submit" value="Submit Claim" />
+                </div>
             </div>
             <br>
         </form>

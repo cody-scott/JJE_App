@@ -54,6 +54,7 @@ class WaiverClaimCreate(CreateView):
         "add_D", "add_G", "add_Util", "add_IR",
         "drop_player", "drop_LW", "drop_C", "drop_RW",
         "drop_D", "drop_G", "drop_Util", "drop_IR",
+        "claim_message",
     ]
 
     def get_form(self, form_class=None):
@@ -80,6 +81,7 @@ class OverclaimCreate(CreateView):
         "team",
         "drop_player", "drop_LW", "drop_C", "drop_RW",
         "drop_D", "drop_G", "drop_Util", "drop_IR",
+        "claim_message",
     ]
 
     def get(self, request, *args, **kwargs):

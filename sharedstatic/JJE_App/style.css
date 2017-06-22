@@ -2,16 +2,9 @@
     padding-bottom: 5px;
 }
 
-.btn_login {
-    background-color: #b2dba1 !important;
-}
-
-.btn_register {
-    background-color: #f7e1b5 !important;
-}
-
 .navbar {
-    display: none; }
+    display: none;
+}
 
 .nowrap {
     white-space: nowrap;
@@ -36,13 +29,13 @@
 }
 
 .chart rect {
-  fill: steelblue;
+    fill: steelblue;
 }
 
 .chart text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: end;
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: end;
 }
 /**/
 
@@ -51,57 +44,52 @@
 
 
 @media (min-width: 100px) {
-    /* Navbar */
-    .navbar + .docs-section {
-        border-top-width: 0;
-    }
 
-    .navbar,
-    .navbar-spacer {
-        display: block;
-        width: 100%;
-        height: 6.5rem;
-        background: #fff;
-        z-index: 99;
-        border-top: 1px solid #eee;
-        /*border-bottom: 1px solid #eee;*/
-    }
-
-    .navbar-spacer {
-        display: none;
-    }
-
-    .navbar > .container {
-        width: 100%;
-        text-align: center;
-    }
-
-    .navbar-list {
-        list-style: none;
+    .claim_form {
         margin-bottom: 0;
     }
 
-    .navbar-item {
-        position: relative;
-        float: left;
-        margin-bottom: 0;
+    ul.nav {
+        width:100%;
+        margin:0 auto;
+        padding:0;
+        list-style:none;
+        text-align:center;
+        font-family: sans-serif;
     }
-
-    .navbar-link {
-        text-transform: uppercase;
-        font-size: 8px;
-        font-weight: 600;
-        letter-spacing: .2rem;
-        margin-right: 25px;
-        text-decoration: none;
+    .nav li {
+        display:inline-block;
+        width:25%;
+        margin:0;
+        padding:0;
+    }
+    .nav a {
         line-height: 6.5rem;
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: .2rem;
         color: #222;
-
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align:center;
+        margin:0;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        display:block;
     }
 
-    .navbar-link.active {
-        color: #33C3F0;
+    ul.nav li:first-child a{
+        border:none;
     }
+
+    ul.nav li:last-child a {
+        border:none;
+    }​
+
+
+     .nav a.hover {
+         color: #33C3F0;
+     }
 
 
     .new-claim-row {
@@ -134,14 +122,14 @@
     }
 
     input[class=claim_tbx], select[class=claim_cbx] {
-        width: 50%;
+        width: 85%;
         min-width: 260px;
     }
 
-    /*input[class=claim_tbx] {*/
-    /*width: 50%;*/
-    /*min-width: 260px;*/
-    /*}*/
+    textarea[class=claim_message_tbx] {
+        width: 85%;
+        min-width: 260px;
+    }
 
     .hr_top {
         margin-top: 5px;
@@ -162,8 +150,8 @@
     }
 
     .maxvh {
-    height: 70vh;
-}
+        height: 70vh;
+    }
 
 }
 
@@ -185,6 +173,16 @@
 
     .colwidth {
         width: inherit;
+    }
+
+    input[class=claim_tbx], select[class=claim_cbx] {
+        width: 60%;
+        min-width: 260px;
+    }
+
+    textarea[class=claim_message_tbx] {
+        width: 60%;
+        min-width: 260px;
     }
 
 }

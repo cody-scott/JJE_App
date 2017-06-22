@@ -50,8 +50,7 @@ class WaiverClaim(models.Model):
     overclaimed = models.BooleanField(default=False)
     cancelled = models.BooleanField(default=False)
 
-    # this should be a relationship to the team table
-    # team_id = db.Column(db.Integer, db.ForeignKey('yahoo_teams.team_id'))
+    claim_message = models.TextField(blank=True)
 
     def get_absolute_url(self):
         return reverse('index')
