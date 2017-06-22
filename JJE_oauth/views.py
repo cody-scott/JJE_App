@@ -12,6 +12,7 @@ from JJE_oauth.utils.oauth_flow import \
     start_oauth, callback_oauth, refresh_token
 
 oauth_complete_signal = django.dispatch.Signal(providing_args=["request"])
+oauth_refresh_signal = django.dispatch.Signal(providing_args=["request"])
 
 
 @method_decorator(login_required, name='dispatch')
@@ -32,4 +33,5 @@ class OAuthCallback(View):
 class OAuthRefresh(View):
     def get(self, request):
         refresh_token(request)
+        oauth_refresh_signal.send(sender=self.__class__, request=request)
         return redirect(Site.objects.first().domain)

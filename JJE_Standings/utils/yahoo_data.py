@@ -1,5 +1,3 @@
-from requests_oauthlib import OAuth1Session
-
 from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import YahooTeam
 

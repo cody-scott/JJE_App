@@ -1,8 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-
-import os
-
 from django.contrib.auth import get_user_model
 
 from JJE_Waivers.models import YahooTeam, WaiverClaim

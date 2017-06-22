@@ -16,7 +16,6 @@ class UpdateStandings(View):
         # if check_if_update_required():
         update_standings(request)
         email_standings()
-
         return HttpResponse(
             "<pre>{}</pre>".format(get_standings_json()))
 
