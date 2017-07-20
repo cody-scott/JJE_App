@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
     'debug_toolbar',
 
+    'rest_framework',
+
     'JJE_Waivers.apps.JJEWaiversConfig',
     'JJE_Standings.apps.JJEStandingsConfig',
     'JJE_oauth.apps.JJEOauthConfig',
@@ -178,6 +180,7 @@ except:
     EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")
     ADMINS = (('Admin', os.environ.get("email_user")),)
+    # These are for the api
     client_id = os.environ.get("client_id")
     client_secret = os.environ.get("client_sec")
 
@@ -201,3 +204,13 @@ if _check_os_condition("AD_Email", "True"):
 send_emails = True
 if _check_os_condition("Send_Email", "False"):
     send_emails = False
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',
+                                ),
+    'PAGE_SIZE': 10
+}

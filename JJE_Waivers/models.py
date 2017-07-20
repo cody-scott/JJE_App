@@ -113,3 +113,6 @@ class WaiverClaim(models.Model):
 
     def __str__(self):
         return self.add_player
+
+    class Meta:
+        ordering = ['-claim_start']
