@@ -67,3 +67,7 @@ class YahooStanding(models.Model):
 
     def __str__(self):
         return "<id: {}>".format(self.team)
+
+
+    class Meta:
+        ordering = ['current_standings', 'rank']
