@@ -17,6 +17,16 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from JJE_App.settings import DEBUG
 
+from rest_framework.routers import DefaultRouter
+from JJE_Waivers.api import views as api_views_1
+from JJE_Standings.api import views as api_views_2
+
+router = DefaultRouter()
+router.register(r'waiver_claims', api_views_1.WaiverClaimViewSet, 'all_waiver_claims')
+router.register(r'active_claims', api_views_1.ActiveWaiverclaimViewSet, 'active_claims')
+router.register(r'all_standings', api_views_2.StandingsViewSet, 'all_standings')
+router.register(r'standings', api_views_2.ActiveStandingsViewSet, 'standings')
+
 admin.site.site_title = "JJE Admin"
 admin.site.site_header = "JJE Admin"
 urlpatterns = [
@@ -25,9 +35,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls, name="admin"),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^oauth/', include('JJE_oauth.urls'), name="JJE_oauth"),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/', include(router.urls)),
 ]
-
 
 
 if DEBUG:
