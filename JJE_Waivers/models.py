@@ -116,3 +116,4 @@ class WaiverClaim(models.Model):
 
     class Meta:
         ordering = ['-claim_start']
+
