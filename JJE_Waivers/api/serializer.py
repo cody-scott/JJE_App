@@ -5,8 +5,19 @@ from JJE_Waivers import models
 from django.contrib.auth.models import User
 
 
+class YahooTeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.YahooTeam
+        fields = (
+            'id',
+            'team_name',
+            'logo_url',
+        )
+
+
 class WaiverClaimSerializer(serializers.ModelSerializer):
     active_claim_field = serializers.BooleanField(source='active_claim')
+    team = YahooTeamSerializer()
 
     class Meta:
         model = models.WaiverClaim
@@ -22,3 +33,5 @@ class WaiverClaimSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'active_claim_field',
         )
+
+
