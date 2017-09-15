@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import math
 
+from JJE_App.settings import LEAGUE_ID
 
 def create_session(request):
     token = UserToken.objects.get(standings_token=True)
@@ -26,7 +27,7 @@ def create_session(request):
 def build_team_data(request):
     yahoo_obj = create_session(request)
     url = "https://fantasysports.yahooapis.com/" \
-          "fantasy/v2/league/nhl.l.31015/standings"
+          "fantasy/v2/league/{}/standings".format(LEAGUE_ID)
 
     result = yahoo_obj.get(url)
     results, status_code = result.text, result.status_code
@@ -54,7 +55,8 @@ def set_standings_not_current():
 
 def _standings_collection(yahoo_obj):
     url = "https://fantasysports.yahooapis.com/" \
-          "fantasy/v2/league/nhl.l.31015/standings"
+          "fantasy/v2/league/{}/standings".format(LEAGUE_ID)
+
     result = yahoo_obj.request("get", url)
     results, status_code = result.text, result.status_code
     if (result.text is None) or (result.status_code != 200):
@@ -89,6 +91,32 @@ def league_standings(xml_data=None):
                 'new_team': new_team}
         )
     return team_list
+
+
+def _process_team_to_dct(teams):
+    guid_dct = {}
+    for team in teams:
+
+        team_id = team.find('team_id').text
+        team_name = team.find('name').text
+        logo_url = team.find('team_logo').find('url').text
+        manager = team.find('manager')
+        manager_name = manager.find('nickname').text
+        manager_email = manager.find('email').text
+        manager_guid = manager.find('guid').text
+
+        x = guid_dct.get(manager_guid, [])
+        x.append({
+            'team_id': team_id,
+            'team_name': team_name,
+            'logo_url': logo_url,
+            'manager': manager,
+            'manager_name': manager_name,
+            'manager_email': manager_email
+        })
+        guid_dct[manager_guid] = x
+    return guid_dct
+
 
 
 def _process_team(team_row_xml):
