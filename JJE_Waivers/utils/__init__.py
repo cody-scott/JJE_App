@@ -14,8 +14,9 @@ def get_user_teams_list(user):
 
 def get_current_ranks(user):
     """Gets all the teams that are not eligible for overclaim"""
+    # If no current standings make overclaims off
     if len(YahooStanding.objects.all()) == 0:
-        return []
+        return [team.id for team in YahooTeam.objects.all()]
 
     ranks = []
     for item in user.yahooteam_set.all():
