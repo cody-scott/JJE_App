@@ -40,9 +40,15 @@ function timer_function() {
 
                 var outvm = "";
                 if (hr > 0) {
-                    if (hr > 10) { outvm += hr }
-                    else if ((hr < 10) && (hr > 0)) {outvm += ("0" + hr)}
-                    outvm += ":"
+                    if (hr > 10) {
+                        outvm += hr;
+                        outvm += ":"
+                    }
+                    else if ((hr < 10) && (hr > 0)) {
+                        outvm += ("0" + hr);
+                        outvm += ":"
+                    }
+
                 }
 
                 if (mn < 10) {outvm += "0"}

@@ -23,8 +23,8 @@ class WaiverClaimSerializer(serializers.ModelSerializer):
         model = models.WaiverClaim
         fields = (
             'id', 'team', 'claim_start',
-            'add_player', 'add_LW', 'add_C', 'add_RW', 'add_D', 'add_G', 'add_Util', 'add_IR'
-            'drop_player', 'drop_LW', 'drop_C', 'drop_RW', 'drop_D', 'drop_G', 'drop_Util', 'drop_IR'
+            'add_player', 'add_LW', 'add_C', 'add_RW', 'add_D', 'add_G', 'add_Util', 'add_IR',
+            'drop_player', 'drop_LW', 'drop_C', 'drop_RW', 'drop_D', 'drop_G', 'drop_Util', 'drop_IR',
             'over_claim_id', 'overclaimed', 'cancelled', 'claim_message',
             'get_position_add', 'get_position_drop',
             'claim_end', 'claim_end_normal',
