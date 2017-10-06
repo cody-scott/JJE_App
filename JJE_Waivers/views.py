@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView
 from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import WaiverClaim, YahooTeam
 from JJE_Waivers.utils import email_functions, get_user_teams_list, \
-    get_current_ranks, get_claim_rank, show_oauth_link
+    get_current_ranks, get_claim_rank, show_oauth_link, check_if_standings
 
 
 class IndexView(ListView):
@@ -86,6 +86,9 @@ class OverclaimCreate(CreateView):
 
     def get(self, request, *args, **kwargs):
         try:
+            if not check_if_standings():
+                raise AssertionError
+
             wc_id = self.kwargs.get("pk")
             player = WaiverClaim.objects.get(id=wc_id)
             assert player.active_claim()

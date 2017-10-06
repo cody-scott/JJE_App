@@ -1,7 +1,7 @@
 from JJE_Standings.models import YahooStanding
 
 
-def create_standing(team, rank):
+def create_standing(team, rank=1):
     standing = YahooStanding()
     standing.team = team
     standing.rank = rank

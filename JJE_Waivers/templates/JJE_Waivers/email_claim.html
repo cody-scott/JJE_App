@@ -6,8 +6,11 @@
 <div>
     <h1>Claimee: {{ claim.team.team_name }}</h1>
     <h2>Add: {{ claim.add_player }}</h2>
-    <h2>Drop: {{ claim.drop_player }}</h2>
-
+    {% if IR_PLAYER == True %}
+        <h2>Move to IR: {{ claim.drop_player }}</h2>
+    {% else %}
+        <h2>Drop: {{ claim.drop_player }}</h2>
+    {% endif %}
     {% if claim.claim_message != '' %}
         <br>
         <h2>

@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 
 from JJE_Waivers.models import YahooTeam, WaiverClaim
 from JJE_Waivers import utils
+from JJE_Standings.models import YahooStanding
 from JJE_oauth.tests.tests import create_user_token
 
 
@@ -30,6 +31,9 @@ def create_test_team(team_name, user=None):
         new_team.user = user
     new_team.save()
     return new_team
+
+
+
 
 
 class YahooTeamTest(TestCase):

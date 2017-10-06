@@ -37,10 +37,14 @@ def send_waiver_email(waiver_object, message_type, request):
 
 
 def format_waiver_claim(waiver_object, message_type, request):
-    waiver_object = waiver_object
+    waiver_object = waiver_object #type: WaiverClaim
+
+    move_to_ir = waiver_object.drop_IR
+
     body = render_to_string("JJE_Waivers/email_claim.html", {
         "claim": waiver_object,
         "site": get_current_site(request),
+        "IR_PLAYER": move_to_ir
     })
 
     body_non_html = "{}\n{}\n{}\n{}\n{}".format(

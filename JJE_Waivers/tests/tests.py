@@ -9,6 +9,8 @@ from JJE_Standings.tests.shared_tests import create_standing
 from JJE_Waivers.models import WaiverClaim, YahooTeam
 from JJE_Waivers.tests.sharedtests import \
     create_test_user, create_test_user_login, create_test_team, create_claim
+
+
 from JJE_oauth.tests.tests import create_user_token
 
 
@@ -182,7 +184,7 @@ class IndexViewLoggedInTest(TestCase):
         claim = create_claim("Test", "Test", t1)
 
         request = self.client.get('/')
-        self.assertInHTML(
+        self.assertNotIn(
             '<input class="overclaim_btn" type="submit" value="Overclaim">',
             request.rendered_content
         )
@@ -204,15 +206,21 @@ class OverclaimViewTest(TestCase):
     def test_valid_overclaim(self):
         user, logged_in = create_test_user_login(self.client)
         team = create_test_team("Test Team", user)
+        create_standing(team)
+
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
         response = self.client.get('/waiver_claim/overclaim={}'.format(1))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_overclaim_content(self):
+
+
         user = create_test_user()
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
         team = create_test_team("Test Team", user)
+        create_standing(team)
+
         team2 = create_test_team("Test Team 2", user2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
         response = self.client.get('/waiver_claim/overclaim={}'.format(1))
@@ -223,6 +231,8 @@ class OverclaimViewTest(TestCase):
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
         team = create_test_team("Test Team", user)
+        create_standing(team)
+
         team2 = create_test_team("Test Team 2", user2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team2)
         response = self.client.get('/waiver_claim/overclaim={}'.format(1))
@@ -253,6 +263,7 @@ class OverclaimViewTest(TestCase):
         user, logged_in = create_test_user_login(
             self.client, "t1@test.com", "pass")
         team = create_test_team("t1", user)
+        create_standing(team)
 
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")

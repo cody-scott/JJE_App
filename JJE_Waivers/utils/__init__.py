@@ -93,3 +93,15 @@ def assign_user_teams_from_token(request, **kwargs):
         team.save()
 
     return
+
+
+def check_if_standings():
+    """
+    Returns true if there is standings that exist
+    :return:
+    :rtype:
+    """
+    if len(YahooStanding.objects.all()) == 0:
+        return False
+    else:
+        return True
