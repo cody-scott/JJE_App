@@ -42,7 +42,11 @@
             </div>
             <div class="row">
                 <div class="twelve columns padded nowrap">
-                    <h5>Player Dropped: {{ claim.drop_player }}</h5>
+                    {% if claim.drop_IR == True %}
+                        <h5>Moved to IR: {{ claim.drop_player }}</h5>
+                    {% else %}
+                        <h5>Player Dropped: {{ claim.drop_player }}</h5>
+                    {% endif %}
                     <h6>Position: {{ claim.get_position_drop }}</h6>
                 </div>
             </div>
