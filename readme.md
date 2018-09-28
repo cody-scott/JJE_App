@@ -98,17 +98,17 @@ finally update the proxy redirect
         }
 
         server {
-            listen 443;
+            listen 443 ssl;
             server_name www.myapp.new *.myapp.new;
 
             ssl_certificate "/usr/local/etc/nginx/ssl/myapp.crt";
             ssl_certificate_key "/usr/local/etc/nginx/ssl/myapp.key";
 
-            ssl on;
-            ssl_session_cache builtin:1000 shared:SLL:10m;
-            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-            ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
-            ssl_prefer_server_ciphers on;
+            #ssl on;
+            #ssl_session_cache builtin:1000 shared:SLL:10m;
+            #ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            #ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+            #ssl_prefer_server_ciphers on;
 
             access_log	"/Users/codyscott/tmp_logs/myapp.log";
 
@@ -137,3 +137,52 @@ then hit your link via the weblink. My example again is ***www.myapp.new***
 
 
 Everything should redirect through https now.
+
+# FOR DEVELOPMENT
+
+1 Change the sites in the admin
+2 swap local development token in
+3 setup hosts file correctly
+
+    127.0.0.1   www.myapp.new
+   
+4 
+
+
+# New Season
+
+1 Swap sites to local dev. ie: https://www.myapp.new
+2 Swap token info to development token
+
+### Delete existing data from these tables
+
+1. yahoostanding
+2. waiverclaim
+3. yahooteam
+4. oauth_usertoken
+
+
+
+### TEST
+1. Add your token (do flow)
+1. Assign your token to "standings" token
+1. Load teams from yahoo https://www.myapp.new/standins/maketeams
+1. manually assign your team to the correct one
+1. run a waiver claim
+
+##### fix stuff
+
+### Working?
+
+Delete data from following again
+
+1 oauth_usertoken
+2 yahooteam
+
+push to heroku db
+
+    heroku pg:push {localdbname} DATABASE_URL -a {APPNAME}
+    
+### Recommended
+
+Create a test DB on the server and test against that to be safe

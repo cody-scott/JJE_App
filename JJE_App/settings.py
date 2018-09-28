@@ -215,4 +215,4 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50
 }
 
-LEAGUE_ID = 'nhl.l.31015'
+LEAGUE_ID = 'nhl.l.39816'

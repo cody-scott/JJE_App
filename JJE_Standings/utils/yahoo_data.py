@@ -156,7 +156,7 @@ def _process_standings(team_class, team_row_xml, team_id):
     standings_class = _process_team_points(standings_class, team_row_xml)
 
     starting_week = datetime.strptime(
-        "2017-10-06 00:00:00.000000", "%Y-%m-%d %H:%M:%S.%f"
+        "2018-10-03 00:00:00.000000", "%Y-%m-%d %H:%M:%S.%f"
     )
     standings_class.standings_week = math.floor(
         ((datetime.utcnow() - starting_week).days / 7)
