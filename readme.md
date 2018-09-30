@@ -63,7 +63,7 @@ Setup nginx and environment variables
 ### Test
 1. Add your token (do flow)
 1. Assign your token to "standings" token
-1. Load teams from yahoo https://www.myapp.new/standins/maketeams
+1. Load teams from yahoo https://www.myapp.new/standings/maketeams
 1. manually assign your team to the correct one
 1. run a waiver claim
 
