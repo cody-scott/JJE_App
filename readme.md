@@ -22,111 +22,15 @@ Made for python 3.6
 
     This should be your email for the username + email
 
-
-1. Set your environment variables
-
-    email_user
-
-        This is the email account to send info from
-
-    email_password
-
-        This is the password for the default emailer
-
-    SECRET_KEY
-
-        secret key for your application
-
-    DATABASE_URL
-
-        Database_url string for the application
-
+----
 
 ### Making Oauth requests to yahoo
 
-If you would like to make any requests that hit the yahoo api then you will need to do additional work
-
-Examples of items that hit the api currently are the linking of the user to their teams in yahoo
-and updating the current weekly standings.
-
-Since these require requests be sent over HTTPS you will need to setup a reverse proxy using NGINX.
-
-Additionally you will need to configure this proxy to serve a certificate you create to ensure its over https.
-
-#### settings.py file
-
-move these items outside the if block
-
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
-#### Host file
-
-Update your host file to include a url. ***www.myapp.new*** is what i used below.
+Need to have ssl server locally. Setup with nginx
 
 #### NGINX Config example
 
-Here is an example configuration. You will need to update paths below with your data.
-
-Specifically update the ssl cert/ssl key paths and the log path
-
-Update anything that says myapp.new to your path
-
-finally update the proxy redirect
-
-    # --------------------
-    worker_processes  1;
-
-    events {
-        worker_connections  1024;
-    }
-
-
-    http {
-        include       mime.types;
-        default_type  application/octet-stream;
-
-        sendfile        on;
-
-        keepalive_timeout  65;
-
-        server {
-            listen 80;
-            return 301 https://$host$request_uri;
-        }
-
-        server {
-            listen 443 ssl;
-            server_name www.myapp.new *.myapp.new;
-
-            ssl_certificate "/usr/local/etc/nginx/ssl/myapp.crt";
-            ssl_certificate_key "/usr/local/etc/nginx/ssl/myapp.key";
-
-            #ssl on;
-            #ssl_session_cache builtin:1000 shared:SLL:10m;
-            #ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-            #ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
-            #ssl_prefer_server_ciphers on;
-
-            access_log	"/Users/codyscott/tmp_logs/myapp.log";
-
-            location / {
-                    proxy_set_header        Host $host;
-                    proxy_set_header        X-Real-IP $remote_addr;
-                    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header        X-Forwarded-Proto $scheme;
-
-                    # Fix the “It appears that your reverse proxy set up is broken" error.
-                    proxy_pass          http://localhost:8000;
-                    proxy_read_timeout  90;
-
-                    proxy_redirect      http://localhost:8000 https://www.myapp.new;
-
-            }
-        }
-    }
+see nginx_setup folder for nginx, host file, and ssl setup.
 
 
 #### Run the server
@@ -135,24 +39,17 @@ finally update the proxy redirect
 
 then hit your link via the weblink. My example again is ***www.myapp.new***
 
+----
 
-Everything should redirect through https now.
 
 # FOR DEVELOPMENT
 
-1 Change the sites in the admin
-2 swap local development token in
-3 setup hosts file correctly
-
-    127.0.0.1   www.myapp.new
-   
-4 
-
+Setup nginx and environment variables
 
 # New Season
 
-1 Swap sites to local dev. ie: https://www.myapp.new
-2 Swap token info to development token
+1. Swap sites to local dev. ie: https://www.myapp.new
+2. Swap token info to development token
 
 ### Delete existing data from these tables
 
@@ -163,26 +60,59 @@ Everything should redirect through https now.
 
 
 
-### TEST
+### Test
 1. Add your token (do flow)
 1. Assign your token to "standings" token
 1. Load teams from yahoo https://www.myapp.new/standins/maketeams
 1. manually assign your team to the correct one
 1. run a waiver claim
 
-##### fix stuff
+#### Chrome testing
+
+for chrome, need security toned down.
+
+        /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --ignore-certificate-errors &> /dev/null &
+
+
+#### Fix Stuff
+
+Stuff broken? Fix it up!
+
+-----
+
 
 ### Working?
 
 Delete data from following again
 
-1 oauth_usertoken
-2 yahooteam
+1. oauth_usertoken
+2. yahooteam
+3. yahoostanding
 
-push to heroku db
+        DELETE from "JJE_Waivers_waiverclaim";
+        DELETE from "JJE_Waivers_yahooteam";
+        DELETE from "JJE_oauth_usertoken";
+        DELETE from "JJE_Standings_yahoostanding";
+
+----
+
+### Push to Heroku
 
     heroku pg:push {localdbname} DATABASE_URL -a {APPNAME}
     
 ### Recommended
 
 Create a test DB on the server and test against that to be safe
+
+
+### ENV Variables
+
+    DEBUG = True -> flag for debugging. usually true for local development
+    EMAIL_HOST_USER -> email of league email
+    EMAIL_HOST_PASSWORD -> password of league email. Should be single app generated, not master password
+    client_id -> client id for site from yahoo. Should be local development for www.myapp.new
+    client_secret -> client secret for site from yahoo. Should be local development for www.myapp.new
+    LEAGUE_ID = 'nhl.l.xxxxx' -> nhl league id. replace xxxxx with id
+    SU_Email = True -> flag to email superuser only
+    AD_Email = False -> flag to email admin only
+    Send_Email = True -> flag to send email
