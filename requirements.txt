@@ -1,6 +1,6 @@
 appdirs==1.4.3
 beautifulsoup4==4.6.0
-certifi>=2018.8.24
+certifi==2018.8.24
 chardet==3.0.4
 coreapi==2.3.1
 coreschema==0.0.4
@@ -22,7 +22,7 @@ Markdown==3.0.1
 MarkupSafe==1.0
 oauthlib==2.0.2
 packaging==16.8
-psycopg2==2.7.1
+psycopg2==2.7.5
 pyparsing==2.2.0
 python3-openid==3.1.0
 pytz==2017.2
