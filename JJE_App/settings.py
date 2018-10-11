@@ -17,7 +17,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "EMPTYSECRET")
 
 DEBUG = False
 ACCOUNT_EMAIL_VERIFICATION = "optional"
-ALLOWED_HOSTS = ['jje-league.herokuapp.com']
+ALLOWED_HOSTS = ['jje-league.herokuapp.com', 'jje-test-site.herokuapp.com']
 if os.environ.get("DEBUG", "") == "True":
     DEBUG = True
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
