@@ -169,13 +169,17 @@ EMAIL_HOST = 'smtp.gmail.com'
 
 try:
     from JJE_App.private_config import \
-        email_user, email_password, client_id, client_secret
+        email_user, email_password, client_id, client_secret, database_url
 
     EMAIL_HOST_USER = email_user
     EMAIL_HOST_PASSWORD = email_password
     ADMINS = (('Admin', email_user),)
     client_id = client_id
     client_secret = client_secret
+
+    db_from_env = dj_database_url.parse(database_url, conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
 except:
     EMAIL_HOST_USER = os.environ.get("email_user")
     EMAIL_HOST_PASSWORD = os.environ.get("email_password")

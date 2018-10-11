@@ -14,14 +14,14 @@ class YahooTeam(models.Model):
 
     manager_guid = models.CharField(max_length=200, blank=True)
 
-    user = models.ForeignKey(User, default=None, blank=True, null=True)
+    user = models.ForeignKey(User, default=None, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.team_name
 
 
 class WaiverClaim(models.Model):
-    team = models.ForeignKey(YahooTeam)
+    team = models.ForeignKey(YahooTeam, on_delete=models.SET_NULL, null=True)
 
     claim_start = models.DateTimeField(default=timezone.now)
 

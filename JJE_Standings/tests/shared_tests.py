@@ -2,6 +2,12 @@ from JJE_Standings.models import YahooStanding
 
 
 def create_standing(team, rank=1):
+    """
+    adds standing record to the table
+    :param team: team to have added
+    :param rank: rank of the team
+    :return:
+    """
     standing = YahooStanding()
     standing.team = team
     standing.rank = rank

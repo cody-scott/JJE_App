@@ -24,7 +24,7 @@ class YahooStanding(models.Model):
     """Weekly standings from Yahoo"""
     date_created = models.DateTimeField(auto_now=True)
 
-    team = models.ForeignKey(YahooTeam)
+    team = models.ForeignKey(YahooTeam, on_delete=models.SET_NULL, null=True)
 
     rank = models.IntegerField()
     stat_point_total = models.FloatField()

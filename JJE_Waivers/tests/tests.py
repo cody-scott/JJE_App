@@ -191,6 +191,18 @@ class IndexViewLoggedInTest(TestCase):
 
 
 class OverclaimViewTest(TestCase):
+    """
+    Tests
+    not logged in
+    overclaim of no id
+    overclaim of same team
+    overclaim of lower rank
+    overclaim of same rank
+    overclaim of higher rank
+    overclaim id check
+    """
+
+
     def test_null_overclaim(self):
         """
         Waiver claim matching query because requesting
@@ -200,8 +212,9 @@ class OverclaimViewTest(TestCase):
             self.client, "test1@test.com", "test")
         team = create_test_team("Test Team", user2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-        response = self.client.get('/waiver_claim/overclaim={}'.format(10))
+        response = self.client.get('/waiver_claim/overclaim={}'.format(9999))
         self.assertEqual(response.status_code, 302)
+
 
     def test_valid_overclaim(self):
         user, logged_in = create_test_user_login(self.client)
@@ -209,12 +222,10 @@ class OverclaimViewTest(TestCase):
         create_standing(team)
 
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-        response = self.client.get('/waiver_claim/overclaim={}'.format(1))
+        response = self.client.get(f'/waiver_claim/overclaim={claim_one.id}')
         self.assertEqual(response.status_code, 302)
 
     def test_overclaim_content(self):
-
-
         user = create_test_user()
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
@@ -223,10 +234,15 @@ class OverclaimViewTest(TestCase):
 
         team2 = create_test_team("Test Team 2", user2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
-        response = self.client.get('/waiver_claim/overclaim={}'.format(1))
+        response = self.client.get(f'/waiver_claim/overclaim={claim_one.id}')
         self.assertEqual(response.context['add_name'], claim_one.add_player)
 
     def test_overclaim_content_same_user(self):
+        """
+        Testing to see what happens if the same user tries and overclaims their own
+        Should redirect home?
+        :return:
+        """
         user = create_test_user()
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
@@ -235,50 +251,74 @@ class OverclaimViewTest(TestCase):
 
         team2 = create_test_team("Test Team 2", user2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team2)
-        response = self.client.get('/waiver_claim/overclaim={}'.format(1))
+
+        response = self.client.get(f'/waiver_claim/overclaim={claim_one.id}')
+
         self.assertEqual(response.context['add_name'], claim_one.add_player)
 
     def test_overclaim_submit(self):
+        """
+        Check if overclaim id is valid when overclaiming
+        Second claim id should be the id of the first claim
+        first claim should also be flagged as overclaimed
+        :return:
+        """
         user = create_test_user()
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
         team = create_test_team("Test Team", user)
         team_two = create_test_team("Team Two", user2)
+
+        create_standing(team, 1)
+        create_standing(team_two, 2)
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
 
-        response = self.client.post('/waiver_claim/overclaim={}'.format(1),
+        response = self.client.post(f'/waiver_claim/overclaim={claim_one.id}',
                                     {
                                         'team': team_two.id,
                                         'drop_player': "Drop Test"}
                                     )
-        claim_two = WaiverClaim.objects.get(id=2)
-        self.assertEqual(claim_two.team.id, team_two.id)
+        claim_two = team_two.waiverclaim_set.first()
 
-        claim_one = WaiverClaim.objects.get(id=1)
+        claim_one = WaiverClaim.objects.get(id=claim_one.id)
         self.assertIs(claim_one.overclaimed, True)
 
         self.assertEqual(claim_two.over_claim_id, claim_one.id)
 
     def test_logged_in_overclaim(self):
+        """
+        Team 1 is lower rank then team 2
+        test to see if team 1 tries to overclaim team 2
+        goal is to ensure its able to get to the overclaim page
+        Testing to see if valid overclaim page
+        :return:
+        """
         user, logged_in = create_test_user_login(
             self.client, "t1@test.com", "pass")
         team = create_test_team("t1", user)
-        create_standing(team)
+        create_standing(team, 2)
 
         user2, logged_in = create_test_user_login(
             self.client, "test1@test.com", "test")
         team2 = create_test_team("t2", user2)
+        create_standing(team2, 1)
 
         self.client.login(username="t1@test.com", password="pass")
 
         claim = create_claim("ap1", "dp1", team2)
 
-        response = self.client.get("/waiver_claim/overclaim=1")
+        response = self.client.get(f"/waiver_claim/overclaim={claim.id}")
         self.assertInHTML(
-            '<option value="1" selected>t1</option>',
+            f'<option value="{team.id}" selected>t1</option>',
             response.rendered_content)
 
     def test_claim_by_higher_rank_team(self):
+        """
+        Team 1 is the higher team
+        test to see if team 1 tries to overclaim team 2
+        should redirect to home
+        :return:
+        """
         user, logged_in = create_test_user_login(
             self.client, "t1@test.com", "pass"
         )
@@ -291,11 +331,17 @@ class OverclaimViewTest(TestCase):
 
         claim = create_claim("ap1", "dp1", team2)
 
-        response = self.client.get("/waiver_claim/overclaim=1")
+        response = self.client.get(f"/waiver_claim/overclaim={claim.id}")
 
         self.assertEqual(response.status_code, 302)
 
     def test_claim_by_equal_rank_team(self):
+        """
+        Team 1 and team 2 are equal ranked teams
+        test to see if team 1 tries to overclaim team 2
+        should redirect to home
+        :return:
+        """
         user, logged_in = create_test_user_login(
             self.client, "t1@test.com", "pass"
         )
@@ -308,7 +354,7 @@ class OverclaimViewTest(TestCase):
 
         claim = create_claim("ap1", "dp1", team2)
 
-        response = self.client.get("/waiver_claim/overclaim=1")
+        response = self.client.get(f"/waiver_claim/overclaim={claim.id}")
 
         self.assertEqual(response.status_code, 302)
 
@@ -325,7 +371,7 @@ class OverclaimViewTest(TestCase):
 
         claim = create_claim("ap1", "dp1", team2)
 
-        response = self.client.get("/waiver_claim/overclaim=1")
+        response = self.client.get(f"/waiver_claim/overclaim={claim.id}")
 
         self.assertEqual(response.status_code, 200)
 
@@ -351,7 +397,7 @@ class CancelClaimTest(TestCase):
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
         response = self.client.post(
             '/waiver_claim/cancel={}'.format(claim_one.id), follow=True)
-        claim_one_test = WaiverClaim.objects.get(id=1)
+        claim_one_test = WaiverClaim.objects.get(id=claim_one.id)
         self.assertIs(claim_one_test.cancelled, True)
 
     def test_cancel_wrong_user_post(self):

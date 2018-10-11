@@ -17,7 +17,7 @@ class UserToken(models.Model):
     session_handle = models.TextField()
     user_guid = models.TextField()
 
-    user = models.ForeignKey(User, default=None, blank=True, null=True)
+    user = models.ForeignKey(User, default=None, blank=True, null=True, on_delete=models.SET_NULL)
 
     standings_token = models.BooleanField(default=False)
 
