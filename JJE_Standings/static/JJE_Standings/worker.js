@@ -17,16 +17,25 @@ var colors = [
     '#FF66FF',
     '#FF66B2'
 ];
-var all_colors = colors;
+var team_colors = {};
 
 var standings_data;
 var all_standings_data;
 var week_labels;
+
 function get_standings() {
     $.getJSON(
         current_standings_url + "?format=json", function(data) {
             standings_data = process_data(data);
+
+            for (var i=0; i<data.length; i++) {
+                var tm = data[i]['team']['team_name'];
+                team_colors[tm] = colors[i];
+            }
+
             create_chart();
+
+            get_all_standings();
         }
     )
 }
@@ -38,6 +47,28 @@ function get_all_standings() {
             create_season_chart();
         }
     )
+}
+
+// var dt;
+// function set_team_colors() {
+//         $.getJSON(
+//         current_standings_url + "?format=json", function(data) {
+//             dt = data;
+//
+//             for (var i=0; i<data.length; i++) {
+//                 var tm = data[i]['team']['team_name'];
+//                 team_colors[tm] = colors[i];
+//             }
+//
+//             load_standings();
+//         }
+//     )
+// }
+
+
+function load_standings() {
+
+    get_all_standings();
 }
 
 
@@ -97,8 +128,8 @@ function process_all_standings(data) {
             label: key,
             data: out_dct[key],
             fill: false,
-            borderColor: colors[i],
-            backgroundColor: colors[i]
+            borderColor: team_colors[key],
+            backgroundColor: team_colors[key]
         };
         values.push(tmp);
     }
@@ -232,8 +263,8 @@ $(document).ready(function() {
         show_chart();
     }
     get_standings();
-    get_all_standings();
-    create_season_chart();
+
+    // create_season_chart();
 
     console.log(is_mobile);
 
