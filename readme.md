@@ -37,7 +37,7 @@ see nginx_setup folder for nginx, host file, and ssl setup.
 
     nginx start
 
-then hit your link via the weblink. My example again is ***www.myapp.new***
+then hit your link via the weblink. My example again is ***www.myapp.test***
 
 ----
 
@@ -48,7 +48,7 @@ Setup nginx and environment variables
 
 # New Season
 
-1. Swap sites to local dev. ie: https://www.myapp.new
+1. Swap sites to local dev. ie: https://www.myapp.test
 2. Swap token info to development token
 
 ### Delete existing data from these tables
@@ -63,7 +63,7 @@ Setup nginx and environment variables
 ### Test
 1. Add your token (do flow)
 1. Assign your token to "standings" token
-1. Load teams from yahoo https://www.myapp.new/standings/maketeams
+1. Load teams from yahoo https://www.myapp.test/standings/maketeams
 1. manually assign your team to the correct one
 1. run a waiver claim
 

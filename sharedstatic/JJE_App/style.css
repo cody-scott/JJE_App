@@ -24,19 +24,19 @@
 
 /*d3*/
 
-.chart {
-    height: 100vh;
-}
+/*.chart {*/
+    /*height: 100vh;*/
+/*}*/
 
-.chart rect {
-    fill: steelblue;
-}
+/*.chart rect {*/
+    /*fill: steelblue;*/
+/*}*/
 
-.chart text {
-    fill: white;
-    font: 10px sans-serif;
-    text-anchor: end;
-}
+/*.chart text {*/
+    /*fill: white;*/
+    /*font: 10px sans-serif;*/
+    /*text-anchor: end;*/
+/*}*/
 /**/
 
 
@@ -59,13 +59,13 @@
     }
     .nav li {
         display:inline-block;
-        width:25%;
+        /*width:25%;*/
         margin:0;
         padding:0;
     }
     .nav a {
         line-height: 6.5rem;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 300;
         letter-spacing: .2rem;
         color: #222;
@@ -155,16 +155,31 @@
 
 }
 
-@media (min-width: 500px) {
-    .navbar-link {
-        text-transform: uppercase;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: .2rem;
-        margin-right: 35px;
-        text-decoration: none;
+@media (min-width: 400px) {
+    /*.navbar-link {*/
+        /*text-transform: uppercase;*/
+        /*font-size: 12px;*/
+        /*font-weight: 600;*/
+        /*letter-spacing: .2rem;*/
+        /*margin-right: 35px;*/
+        /*text-decoration: none;*/
+        /*line-height: 6.5rem;*/
+        /*color: #222;*/
+    /*}*/
+
+    .nav a {
         line-height: 6.5rem;
+        font-size: 15px;
+        font-weight: 300;
+        letter-spacing: .2rem;
         color: #222;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align:center;
+        margin:0;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        display:block;
     }
 
 }

@@ -22,7 +22,7 @@ if os.environ.get("DEBUG", "") == "True":
     DEBUG = True
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     ACCOUNT_EMAIL_VERIFICATION = "none"
-    ALLOWED_HOSTS += ['127.0.0.1', '0.0.0.0', 'localhost', 'www.myapp.new']
+    ALLOWED_HOSTS += ['127.0.0.1', '0.0.0.0', 'localhost', 'www.myapp.new', "*"]
 
 INTERNAL_IPS = ["127.0.0.1"]
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
@@ -220,3 +220,7 @@ REST_FRAMEWORK = {
 }
 
 LEAGUE_ID = 'nhl.l.39816'
+
+DEBUG_TOOLBAR_CONFIG = {
+  'JQUERY_URL':'',
+}

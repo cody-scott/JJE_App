@@ -12,13 +12,24 @@
 
     <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
 
+{#    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">#}
     <link rel="stylesheet" href="{% static 'JJE_App/skeleton/skeleton.css' %}">
     <link rel="stylesheet" href="{% static 'JJE_App/skeleton/normalize.css' %}">
 
-    <script src="{% static 'JJE_App/javascript_libs/jquery-3.1.1.min.js' %}"></script>
+
+{#    <script src="{% static 'JJE_App/javascript_libs/jquery-3.1.1.min.js' %}"></script>#}
+    <script  src="https://code.jquery.com/jquery-2.2.4.min.js"
+             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+             crossorigin="anonymous">
+    </script>
+
+
     <script src="{% static 'JJE_App/javascript_libs/moment.min.js' %}"></script>
     <script src="{% static 'JJE_App/javascript_libs/countdown.min.js' %}"></script>
     <script src="{% static 'JJE_App/javascript_libs/moment-countdown.min.js' %}"></script>
+
+
+{#    <script src = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>#}
 
     {% block head %}
     {% endblock %}
@@ -33,8 +44,13 @@
         <div class="container">
             <ul class="nav">
                 <li class="nav"><a class="nav" href="/">Home</a></li>
+                <li class="nav"><a class="nav" >|</a></li>
+                <li class="nav"><a class="nav" href="/standings/">Standings</a></li>
+            <li class="nav"><a class="nav" >|</a></li>
                 {#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
                 {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
+{#            </ul>#}
+{#            <ul class="nav">#}
                 {% if user.is_authenticated %}
                     <li class="nav">
                         <a class="nav" href="/accounts/logout">Logout</a>
@@ -45,6 +61,7 @@
                     </li>
                 {% endif %}
             {% if user.is_staff %}
+                    <li class="nav"><a class="nav" >|</a></li>
                     <li class="nav">
                         <a class="nav" href="/admin">Admin</a>
                     </li>

@@ -1,0 +1,19 @@
+{% extends 'JJE_App/_layout.html' %}
+{% load static %}
+{% block title_block %}JJE League - Standings{% endblock %}
+{% block content %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <script src="{% static 'JJE_Standings/worker.js' %}"></script>
+    <div class="container standings-container">
+                <div class="row land_view">
+                    <div class="twelve columns padded nowrap">
+                        <canvas id="myChart" width="100%" height="50%"></canvas>
+                    </div>
+                </div>
+                <div class="row port_view">
+                    <div class="twelve columns padded">
+                        <h4>Please rotate to landscape</h4>
+                    </div>
+                </div>
+    </div>
+{% endblock %}

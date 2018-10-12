@@ -5,6 +5,8 @@ Create folders
 
 Run ssl_setup notes while in ssl folder
 
+        /usr/local/etc/nginx
+
 Copy myapp to servers folder
 
 add server to hosts file
@@ -13,4 +15,4 @@ add server to hosts file
         
 Add
 
-        127.0.0.1   www.myapp.new
+        127.0.0.1   www.myapp.test
