@@ -155,6 +155,12 @@ function create_season_chart() {
             legend: {
                 display: true
             },
+            animation: {
+                duration: 0, // general animation time
+            },
+            hover: {
+              animationDuration: 0, // duration of animations when hovering an item
+            },
         }
     },);
 }
@@ -217,9 +223,7 @@ var chart_loaded = false;
 var is_mobile = false;
 
 $(document).ready(function() {
-    get_standings();
-    get_all_standings();
-    create_season_chart();
+
     if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         is_mobile = true;
         resize_checker()
@@ -227,6 +231,9 @@ $(document).ready(function() {
     else {
         show_chart();
     }
+    get_standings();
+    get_all_standings();
+    create_season_chart();
 
     console.log(is_mobile);
 
