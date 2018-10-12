@@ -10,26 +10,19 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-{#    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">#}
-    <link rel="stylesheet" href="{% static 'JJE_App/skeleton/skeleton.css' %}">
-    <link rel="stylesheet" href="{% static 'JJE_App/skeleton/normalize.css' %}">
-
-
-{#    <script src="{% static 'JJE_App/javascript_libs/jquery-3.1.1.min.js' %}"></script>#}
     <script  src="https://code.jquery.com/jquery-2.2.4.min.js"
              integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
              crossorigin="anonymous">
     </script>
 
-
     <script src="{% static 'JJE_App/javascript_libs/moment.min.js' %}"></script>
     <script src="{% static 'JJE_App/javascript_libs/countdown.min.js' %}"></script>
     <script src="{% static 'JJE_App/javascript_libs/moment-countdown.min.js' %}"></script>
-
-
-{#    <script src = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>#}
 
     {% block head %}
     {% endblock %}
@@ -40,34 +33,34 @@
 <body>
 
 <div class="container">
-    <nav class="nav">
-        <div class="container">
+    <nav>
+{#        <div class="container">#}
             <ul class="nav">
-                <li class="nav"><a class="nav" href="/">Home</a></li>
-                <li class="nav"><a class="nav" >|</a></li>
-                <li class="nav"><a class="nav" href="/standings/">Standings</a></li>
-            <li class="nav"><a class="nav" >|</a></li>
+                <li class="nav nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav nav-item"><a class="nav-link" >|</a></li>
+                <li class="nav nav-item"><a class="nav-link" href="/standings/">Standings</a></li>
+            <li class="nav nav-item"><a class="nav-link" >|</a></li>
                 {#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
                 {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
 {#            </ul>#}
 {#            <ul class="nav">#}
                 {% if user.is_authenticated %}
-                    <li class="nav">
-                        <a class="nav" href="/accounts/logout">Logout</a>
+                    <li class="nav nav-item">
+                        <a class="nav-link" href="/accounts/logout">Logout</a>
                     </li>
                 {% else %}
-                    <li class="nav">
-                        <a class="nav" href="/accounts/login">Login</a>
+                    <li class="nav nav-item">
+                        <a class="nav-link" href="/accounts/login">Login</a>
                     </li>
                 {% endif %}
             {% if user.is_staff %}
-                    <li class="nav"><a class="nav" >|</a></li>
-                    <li class="nav">
-                        <a class="nav" href="/admin">Admin</a>
+                    <li class="nav nav-item"><a class="nav-link" >|</a></li>
+                    <li class="nav nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
                     </li>
             {% endif %}
             </ul>
-        </div>
+{#        </div>#}
     </nav>
 </div>
 <hr class="hr_top">
