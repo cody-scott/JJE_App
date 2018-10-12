@@ -132,7 +132,7 @@ class IndexViewLoggedInTest(TestCase):
         claim_one = create_claim("Test A P 1", "Test D P 1", team)
         request = self.client.get('/')
         self.assertInHTML(
-            '<input class="cancel_btn" type="submit" value="Cancel">',
+            '<input class="btn btn-danger cancel_btn" type="submit" value="Cancel">',
             request.rendered_content
         )
 
@@ -158,7 +158,7 @@ class IndexViewLoggedInTest(TestCase):
         user, logged_in = create_test_user_login(self.client)
         request = self.client.get('/')
         self.assertInHTML(
-            '<input type="submit" class="newclaim_btn" value="Link Yahoo">',
+            '<input type="submit" class="btn btn-success newclaim_btn" value="Link Yahoo">',
             request.rendered_content
         )
 
@@ -168,7 +168,7 @@ class IndexViewLoggedInTest(TestCase):
         token = create_user_token(user)
         request = self.client.get('/')
         self.assertInHTML(
-            '<input type="submit" class="newclaim_btn" value="New Claim">',
+            '<input type="submit" class="btn btn-success newclaim_btn" value="New Claim">',
             request.rendered_content
         )
 
@@ -185,7 +185,7 @@ class IndexViewLoggedInTest(TestCase):
 
         request = self.client.get('/')
         self.assertNotIn(
-            '<input class="overclaim_btn" type="submit" value="Overclaim">',
+            '<input class="btn btn-primary overclaim_btn" type="submit" value="Overclaim">',
             request.rendered_content
         )
 
