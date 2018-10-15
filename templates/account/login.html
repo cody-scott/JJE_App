@@ -57,15 +57,13 @@
                     {{ form.password|attr:"class:form-control"}}
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-check">
                 <div class="col-lg-6">
                     {{ form.remember.errors }}
-                    <label for="{{ form.remember.id_for_label }}">Remember me:</label>
-                    {{ form.remember|attr:"class:form-control"}}
+                    {{ form.remember|attr:"class:form-check-input"}}
+                    <label for="{{ form.remember.id_for_label }}" class="form-check-label">Remember me</label>
                 </div>
             </div>
-
-
 
             {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
