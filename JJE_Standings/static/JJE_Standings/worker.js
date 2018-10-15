@@ -85,7 +85,7 @@ function process_data(data) {
         datasets: [{
             data: dt,
             backgroundColor: colors
-        }],
+        }]
     };
     return out_data;
 }
@@ -94,9 +94,16 @@ function sortNumber(a,b) {
     return a - b;
 }
 
+function sortSeasonNumber(a, b) {
+    a = parseInt(a["x"].replace("Week ",""));
+    b = parseInt(b["x"].replace("Week ",""));
+    return a-b
+}
+
 function process_all_standings(data) {
     var out_dct = {};
     var week_list = [];
+
     for (var i=0; i < data.length; i++) {
         var c_row = data[i];
         var tm = c_row['team']['team_name'];
@@ -117,16 +124,18 @@ function process_all_standings(data) {
     var values = [];
     var tmp_keys = [];
 
+    //gets a list of the team names
     for (var key in out_dct) {
         tmp_keys.push(key);
     }
+    //this sorts the teams to alphabetical
     tmp_keys.sort();
 
     for (var i=0; i<tmp_keys.length; i++) {
         var key = tmp_keys[i];
         var tmp = {
             label: key,
-            data: out_dct[key],
+            data: out_dct[key].sort(sortSeasonNumber),
             fill: false,
             borderColor: team_colors[key],
             backgroundColor: team_colors[key]
@@ -162,7 +171,7 @@ function create_chart() {
                 display: false
             },
         }
-    },);
+    });
 }
 
 function create_season_chart() {
@@ -193,7 +202,7 @@ function create_season_chart() {
               animationDuration: 0, // duration of animations when hovering an item
             },
         }
-    },);
+    });
 }
 
 
