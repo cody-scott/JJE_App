@@ -34,35 +34,50 @@
 
 <div class="container">
     <nav>
-{#        <div class="container">#}
-            <ul class="nav">
-                <li class="nav nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav nav-item"><a class="nav-link" >|</a></li>
-                <li class="nav nav-item"><a class="nav-link" href="/standings/">Standings</a></li>
+        {#        <div class="container">#}
+        <ul class="nav">
+            <li class="nav nav-item"><a class="nav-link" href="/">Home</a></li>
             <li class="nav nav-item"><a class="nav-link" >|</a></li>
-                {#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
-                {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
-{#            </ul>#}
-{#            <ul class="nav">#}
-                {% if user.is_authenticated %}
-                    <li class="nav nav-item">
-                        <a class="nav-link" href="/accounts/logout">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav nav-item">
-                        <a class="nav-link" href="/accounts/login">Login</a>
-                    </li>
-                {% endif %}
-            {% if user.is_staff %}
-                    <li class="nav nav-item"><a class="nav-link" >|</a></li>
-                    <li class="nav nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
-                    </li>
+            <li class="nav nav-item"><a class="nav-link" href="/standings/">Standings</a></li>
+            <li class="nav nav-item"><a class="nav-link" >|</a></li>
+            {#                <li class="navbar-item"><a class="navbar-link" href="/Standings">Standings</a></li>#}
+            {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
+            {#            </ul>#}
+            {#            <ul class="nav">#}
+            {% if user.is_authenticated %}
+                <li class="nav nav-item">
+                    <a class="nav-link" href="/accounts/logout">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav nav-item">
+                    <a class="nav-link" href="/accounts/login">Login</a>
+                </li>
             {% endif %}
-            </ul>
-{#        </div>#}
+            {% if user.is_staff %}
+                <li class="nav nav-item"><a class="nav-link" >|</a></li>
+                <li class="nav nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+            {% endif %}
+        </ul>
     </nav>
 </div>
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+
 <hr class="hr_top">
 
 {% block basecontent %}
