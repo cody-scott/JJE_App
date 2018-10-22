@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
+from django.contrib import messages
 
 from JJE_Standings.models import YahooStanding
 from JJE_Waivers.models import WaiverClaim, YahooTeam
@@ -69,6 +70,8 @@ class WaiverClaimCreate(CreateView):
 
     def form_valid(self, form):
         valid_form = super(WaiverClaimCreate, self).form_valid(form)
+        messages.add_message(self.request, messages.INFO,
+                             "Claim Successful")
         email_functions.claim_email(self.object, "New Claim", self.request)
         return valid_form
 
@@ -91,7 +94,11 @@ class OverclaimCreate(CreateView):
 
             wc_id = self.kwargs.get("pk")
             player = WaiverClaim.objects.get(id=wc_id)
-            assert player.active_claim()
+
+            if not player.active_claim():
+                messages.add_message(request, messages.WARNING,
+                                     "Waiver claim is no longer active")
+                assert player.active_claim()
 
             claim_team_standing = get_claim_rank(player.team)
             claimee_standings = []
@@ -106,6 +113,8 @@ class OverclaimCreate(CreateView):
                 cts = max(claim_team_standing)
                 cee = max(claimee_standings)
                 if cts >= cee:
+                    messages.add_message(request, messages.WARNING,
+                                         "Claim team is lower ranked then you")
                     raise AssertionError
 
             return super(OverclaimCreate, self).get(request, *args, **kwargs)
@@ -148,6 +157,9 @@ class OverclaimCreate(CreateView):
         form.instance.add_IR = player.add_IR
         form.instance.over_claim_id = int(wc_id)
         valid_form = super(OverclaimCreate, self).form_valid(form)
+
+        messages.add_message(self.request, messages.INFO,
+                             "Overclaim Successful")
 
         email_functions.claim_email(self.object, "Overclaim", self.request)
 
@@ -210,5 +222,7 @@ class CancelClaimView(DetailView):
 
         claim.cancelled = True
         claim.save()
+        messages.add_message(self.request, messages.INFO,
+                             "Claim cancelled")
         email_functions.cancel_email(claim, request)
         return redirect(reverse('index'))
