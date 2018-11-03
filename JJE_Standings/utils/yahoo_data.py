@@ -41,6 +41,16 @@ def build_team_data(request):
         _process_team(team)
 
 
+def test_standings(request):
+    yahoo_obj = create_session(request)
+    url = "https://fantasysports.yahooapis.com/" \
+          "fantasy/v2/league/{}/standings".format(LEAGUE_ID)
+
+    result = yahoo_obj.request("get", url)
+    results, status_code = result.text, result.status_code
+
+    return result, status_code
+
 def update_standings(request):
     yahoo_obj = create_session(request)
     set_standings_not_current()
@@ -60,7 +70,7 @@ def _standings_collection(yahoo_obj):
     result = yahoo_obj.request("get", url)
     results, status_code = result.text, result.status_code
     if (result.text is None) or (result.status_code != 200):
-        'Means an error with the yahoo stuff'
+        # 'Means an error with the yahoo stuff'
         print("Error with yahoo")
         return False
 

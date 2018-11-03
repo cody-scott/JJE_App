@@ -1,6 +1,6 @@
 appdirs==1.4.3
 beautifulsoup4==4.6.0
-certifi==2018.8.24
+certifi>=2018.10.15
 chardet==3.0.4
 coreapi==2.3.1
 coreschema==0.0.4
@@ -26,8 +26,8 @@ psycopg2==2.7.5
 pyparsing==2.2.0
 python3-openid==3.1.0
 pytz==2017.2
-requests==2.17.3
-requests-oauthlib==0.8.0
+requests==2.20.0
+requests-oauthlib==1.0.0
 six==1.10.0
 sqlparse==0.2.3
 uritemplate==3.0.0
