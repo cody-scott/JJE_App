@@ -74,13 +74,6 @@ for chrome, need security toned down.
         /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --ignore-certificate-errors &> /dev/null &
 
 
-#### Fix Stuff
-
-Stuff broken? Fix it up!
-
------
-
-
 ### Working?
 
 Delete data from following again
@@ -103,7 +96,6 @@ Delete data from following again
 ### Recommended
 
 Create a test DB on the server and test against that to be safe
-
 
 ### ENV Variables
 
