@@ -39,7 +39,7 @@ def build_team_data(request):
     teams = standings_soup.findAll('team')
     for team in teams:
         _process_team(team)
-
+    return True
 
 def test_standings(request):
     yahoo_obj = create_session(request)

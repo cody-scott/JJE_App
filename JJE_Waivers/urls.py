@@ -13,9 +13,3 @@ urlpatterns = [
         views.CancelClaimView.as_view(),
         name="waiver_claim-cancel"),
 ]
-
-# from rest_framework.schemas import get_schema_view
-# schema_view = get_schema_view(title='Pastbin API')
-# urlpatterns += [
-#     url(r'^schema/$', schema_view)
-# ]

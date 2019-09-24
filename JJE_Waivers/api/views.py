@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
 
 from JJE_Waivers.api.serializer import WaiverClaimSerializer
 from JJE_Waivers.models import WaiverClaim

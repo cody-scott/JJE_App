@@ -28,8 +28,10 @@ class UpdateStandings(View):
 
 class CreateTeams(View):
     def get(self, request):
-        build_team_data(request)
-        return HttpResponse("Done")
+        if build_team_data(request):
+            return HttpResponse("Done")
+        else:
+            return HttpResponse("Error")
 
 
 @method_decorator(login_required, name='dispatch')

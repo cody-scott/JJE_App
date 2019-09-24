@@ -102,7 +102,7 @@ if 'test' in sys.argv:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(os.path.dirname(__file__), 'test.db'),
+            'NAME': os.path.join(os.path.dirname(__file__), 'est.tdb'),
             'TEST_NAME': os.path.join(os.path.dirname(__file__), 'test.db'),
         }
     }
@@ -219,7 +219,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50
 }
 
-LEAGUE_ID = 'nhl.l.39816'
+LEAGUE_ID = os.environ.get("league_id")
 
 DEBUG_TOOLBAR_CONFIG = {
   'JQUERY_URL':'',

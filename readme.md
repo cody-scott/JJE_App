@@ -116,3 +116,10 @@ Create a test DB on the server and test against that to be safe
     SU_Email = True -> flag to email superuser only
     AD_Email = False -> flag to email admin only
     Send_Email = True -> flag to send email
+    
+    
+### For yahoo
+
+set the sites table in the db
+
+exp https://www.myapp.test
