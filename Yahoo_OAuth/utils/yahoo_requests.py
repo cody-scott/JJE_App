@@ -11,7 +11,7 @@ import os
 
 def _get_local(file_name):
     # todo remove this
-    with open(os.path.join(BASE_DIR, f'test_files/{file_name}'), 'r') as fl:
+    with open(os.path.join(BASE_DIR, f'Development/test_files/{file_name}'), 'r') as fl:
         return {'results': fl.read(), 'status_code': 200}
 
 
