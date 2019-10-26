@@ -1,12 +1,41 @@
 
+# New Season
+
+## Variables to set
+
+Update the league_id variable
+Update the starting week variable
+
+
+## Cleanup
+
+Can choose to  wipe the tables if you want.
+
+wipe
+
+* standings
+* waiver claims
+* yahoo user tokens
+* yahoo guids
+* yahoo_teams
+
+Don't need to wipe user table, that can be reused
+
 ## .env variables
 
+Set these variables on heroku and in a .env file for testing
+
+    # postgres url for the database
     DATABASE_URL=""
     
+    # django apps secret key
     SECRET_KEY=""
+    
+    # Info from yahoo app
     client_id=""
     client_secret=""
     
+    # fantasy specific info
     league_id=""
     starting_week="2019-10-04"
     
