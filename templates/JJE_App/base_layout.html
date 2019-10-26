@@ -44,6 +44,13 @@
             {#                <li class="navbar-item"><a class="navbar-link" href="/Rules">Rules</a></li>#}
             {#            </ul>#}
             {#            <ul class="nav">#}
+            {% if user.is_staff %}
+
+                <li class="nav nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                <li class="nav nav-item"><a class="nav-link" >|</a></li>
+            {% endif %}
             {% if user.is_authenticated %}
                 <li class="nav nav-item">
                     <a class="nav-link" href="/accounts/logout">Logout</a>
@@ -51,12 +58,6 @@
             {% else %}
                 <li class="nav nav-item">
                     <a class="nav-link" href="/accounts/login">Login</a>
-                </li>
-            {% endif %}
-            {% if user.is_staff %}
-                <li class="nav nav-item"><a class="nav-link" >|</a></li>
-                <li class="nav nav-item">
-                    <a class="nav-link" href="/admin">Admin</a>
                 </li>
             {% endif %}
         </ul>
@@ -92,6 +93,6 @@
 
 {#<hr>#}
 <div class="padding-header"></div>
-
+<!--Code available at https://github.com/namur007/JJE_App-->
 </body>
 </html>
