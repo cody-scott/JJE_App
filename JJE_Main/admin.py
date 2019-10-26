@@ -5,7 +5,7 @@ from JJE_Main.models import YahooTeam, YahooGUID
 
 class TeamAdmin(admin.ModelAdmin):
     readonly_fields = ('team_id', 'team_name', 'logo_url')
-    fields = ('team_id', 'team_name', 'logo_url')
+    fields = ('team_id', 'team_name', 'logo_url', 'is_active')
     list_display = [
         'team_name',
     ]
