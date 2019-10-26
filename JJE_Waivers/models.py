@@ -40,6 +40,7 @@ class WaiverClaim(models.Model):
 
     claim_message = models.TextField(blank=True, null=True)
 
+
     def get_absolute_url(self):
         return reverse('index')
         # return reverse('waiver-claim-detail', kwargs={'pk': self.pk})
