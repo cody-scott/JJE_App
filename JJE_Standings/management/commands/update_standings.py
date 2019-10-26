@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from JJE_Standings.utils.yahoo_data import update_standings
 from JJE_Standings.utils import standing_emails
 

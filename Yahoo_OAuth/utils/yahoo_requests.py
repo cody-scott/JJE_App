@@ -1,5 +1,4 @@
 from Yahoo_OAuth.utils.oauth_flow import refresh_user_token, create_oauth_session
-from Yahoo_OAuth.models import UserToken
 
 from django.conf import settings
 from urllib.parse import urlencode

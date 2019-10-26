@@ -1,9 +1,4 @@
-from django.views.generic import View, TemplateView
-
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse
+from django.views.generic import TemplateView
 
 
 class IndexView(TemplateView):

@@ -1,12 +1,8 @@
 from rest_framework import viewsets, permissions
-from rest_framework.response import Response
 
 from JJE_Main.api import serializer
 from JJE_Main.models import YahooGUID, YahooTeam
 from JJE_Main.utils import api_calls
-from JJE_Main.api import filters as api_filter
-
-from allauth.account.models import EmailAddress
 
 
 # Returns GUID -> teams

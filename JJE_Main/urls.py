@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from JJE_Main import views
 from JJE_Main.api import views as main_api
-from rest_framework.routers import DefaultRouter, SimpleRouter
+from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 
 router.register(r'guid', main_api.YahooTeamGUIDViewSetCurrentWeek, 'guid_api')

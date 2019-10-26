@@ -2,6 +2,7 @@ from django.contrib import admin
 from JJE_Standings.models import YahooStanding
 
 
+# noinspection PyProtectedMember
 class StandingsAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields if f.name not in ['current_standings']]

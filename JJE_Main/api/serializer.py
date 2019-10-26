@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from JJE_Main.models import YahooGUID, YahooTeam
-from allauth.account.models import EmailAddress
 
 
 class YahooTeamSerializer(serializers.ModelSerializer):

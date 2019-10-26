@@ -1,5 +1,4 @@
 import django_filters
-from django_filters.fields import Lookup
 
 from JJE_Standings.models import YahooStanding
 

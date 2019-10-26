@@ -4,8 +4,6 @@ from django.contrib.sites.models import Site
 from JJE_Main.models import YahooGUID, YahooTeam
 
 from bs4 import BeautifulSoup
-from datetime import datetime
-import math
 import requests
 import os
 

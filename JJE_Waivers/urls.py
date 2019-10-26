@@ -3,7 +3,7 @@ from . import views
 
 
 # from JJE_Waivers.api import views as waivers_api
-from rest_framework.routers import DefaultRouter, SimpleRouter
+from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 
 #

@@ -188,8 +188,8 @@ class CancelClaimView(DetailView):
     model = WaiverClaim
 
     def get(self, request, *a, **k):
-        id = int(k.get("pk"))
-        claim_obj = WaiverClaim.objects.filter(id=id).first()
+        _id = int(k.get("pk"))
+        claim_obj = WaiverClaim.objects.filter(id=_id).first()
         if claim_obj is None or not claim_obj.active_claim():
             return redirect(reverse("waivers_index"))
 

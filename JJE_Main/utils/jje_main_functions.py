@@ -17,7 +17,7 @@ def get_users_teams_ids(guid):
 
 
 def get_users_teams_qs(guid):
-    guid_objs = YahooGUID.objects.filter(yahoo_guid=guid) # type: YahooGUID
+    guid_objs = YahooGUID.objects.filter(yahoo_guid=guid)
     if len(guid_objs) == 0:
         return []
 

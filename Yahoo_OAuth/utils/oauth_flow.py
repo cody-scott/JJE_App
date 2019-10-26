@@ -70,7 +70,7 @@ def refresh_current_token(request):
     user = request.user
     user_token = user.usertokens_set.first()
 
-    refresh_user_token(request, user_token)
+    refresh_user_token(user_token)
 
 
 def refresh_user_token(user_token):

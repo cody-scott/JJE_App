@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import redirect
 from django.views.generic import View
-from django.contrib.sites.models import Site
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator

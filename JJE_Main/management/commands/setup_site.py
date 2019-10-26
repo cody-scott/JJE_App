@@ -1,8 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from allauth.account.models import EmailAddress
+
 
 class Command(BaseCommand):
     help = 'Setup Site'
