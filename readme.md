@@ -93,13 +93,14 @@ Active Claim info
 
 ### Submitting claims
 
-Claims should be sent as POST
+New claims should be sent as POST
+Cancel claims should be sent as PUT
 
 -----
 
 **Create New claim**
 
-    /waivers/api/new
+    /waivers/api/new/
     data = {
         "yahoo_team": 9,
         "add_player": "testadd",
@@ -108,24 +109,28 @@ Claims should be sent as POST
         "drop_D": True,
     }
     
+    requests.post('./waivers/api/new/', headers=headers, data=data)
+    
 **Overclaim**
 
-    /waivers/api/overclaim
+    /waivers/api/overclaim/
     data = {
         "yahoo_team": 9,
         "over_claim_id": 36,
         "drop_player": "testdrop",
         "drop_D": True,
     }
+    requests.post('./waivers/api/overclaim/', headers=headers, data=data)
     
     
 **Cancel**
 
 supply cancellation ID in the url
 
-    /waivers/api/cancel/<ID>
+    /waivers/api/cancel/<ID>/
+    requests.put('./waivers/api/cancel/<ID>/', headers=headers)
 
-
+----
 
 ## Yahoo Player Data
 
@@ -136,7 +141,7 @@ supply cancellation ID in the url
     data {
         'player_id': 6381,
     }
-    requests.get("./oauth/api/player", headers=headers, params=data)
+    requests.get("./oauth/api/player/", headers=headers, params=data)
     
 **Collection of Player Stats**
     
@@ -146,10 +151,11 @@ full list of parameters
 
 https://developer.yahoo.com/fantasysports/guide/#players-collection
 
+    /oauth/api/players/
     data {
         'status': "FA",
         "position": "C",
         "sort_type": "lastweek",
         "sort": "AR",
     }
-    requests.get("./oauth/api/players", headers=headers, params=data)
+    requests.get("./oauth/api/players/", headers=headers, params=data)
