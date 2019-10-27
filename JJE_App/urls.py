@@ -19,6 +19,10 @@ router.registry.extend(main_router.registry)
 from JJE_Standings.urls import router as standings_router
 router.registry.extend(standings_router.registry)
 
+
+from JJE_Waivers.urls import router as waivers_router
+router.registry.extend(waivers_router.registry)
+
 urlpatterns = [url(r'api/', include(router.urls)),]
 
 
