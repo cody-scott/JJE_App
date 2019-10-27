@@ -81,7 +81,7 @@ Refresh token with
 
     {"Authorization": "Bearer <TOKEN>"}
 
-### Waiver claim api
+## Waiver claim api
 
 team ID info
 
@@ -127,7 +127,7 @@ supply cancellation ID in the url
 
 
 
-### Yahoo Player Data
+## Yahoo Player Data
 
 **Individual Player Stats**
 
