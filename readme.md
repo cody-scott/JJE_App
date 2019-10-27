@@ -117,3 +117,30 @@ Cancel
 supply cancellation ID in the url
 
     /waivers/api/cancel/<ID>
+    
+----
+    
+### Yahoo Player Data
+
+/oauth/players/
+
+full detail of request types:
+
+https://developer.yahoo.com/fantasysports/guide/#players-collection
+
+    data = {
+        'status': "FA",
+        "position": "C",
+        "sort_type": "lastweek",
+        "sort": "AR",
+    }
+    requests.get("./oauth/players/", headers=headers, params=data) 
+
+----
+
+/oauth/player
+
+    data = {
+        'player_id': 6381,
+    }
+    requests.get("./oauth/player/", headers=headers, params=data)
