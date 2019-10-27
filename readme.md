@@ -55,3 +55,65 @@ Set these variables on heroku and in a .env file for testing
 ## Start chrome
 
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --ignore-certificate-errors &> /dev/null &
+    
+    
+    
+## API
+
+## Token access
+
+Request token with 
+
+    api/token/
+    
+    data = {"username": "", "password"}
+    
+    returns "access" and "refresh" token
+    
+Refresh token with
+
+    api/token/refresh/
+    
+    data = {"refresh": "<refresh token>"
+
+#### Headers to add to requests
+
+    {"Authorization": "Bearer <TOKEN>"}
+
+### Waiver claim api
+
+team ID info
+
+    /api/teams
+
+Active Claim info
+
+    waivers/api/active_claims/
+
+Create New claim
+
+    /waivers/api/new
+    data = {
+        "yahoo_team": 9,
+        "add_player": "testadd",
+        "add_IR": True,
+        "drop_player": "testdrop",
+        "drop_D": True,
+    }
+    
+Overclaim
+
+    /waivers/api/overclaim
+    data = {
+        "yahoo_team": 9,
+        "over_claim_id": 36,
+        "drop_player": "testdrop",
+        "drop_D": True,
+    }
+    
+    
+Cancel
+
+supply cancellation ID in the url
+
+    /waivers/api/cancel/<ID>
