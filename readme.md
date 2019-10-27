@@ -90,6 +90,12 @@ Active Claim info
 
     waivers/api/active_claims/
 
+### Submitting claims
+
+Claims should be sent as POST
+
+-----
+
 Create New claim
 
     /waivers/api/new
