@@ -22,3 +22,18 @@ def get_user_team(request):
 @permission_classes([permissions.IsAuthenticated])
 def get_teams(request):
     return Response(yahoo_requests.get_teams(request))
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_player(request, *args, **kwargs):
+    res, s_code = yahoo_requests.get_player(request, args, kwargs)
+    return Response(res, s_code)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_players(request, *args, **kwargs):
+    res, s_code = yahoo_requests.get_players(request, args, kwargs)
+    return Response(res, s_code)
+

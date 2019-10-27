@@ -4,3 +4,6 @@
 *.sqlite3
 .vscode/*
 *.pyc
+
+.ipynb_checkpoints/*
+*.ipynb
