@@ -96,7 +96,7 @@ Claims should be sent as POST
 
 -----
 
-Create New claim
+**Create New claim**
 
     /waivers/api/new
     data = {
@@ -107,7 +107,7 @@ Create New claim
         "drop_D": True,
     }
     
-Overclaim
+**Overclaim**
 
     /waivers/api/overclaim
     data = {
@@ -118,7 +118,7 @@ Overclaim
     }
     
     
-Cancel
+**Cancel**
 
 supply cancellation ID in the url
 
@@ -128,13 +128,16 @@ supply cancellation ID in the url
 
 ### Yahoo Player Data
 
-/oauth/api/player/
+**Individual Player Stats**
+
+    /oauth/api/player/
 
     data {
         'player_id': 6381,
     }
     requests.get("./oauth/api/player", headers=headers, params=data)
     
+**Collection of Player Stats**
     
 /oauth/api/players/
 
