@@ -69,6 +69,7 @@ Request token with
     data = {"username": "", "password"}
     
     returns "access" and "refresh" token
+    {'access': '<TOKEN>', 'refresh': '<TOKEN>'}
     
 Refresh token with
 
