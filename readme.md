@@ -27,7 +27,9 @@ Refresh token with
 
 #### Headers to add to requests
 
-    {"Authorization": "Bearer <TOKEN>"}
+Use access token as a header in your request
+
+    {"Authorization": "Bearer <ACCESS_TOKEN>"}
 
 ## Waiver claim api
 
