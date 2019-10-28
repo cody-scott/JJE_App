@@ -23,7 +23,7 @@ Refresh token with
 
     api/token/refresh/
     
-    data = {"refresh": "<refresh token>"
+    data = {"refresh": "<refresh token>"}
 
 #### Headers to add to requests
 
