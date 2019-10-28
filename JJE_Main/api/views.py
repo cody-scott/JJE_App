@@ -29,4 +29,10 @@ class YahooTeamViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             api_calls.update_teams(self.request)
-        return YahooTeam.objects.all()
+        qs = YahooTeam.objects.all()
+        try:
+            if self.request.query_params.get('user_teams') == '1':
+                guid = self.request.user.usertoken_set.first().user_guid
+                qs = YahooGUID.objects.get(yahoo_guid=guid).yahoo_team.all()
+        finally:
+            return qs

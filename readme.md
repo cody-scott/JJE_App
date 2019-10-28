@@ -37,6 +37,12 @@ team ID info
 
     /api/teams
 
+    For only your teams
+    params={
+        'user_teams': 1
+    }
+    requests.get('./api/teams', params=params, headers=headers)
+
 Active Claim info
 
     waivers/api/active_claims/
