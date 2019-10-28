@@ -95,7 +95,10 @@ ROOT_URLCONF = 'JJE_App.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
+        'DIRS': [
+            # os.path.join(PROJECT_ROOT, "templates"),
+            os.path.join(BASE_DIR, os.path.join("JJE_App", "templates"))
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,7 +122,7 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'jje_v2.sqlite3')
     }
 }
-#
+
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
@@ -174,7 +177,8 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, os.path.join("JJE_App", "static")),
+    # os.path.join(BASE_DIR, "static"),
 )
 
 # email config
