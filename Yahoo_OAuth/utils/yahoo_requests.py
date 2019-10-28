@@ -53,11 +53,12 @@ def get_player(request, *args, **kwargs):
     player_id = q_params.get("player_id")
     if player_id is None:
         return ["Error with player id"], 400
+    sub_r = {c: q_params[c] for c in q_params if c != "player_id"}
 
     token = request.user.usertoken_set.first()
     yahoo_obj = create_session(token)
 
-    res = request_player(yahoo_obj, player_id)
+    res = request_player(yahoo_obj, player_id, sub_r)
 
     return res['results'], res["status_code"]
 
@@ -99,7 +100,10 @@ def request_players(yahoo_obj, player_dict):
 def request_player(yahoo_obj, player_id, sub_resources=None):
     url = f"https://fantasysports.yahooapis.com/fantasy/v2/league/{settings.LEAGUE_ID}/players;player_keys=nhl.p.{player_id}/stats"
     if sub_resources is not None:
-        url += f';{",".join(sub_resources)}'
+        sr = urlencode(sub_resources)
+        sr = sr.replace("&", ";")
+        url = f"https://fantasysports.yahooapis.com/fantasy/v2/league/{settings.LEAGUE_ID}/players;player_keys=nhl.p.{player_id};{sr}/stats"
+        # url += f';{",".join(sr)}'
     return _get_request(yahoo_obj, url)
 
 
