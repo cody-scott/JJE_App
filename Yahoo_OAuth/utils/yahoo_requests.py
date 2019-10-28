@@ -10,8 +10,9 @@ import os
 
 def _get_local(file_name):
     # todo remove this
-    with open(os.path.join(BASE_DIR, f'Development/test_files/{file_name}'), 'r') as fl:
-        return {'results': fl.read(), 'status_code': 200}
+    pt = os.path.join(BASE_DIR, f'Development\\test_files\\{file_name}')
+    with open(pt, 'r') as fl:
+        return fl.read(), 200
 
 
 def create_session(token):
@@ -27,7 +28,8 @@ def get_standings(request):
     token = request.user.usertoken_set.first()
     # token = UserToken.objects.get(standings_token=True)
     yahoo_obj = create_session(token)
-    return request_standings(yahoo_obj)
+    r = request_standings(yahoo_obj)
+    return r['results'], r["status_code"]
 
 
 def get_teams(request):
@@ -36,7 +38,7 @@ def get_teams(request):
     token = request.user.usertoken_set.first()
     yahoo_obj = create_session(token)
     r = request_teams(yahoo_obj)
-    return r
+    return r['results'], r["status_code"]
 
 
 def get_user_teams(request):
@@ -45,7 +47,7 @@ def get_user_teams(request):
     token = request.user.usertoken_set.first()
     yahoo_obj = create_session(token)
     r = request_teams(yahoo_obj, True)
-    return r
+    return r['results'], r["status_code"]
 
 
 def get_player(request, *args, **kwargs):

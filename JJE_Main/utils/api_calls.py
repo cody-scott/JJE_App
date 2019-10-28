@@ -17,9 +17,7 @@ def update_teams(request):
 
     res = requests.get(url, headers=headers, verify=settings.VERIFY_REQUEST)
 
-    yahoo_res = res.json()
-    team_xml = yahoo_res['results']
-    status_code = yahoo_res['status_code']
+    team_xml = res.text
 
     team_xml = BeautifulSoup(team_xml, 'html.parser')
     teams = team_xml.find_all('team')

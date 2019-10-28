@@ -18,6 +18,7 @@ def query_standings(token):
     url = os.path.join(site.domain, "oauth/api/getstandings/")
     url = url.replace("\\", "/")
     headers = {'Authorization': f'Token {token}'}
+    print(f"query url: {url}")
     res = requests.get(url, headers=headers, verify=settings.VERIFY_REQUEST)
 
     if res.status_code != 200:
@@ -25,7 +26,7 @@ def query_standings(token):
         print(res.text)
         return
 
-    return res.json()
+    return res.text
 
 
 def query_team(token):
@@ -56,8 +57,7 @@ def update_standings(token):
         print("error")
         return False
 
-    new_standings = yahoo_res['results']
-    status_code = yahoo_res['status_code']
+    new_standings = yahoo_res
 
     teams = query_team(token)
 

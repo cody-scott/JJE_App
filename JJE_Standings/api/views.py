@@ -61,6 +61,7 @@ def get_new_standings_data(request):
     # this is to wake up the website if not running
     site = Site.objects.first()
     requests.get(site.domain, verify=settings.VERIFY_REQUEST)
+    print("domain verified")
 
     if update_standings(token) is True:
         standing_emails.send_standings_email()
