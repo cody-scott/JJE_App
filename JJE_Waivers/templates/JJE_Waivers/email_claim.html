@@ -27,7 +27,8 @@
     <h3>Claim Start: {% timezone "America/Toronto" %}{{ claim.claim_start }}{% endtimezone %}</h3>
     <h3>Claim End: {% timezone "America/Toronto" %}{{ claim.claim_end_normal }}{% endtimezone %}</h3>
     <h4>
-        <a href="{{ site.domain }}{% url 'waiver_claim-overclaim' pk=claim.id %}">
+        {% url 'waiver_claim-overclaim' pk=claim.id as temporary_url %}
+        <a href="{{ site.domain }}{{ temporary_url|slice:'1:' }}">
             Overclaim Link
         </a>
     </h4>
