@@ -92,12 +92,12 @@ supply cancellation ID in the url
 
 **Individual Player Stats**
 
-    /oauth/api/player/
+    /oauth/api/getplayer/
 
     data {
         'player_id': 6381,
     }
-    requests.get("./oauth/api/player/", headers=headers, params=data)
+    requests.get("./oauth/api/getplayer/", headers=headers, params=data)
     
 **Collection of Player Stats**
     
@@ -107,11 +107,11 @@ full list of parameters
 
 https://developer.yahoo.com/fantasysports/guide/#players-collection
 
-    /oauth/api/players/
+    /oauth/api/searchplayers/
     data {
         'status': "FA",
         "position": "C",
         "sort_type": "lastweek",
         "sort": "AR",
     }
-    requests.get("./oauth/api/players/", headers=headers, params=data)
+    requests.get("./oauth/api/searchplayers/", headers=headers, params=data)
