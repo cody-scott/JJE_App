@@ -84,12 +84,16 @@ function sortSeasonNumber(a, b) {
 }
 
 function process_all_standings(data) {
-    var out_data = []
+    var out_data = [];
+    var _wlbl = [];
     for (var i=0; i< data.length; i++) {
         var c_row = data[i];
         var tm = c_row['team_name'];
         var standings = c_row['standing_team'].sort((a, b) => (a.standings_week > b.standings_week) ? 1: -1);
 
+        var x = standings.map((val) => (val.standings_week));        
+        _wlbl = _wlbl.concat(x);
+        
         var standing_dict = {
             'label': tm,
             'borderColor': team_colors[tm],
@@ -99,6 +103,10 @@ function process_all_standings(data) {
         }
         out_data.push(standing_dict)
     }
+    
+    _wlbl = Array.from(new Set(_wlbl)).sort();
+    week_labels = _wlbl.map((val) => ("Week " + val));
+    
     return out_data;
 }
 
