@@ -39,3 +39,10 @@ def get_player(request, *args, **kwargs):
 def get_players(request, *args, **kwargs):
     res, s_code = yahoo_requests.get_players(request, args, kwargs)
     return Response(res, s_code)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_roster(request, *args, **kwargs):
+    res, s_code = yahoo_requests.get_team_roster(request, args, kwargs)
+    return Response(res, s_code)

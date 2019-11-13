@@ -16,6 +16,7 @@ urlpatterns += [
     url(r'api/getteams', api_views.get_teams, name="get_teams"),
     url(r'api/getplayer', api_views.get_player, name="get_player"),
     url(r'api/searchplayers', api_views.get_players, name="search_players"),
+    url(r'api/getroster', api_views.get_roster, name="get_roster"),
 ]
 
 

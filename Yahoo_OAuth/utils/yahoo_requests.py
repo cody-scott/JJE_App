@@ -34,7 +34,6 @@ def get_standings(request):
 
 def get_teams(request):
     # return _get_local('standings.txt')
-
     token = request.user.usertoken_set.first()
     yahoo_obj = create_session(token)
     r = request_teams(yahoo_obj)
@@ -43,10 +42,21 @@ def get_teams(request):
 
 def get_user_teams(request):
     # return _get_local('userteams.txt')
-
     token = request.user.usertoken_set.first()
     yahoo_obj = create_session(token)
     r = request_teams(yahoo_obj, True)
+    return r['results'], r["status_code"]
+
+
+def get_team_roster(request, *args, **kwargs):
+    q_params = request.query_params
+    team_id = q_params.get("team_id")
+    if team_id is None:
+        return ["Error with team id"], 400
+
+    token = request.user.usertoken_set.first()
+    yahoo_obj = create_session(token)
+    r = request_roster(yahoo_obj, team_id)
     return r['results'], r["status_code"]
 
 
@@ -113,5 +123,4 @@ def request_teams(yahoo_obj, use_login=False):
     url = f"https://fantasysports.yahooapis.com/fantasy/v2/league/{settings.LEAGUE_ID}/teams"
     if use_login:
         url += ';use_login=1'
-
     return _get_request(yahoo_obj, url)
