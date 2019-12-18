@@ -50,6 +50,9 @@ Set these variables on heroku and in a .env file for testing
     # if you don't want to send an email
     SEND_EMAIL="False"
 
+    # This flags a creation/work on a local sqlite file instead of the postgres db
+    LOCAL_WORK="TRUE"
+
 
 ## Start chrome
 

@@ -8,7 +8,7 @@ from JJE_Main.models import YahooTeam
 
 class WaiverClaim(models.Model):
     # yahoo_team_uid = models.IntegerField()
-    yahoo_team = models.ForeignKey(YahooTeam, default=None, blank=True, null=True, on_delete=models.SET_NULL,
+    yahoo_team = models.ForeignKey(YahooTeam, null=True, on_delete=models.SET_NULL,
                       related_name='waiver_team')
 
     claim_start = models.DateTimeField(default=timezone.now)
