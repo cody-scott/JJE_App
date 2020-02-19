@@ -84,29 +84,23 @@ function sortSeasonNumber(a, b) {
 }
 
 function process_all_standings(data) {
-    var out_data = [];
-    var _wlbl = [];
-    for (var i=0; i< data.length; i++) {
-        var c_row = data[i];
+    var mx = get_max_standings_week(data);
+    var out_data = []
+    for (x=0; x<data.length; x++) {
+        var c_row = data[x];
         var tm = c_row['team_name'];
-        var standings = c_row['standing_team'].sort((a, b) => (a.standings_week > b.standings_week) ? 1: -1);
 
-        var x = standings.map((val) => (val.standings_week));        
-        _wlbl = _wlbl.concat(x);
-        
+        var dt = format_data(c_row['standing_team'], mx);
         var standing_dict = {
             'label': tm,
             'borderColor': team_colors[tm],
             'backgroundColor': team_colors[tm],
             'fill': false,
-            'data': standings.map((val) => ({"x": "Week " + val.standings_week, "y": val.stat_point_total}))
+            'data': dt
         }
-        out_data.push(standing_dict)
+        out_data.push(standing_dict);
     }
-    
-    _wlbl = Array.from(new Set(_wlbl)).sort();
-    week_labels = _wlbl.map((val) => ("Week " + val));
-    
+    week_labels = generate_week_lbl(mx);
     return out_data;
 }
 
@@ -235,3 +229,36 @@ $(document).ready(function() {
     get_standings();
     console.log(is_mobile);
 });
+
+
+function get_max_standings_week(data) {
+    var ix = data[0];
+    var arx = ix['standing_team'].map((x) => parseInt(x['standings_week']));
+    return Math.max.apply(null, arx)+1;
+}
+
+function format_data(data, mx) {
+    dt = {};
+    for (var x=0; x<data.length; x++) {
+        var v = data[x];
+        dt[v['standings_week']] = v['stat_point_total'];
+    }
+    var o_d = [];
+    for (var x=0; x<mx; x++) {
+        var val = NaN;
+        var z = dt[x];
+        if (z !== undefined) {
+            val = z;
+        }
+        o_d.push({"x": "Week " + x, "y": val});
+    }
+    return o_d;
+}
+
+function generate_week_lbl(mx) {
+    var lbls = [];
+    for (var i = 0; i<mx; i++) {
+        lbls.push('Week ' + i);
+    }
+    return lbls;
+}
